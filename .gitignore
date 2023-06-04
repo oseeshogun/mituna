@@ -55,3 +55,6 @@ pubspec.lock
 *.lock
 *.iml
 *.flutter-plugins
+
+# Data
+assets/data/*
