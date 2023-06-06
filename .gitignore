@@ -58,3 +58,11 @@ pubspec.lock
 
 # Data
 assets/data/*
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.iconfig.dart
+
+# objectbox
+objectbox-model.json
