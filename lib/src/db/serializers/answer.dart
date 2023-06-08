@@ -1,7 +1,7 @@
 import 'package:mituna/src/utils/uuid_convertor.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/answer.dart';
+import '../entities/answer.dart';
 
 class AnswerSerializer {
   static Answer fromJson(Map<String, dynamic> json) {

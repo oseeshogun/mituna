@@ -5,17 +5,29 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mituna/src/db/repositories/question.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mituna/src/services/hive/hive_db.dart';
+import 'package:mituna/src/services/http.dart';
+import 'package:mituna/src/services/sound_effect.dart';
 
 import 'contants/colors.dart';
 import 'firebase_options.dart';
 
 final providerContainer = ProviderContainer();
 late final QuestionRepository questionRepository;
+late final HiveDatabase hiveDatabase;
+late final SoundEffects soundEffect;
+late final ApiService apiService;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   questionRepository = await QuestionRepository.create();
+
+  hiveDatabase = await HiveDatabase.initialize();
+
+  soundEffect = SoundEffects(hiveDatabase);
+
+  apiService = ApiService(dotenv.env['API_URL']!);
 
   await dotenv.load(fileName: '.env');
 

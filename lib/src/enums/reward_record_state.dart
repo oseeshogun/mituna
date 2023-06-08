@@ -1,0 +1,1 @@
+enum RewardRecordState { queue, recorded }

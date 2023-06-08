@@ -1,9 +1,10 @@
 import 'package:mituna/objectbox.g.dart';
+import 'package:mituna/src/enums/all.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
 
-import '../models/question.dart';
+import '../entities/question.dart';
 
 class QuestionRepository {
   late final Store _store;
@@ -25,4 +26,8 @@ class QuestionRepository {
   }
 
   List<Question> getAll() => _questionBox.getAll();
+
+  List<Question> getAllForCategory(QuestionCategory category) {
+    return _questionBox.query(Question_.dbCategory.equals(category.name)).build().find();
+  }
 }

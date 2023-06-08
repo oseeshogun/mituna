@@ -1,7 +1,7 @@
 import 'package:mituna/src/enums/all.dart';
 
-import '../models/answer.dart';
-import '../models/question.dart';
+import '../entities/answer.dart';
+import '../entities/question.dart';
 import 'answer.dart';
 
 class QuestionJsonSerializer {
