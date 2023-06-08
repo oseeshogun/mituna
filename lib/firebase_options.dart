@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:flutter_dotenv/flutter_dotenv.dart' as flutterDotenv;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as flutter_dotenv;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,7 +16,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as flutterDotenv;
 /// );
 /// ```
 class DefaultFirebaseOptions {
-  late flutterDotenv.DotEnv dotenv;
+  late flutter_dotenv.DotEnv dotenv;
 
   DefaultFirebaseOptions(this.dotenv);
 
