@@ -5,8 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mituna/src/db/repositories/question.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mituna/src/http/repositories/all.dart';
+import 'package:mituna/src/http/repositories/gsheet_repository.dart';
 import 'package:mituna/src/services/hive/hive_db.dart';
-import 'package:mituna/src/services/http.dart';
 import 'package:mituna/src/services/sound_effect.dart';
 
 import 'contants/colors.dart';
@@ -16,7 +17,10 @@ final providerContainer = ProviderContainer();
 late final QuestionRepository questionRepository;
 late final HiveDatabase hiveDatabase;
 late final SoundEffects soundEffect;
-late final ApiService apiService;
+late final ApiRepository apiRepository;
+late final RewardsRepository rewardRepository;
+late final CompetitionRepository competitionRepository;
+late final GheetRepository gheetRepository;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,13 +31,16 @@ Future<void> main() async {
 
   soundEffect = SoundEffects(hiveDatabase);
 
-  apiService = ApiService(dotenv.env['API_URL']!);
-
   await dotenv.load(fileName: '.env');
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions(dotenv).currentPlatform);
 
   await FirebaseAuth.instance.setLanguageCode('fr');
+
+  apiRepository = ApiRepository();
+  rewardRepository = RewardsRepository();
+  competitionRepository = CompetitionRepository();
+  gheetRepository = GheetRepository();
 
   runApp(
     UncontrolledProviderScope(

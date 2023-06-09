@@ -59,7 +59,7 @@ class RewardRecord {
   _saveToDb() async {
     if (state == RewardRecordState.recorded) return;
     try {
-      await apiService.recordReward(this);
+      await rewardRepository.recordReward(this);
       await FirebaseFirestore.instance
           .collection('rewards')
           .doc(uid)
