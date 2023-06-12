@@ -1,5 +1,7 @@
+import 'package:mituna/locator.dart';
 import 'package:mituna/main.dart';
 import 'package:mituna/src/db/entities/question.dart';
+import 'package:mituna/src/db/repositories/question.dart';
 import 'package:mituna/src/enums/all.dart';
 import 'package:mituna/src/models/all.dart';
 import 'package:mituna/src/providers/sprint.dart';
@@ -15,6 +17,7 @@ class Sprint {
   final Competition? competition;
   final String id = const Uuid().v4();
   final List<String> goodAnswers;
+  final questionRepository = locator.get<QuestionRepository>();
 
   QuestionCategory? category;
 

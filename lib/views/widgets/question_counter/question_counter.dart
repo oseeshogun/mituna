@@ -3,7 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mituna/contants/colors.dart';
-import 'package:mituna/main.dart';
+import 'package:mituna/locator.dart';
+import 'package:mituna/src/services/sound_effect.dart';
 
 import 'question_counter_controller.dart';
 
@@ -29,6 +30,7 @@ class _QuestionCounterState extends State<QuestionCounter>
     with SingleTickerProviderStateMixin {
   int time = 30;
   Timer? _timer;
+  final soundEffect = locator.get<SoundEffects>();
 
   late final AnimationController counterAnimationController;
   late final Animation<double> counterAnimation;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mituna/locator.dart';
 import 'package:soundpool/soundpool.dart';
 
 import 'hive/hive_db.dart';
 import 'hive/keys.dart';
 
 class SoundEffects {
-  final HiveDatabase hiveDatabase;
 
   Soundpool pool = Soundpool.fromOptions(
     options: const SoundpoolOptions(streamType: StreamType.notification),
@@ -20,7 +20,7 @@ class SoundEffects {
 
   List<int?> streams = [];
 
-  SoundEffects(this.hiveDatabase) {
+  SoundEffects() {
     initSounds();
   }
 
@@ -43,6 +43,7 @@ class SoundEffects {
   }
 
   Future<void> play(int soundId, [int repeat = 0]) async {
+    final hiveDatabase = locator.get<HiveDatabase>();
     final volume = hiveKeyVolume.value(hiveDatabase.userBox);
     if (volume == 0) return;
     try {

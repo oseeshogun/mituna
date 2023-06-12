@@ -15,3 +15,6 @@ export 'text/title_level_one.dart';
 export 'text/title_level_two.dart';
 export 'text/winner_text.dart';
 export 'question_counter/question_counter.dart';
+export 'user_hearts/user_hearts.dart';
+export 'user_hearts/controller.dart';
+export 'count_down_time_from_game.dart';
