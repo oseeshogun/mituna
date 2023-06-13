@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/contants/colors.dart';
 import 'package:mituna/contants/sizes.dart';
 import 'package:mituna/locator.dart';
+import 'package:mituna/src/http/error_object.dart';
 import 'package:mituna/src/http/repositories/all.dart';
 import 'package:mituna/views/widgets/all.dart';
 
@@ -62,17 +63,17 @@ class _ClaimPriceState extends State<ClaimPrice> {
 
   void sendPrice(BuildContext context) {
     setState(() => (loading = true));
-    locator.get<GheetRepository>().setUserWinner('+243$phone').then((value) {
-      _controllerTopCenter.play();
-      setState(() => (submitted = true));
-    }).catchError((err) {
-      debugPrint(err.toString());
-      showAlertDialog(
-        context: context,
-        title: "Oops",
-        message: "Une erreur est survenue, veuillez réessayer.\nSi le problème persiste, contactez le développeur.",
-      ).then((value) {
-        debugPrint(value.toString());
+    locator.get<GheetRepository>().setUserWinner('+243$phone').then((either) {
+      either.fold((failure) {
+        final errorObject = ErrorObject.mapFailureToErrorObject(failure: failure);
+        showOkAlertDialog(
+          context: context,
+          title: errorObject.title,
+          message: errorObject.message,
+        );
+      }, (r) {
+        _controllerTopCenter.play();
+        setState(() => (submitted = true));
       });
     }).whenComplete(() {
       setState(() => (loading = false));

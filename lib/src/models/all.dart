@@ -5,3 +5,4 @@ export 'user_object.dart';
 export 'competition.dart';
 export 'ranked_user.dart';
 export 'sprint.dart';
+export 'extra_category.dart';

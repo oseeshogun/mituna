@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/src/enums/all.dart';
 import 'package:mituna/src/http/repositories/all.dart';
@@ -59,17 +58,8 @@ class RewardRecord {
 
   _saveToDb() async {
     if (state == RewardRecordState.recorded) return;
-    try {
-      final rewardRepository = locator.get<RewardsRepository>();
-      await rewardRepository.recordReward(this);
-      await FirebaseFirestore.instance
-          .collection('rewards')
-          .doc(uid)
-          .collection('records')
-          .doc(id)
-          .update({'state': RewardRecordState.recorded.name});
-    } catch (err) {
-      debugPrint(err.toString());
-    }
+    final rewardRepository = locator.get<RewardsRepository>();
+    await rewardRepository.recordReward(this);
+    await FirebaseFirestore.instance.collection('rewards').doc(uid).collection('records').doc(id).update({'state': RewardRecordState.recorded.name});
   }
 }

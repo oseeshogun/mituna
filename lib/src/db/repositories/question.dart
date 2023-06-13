@@ -1,22 +1,18 @@
 import 'package:mituna/objectbox.g.dart';
 import 'package:mituna/src/enums/all.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 
 import '../entities/question.dart';
 
 class QuestionRepository {
-  late final Store _store;
 
   late final Box<Question> _questionBox;
 
-  QuestionRepository._create(this._store) {
-    _questionBox = Box<Question>(_store);
+  QuestionRepository._create(Store store) {
+    _questionBox = Box<Question>(store);
   }
 
-  static Future<QuestionRepository> create() async {
-    final store = await openStore(directory: path.join((await getApplicationDocumentsDirectory()).path, "obx-mituna"));
+  static QuestionRepository create(Store store)  {
     return QuestionRepository._create(store);
   }
 
@@ -27,7 +23,23 @@ class QuestionRepository {
 
   List<Question> getAll() => _questionBox.getAll();
 
+  int countAll() => _questionBox.count();
+
+  bool questionIsEmpty() => _questionBox.isEmpty();
+
+  void addAll(List<Question> questions) {
+    _questionBox.putMany(questions);
+  }
+
   List<Question> getAllForCategory(QuestionCategory category) {
     return _questionBox.query(Question_.dbCategory.equals(category.name)).build().find();
+  }
+
+  int countAllForCategory(QuestionCategory category) {
+    return _questionBox.query(Question_.dbCategory.equals(category.name)).build().count();
+  }
+
+  void clear() {
+    _questionBox.removeAll();
   }
 }

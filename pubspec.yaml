@@ -74,6 +74,7 @@ flutter:
     - assets/icons/
     - assets/lottiefiles/
     - assets/images/
+    - assets/images/categories/
     - assets/sounds/
     - assets/data/questions.json
   fonts:

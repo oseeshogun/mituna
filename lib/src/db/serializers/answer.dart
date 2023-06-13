@@ -1,12 +1,12 @@
-import 'package:mituna/src/utils/uuid_convertor.dart';
-import 'package:uuid/uuid.dart';
-
 import '../entities/answer.dart';
 
 class AnswerSerializer {
   static Answer fromJson(Map<String, dynamic> json) {
+    if (json['question'] == null) {
+      print(json);
+    }
     return Answer(
-      id: UuidConvertor.toInt(const Uuid().v4()),
+      question: json['question'],
       value: json['response'] is bool ? (json['response'] ? 'Vrai' : 'Faux') : json['response'],
       isCorrect: json['isCorrect'],
       dbType: AnswerType.values
@@ -28,6 +28,7 @@ class AnswerSerializer {
     data['response'] = answer.value;
     data['isCorrect'] = answer.isCorrect;
     data['type'] = answer.dbType;
+    data['question'] = answer.question;
     return data;
   }
 }

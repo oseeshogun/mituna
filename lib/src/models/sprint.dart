@@ -17,7 +17,7 @@ class Sprint {
   final Competition? competition;
   final String id = const Uuid().v4();
   final List<String> goodAnswers;
-  final questionRepository = locator.get<QuestionRepository>();
+  final questionRepository =  locator.get<QuestionRepository>();
 
   QuestionCategory? category;
 

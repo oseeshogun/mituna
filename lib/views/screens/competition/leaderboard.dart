@@ -64,15 +64,18 @@ class _CompetitionLeaderBoardState extends State<CompetitionLeaderBoard> {
 
   loadLeaderBoard(String id) {
     debugPrint('loadLeaderBoard');
-    locator.get<CompetitionRepository>().getCompetitionLeaderBoard(id).then((value) {
-      debugPrint(value.toString());
-      setState(() {
-        failed = false;
-      });
-    }).catchError((err) {
-      debugPrint(err.toString());
-      setState(() {
-        failed = true;
+    locator.get<CompetitionRepository>().getCompetitionLeaderBoard(id).then((either) {
+      either.fold((l) {
+        debugPrint(l.toString());
+        setState(() {
+          failed = true;
+        });
+      }, (rewards) {
+        providerContainer.read(competitionLeaderBoardProvider(id).notifier).state = rewards;
+        debugPrint(rewards.toString());
+        setState(() {
+          failed = false;
+        });
       });
     }).whenComplete(() {
       setState(() {

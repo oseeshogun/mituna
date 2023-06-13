@@ -18,3 +18,6 @@ export 'question_counter/question_counter.dart';
 export 'user_hearts/user_hearts.dart';
 export 'user_hearts/controller.dart';
 export 'count_down_time_from_game.dart';
+export 'painter_indicator.dart';
+export 'category_item.dart';
+export 'extra_category_item.dart';

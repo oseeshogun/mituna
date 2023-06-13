@@ -10,3 +10,7 @@ export 'competition/finished.dart';
 export 'competition/leaderboard.dart';
 
 export 'ranking/global_ranking.dart';
+
+export 'settings/settings.dart';
+
+export 'others/question_contribution.dart';

@@ -1,8 +1,6 @@
 import 'package:mituna/src/enums/all.dart';
 
-import '../entities/answer.dart';
 import '../entities/question.dart';
-import 'answer.dart';
 
 class QuestionJsonSerializer {
   static Question fromJson(Map<String, dynamic> json) {
@@ -30,12 +28,6 @@ class QuestionJsonSerializer {
       link: json['link'],
       moreAbout: json['moreAbout'],
     );
-    final responses = (json['answers'] as List).map<Answer>((answer) {
-      final rawAnswer = Map<String, dynamic>.from(answer);
-      return AnswerSerializer.fromJson(rawAnswer);
-    }).toList();
-
-    question.answers.addAll(responses);
 
     return question;
   }
@@ -53,7 +45,6 @@ class QuestionJsonSerializer {
     data['link'] = question.link;
     data['type'] = question.type.name;
     data['category'] = question.category.name;
-    data['answers'] = question.answers.map((answer) => answer.toJson()).toList();
     return data;
   }
 }

@@ -8,6 +8,7 @@ import 'package:mituna/contants/sizes.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/main.dart';
 import 'package:mituna/src/enums/all.dart';
+import 'package:mituna/src/http/error_object.dart';
 import 'package:mituna/src/http/repositories/all.dart';
 import 'package:mituna/src/providers/ranking.dart';
 import 'package:mituna/views/widgets/all.dart';
@@ -45,18 +46,40 @@ class _RankingScreenState extends State<RankingScreen> {
       loading = true;
       getDataFailed = false;
     });
-    try {
-      await rewardsRepository.getTopRanking(period);
-      await rewardsRepository.getMyRanking(period);
-    } catch (err) {
-      debugPrint(err.toString());
-      showOkAlertDialog(context: context, message: "Une erreur est survenue, Nous n'avons pas pu mettre à jour le classement.");
-      if (mounted) {
-        setState(() {
-          getDataFailed = true;
-        });
-      }
-    }
+    await rewardsRepository.getTopRanking(period).then((either) {
+      either.fold((failure) {
+        if (mounted) {
+          setState(() {
+            getDataFailed = true;
+          });
+        }
+        final errorObject = ErrorObject.mapFailureToErrorObject(failure: failure);
+        showOkAlertDialog(
+          context: context,
+          title: errorObject.title,
+          message: errorObject.message,
+        );
+      }, (rankings) {
+        providerContainer.read(topRankingProvider(period).notifier).state = rankings;
+      });
+    });
+    await rewardsRepository.getMyRanking(period).then((either) {
+      either.fold((failure) {
+        if (mounted) {
+          setState(() {
+            getDataFailed = true;
+          });
+        }
+        final errorObject = ErrorObject.mapFailureToErrorObject(failure: failure);
+        showOkAlertDialog(
+          context: context,
+          title: errorObject.title,
+          message: errorObject.message,
+        );
+      }, (ranking) {
+        providerContainer.read(myRankingProvider(period).notifier).state = ranking;
+      });
+    });
     if (mounted) {
       setState(() {
         loading = false;

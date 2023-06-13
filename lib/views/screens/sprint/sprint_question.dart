@@ -5,6 +5,7 @@ import 'package:mituna/contants/colors.dart';
 import 'package:mituna/contants/sizes.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/src/db/entities/answer.dart';
+import 'package:mituna/src/db/repositories/answer.dart';
 import 'package:mituna/src/models/all.dart';
 import 'package:mituna/src/providers/user.dart';
 import 'package:mituna/src/services/ads.dart';
@@ -35,6 +36,7 @@ class _SprintQuestionState extends State<SprintQuestion> {
   Answer? selectedAnswer;
   int timePassed = 0;
   final questionCounterController = QuestionCounterController();
+  final answerRepository = locator.get<AnswerRepository>();
 
   final soundEffect = locator.get<SoundEffects>();
 
@@ -205,7 +207,8 @@ class _SprintQuestionState extends State<SprintQuestion> {
   }
 
   List<Widget> resultByChoices() {
-    return widget.sprint.question.answers.asMap().entries.map<Widget>((entry) {
+    final answers = answerRepository.getForQuestion(widget.sprint.question.id);
+    return answers.asMap().entries.map<Widget>((entry) {
       final index = entry.key;
       final answer = entry.value;
       return BlinkingAnimation(
@@ -229,12 +232,12 @@ class _SprintQuestionState extends State<SprintQuestion> {
                         if (answered) return;
                         questionCounterController.pause();
                         setState(() => (answered = true));
-                        final answerExists = widget.sprint.question.answers.any((element) => element.id == value);
+                        final answerExists = answers.any((element) => element.id == value);
                         if (!answerExists) {
                           return await badAnswer(userObj, context);
                         }
 
-                        final answerValue = widget.sprint.question.answers.firstWhere((element) => element.id == value);
+                        final answerValue = answers.firstWhere((element) => element.id == value);
                         setState(() {
                           selectedAnswer = answerValue;
                         });

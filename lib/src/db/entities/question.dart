@@ -3,7 +3,6 @@ import 'package:objectbox/objectbox.dart';
 
 import 'package:mituna/objectbox.g.dart';
 import '../serializers/question.dart';
-import 'answer.dart';
 
 @Entity()
 class Question {
@@ -33,8 +32,6 @@ class Question {
   @Transient()
   QuestionCategory get category => QuestionCategory.values.firstWhere((element) => element.name == dbCategory);
   String dbCategory;
-
-  ToMany<Answer> answers = ToMany<Answer>();
 
   @Transient()
   bool get isByChoice => type == QuestionType.choice;

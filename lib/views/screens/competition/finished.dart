@@ -44,21 +44,22 @@ class _CompetitionFinishedState extends State<CompetitionFinished> {
       });
     }
     final args = ModalRoute.of(context)!.settings.arguments as CompetitionFinishedArguments;
-    locator.get<CompetitionRepository>().recordCompetitionReward(args).then((_) {
-      if (mounted) {
-        setState(() {
-          competitionRecorded = true;
-          competitionRecordFailed = false;
-        });
-      }
-    }).catchError((error) {
-      debugPrint(error.toString());
-      if (mounted) {
-        setState(() {
-          competitionRecordFailed = true;
-          competitionRecorded = false;
-        });
-      }
+    locator.get<CompetitionRepository>().recordCompetitionReward(args).then((either) {
+      either.fold((l) {
+        if (mounted) {
+          setState(() {
+            competitionRecordFailed = true;
+            competitionRecorded = false;
+          });
+        }
+      }, (r) {
+        if (mounted) {
+          setState(() {
+            competitionRecorded = true;
+            competitionRecordFailed = false;
+          });
+        }
+      });
     }).whenComplete(() {
       if (mounted) {
         setState(() {

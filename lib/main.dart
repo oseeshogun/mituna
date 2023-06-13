@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
     final initialRoute = isUserAuthenticated ? Home.route : Welcome.route;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       locale: const Locale('fr'),
       supportedLocales: const [Locale('fr')],
       localizationsDelegates: const [
@@ -64,6 +65,8 @@ class MyApp extends StatelessWidget {
         Authentication.route: (context) => const Authentication(),
         SprintScreen.route: (context) => const SprintScreen(),
         RankingScreen.route: (context) => const RankingScreen(),
+        SettingsScreen.route: (context) => const SettingsScreen(),
+        QuestionContribution.route: (context) => const QuestionContribution(),
       },
     );
   }
