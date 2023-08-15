@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         Welcome.route: (context) => const Welcome(),
-        Home.route: (context) => const Home(),
+        Home.route: (context) => Home(),
         Authentication.route: (context) => Authentication(),
       },
     );
