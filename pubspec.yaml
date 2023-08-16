@@ -23,6 +23,11 @@ dependencies:
   google_sign_in: ^6.1.4
   adaptive_dialog: ^1.9.0
   firebase_messaging: ^14.6.5
+  upgrader: ^8.1.0
+  hooks_riverpod: ^2.3.7
+  cloud_firestore: ^4.8.4
+  simple_animations: ^5.0.2
+  lottie: ^2.6.0
 
 dev_dependencies:
   flutter_test:
