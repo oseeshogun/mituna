@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/preferences.dart';
+import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/theme/sizes.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/riverpod/providers/user.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends HookConsumerWidget {
   HomeScreen({super.key});
 
   final prefs = locator.get<SharedPreferences>();
-  
+
   final messaging = FirebaseMessaging.instance;
 
   static const String route = '/home';
@@ -72,6 +73,26 @@ class HomeScreen extends HookConsumerWidget {
                 FadeAnimation(
                   delay: 1.0,
                   child: RunningManLottieButton(onPressed: () => throw UnimplementedError('Should start print')),
+                ),
+                const SizedBox(height: 20.0),
+                const TextTitleLevelOne('Appuyez pour commencer'),
+                const SizedBox(height: 30.0),
+                CategoryItem(
+                  category: QuestionCategory.values.first,
+                  onPressed: () => throw UnimplementedError('Should start print for this category'),
+                ),
+                Wrap(
+                  children: QuestionCategory.values.skip(1).map<Widget>((category) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width * .45,
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: CategoryItem(
+                        category: category,
+                        onPressed: () => throw UnimplementedError('Should start print for this category'),
+                      ),
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(height: 30.0),
                 Transform.translate(
