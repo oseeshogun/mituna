@@ -34,6 +34,9 @@ dependencies:
   path: ^1.8.3
   get_it: ^7.6.0
   shared_preferences: ^2.2.0
+  uuid: ^3.0.7
+  vibration: ^1.8.1
+  soundpool: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -21,7 +21,10 @@ Future<void> main() async {
 
   await locator.allReady();
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(UncontrolledProviderScope(
+    container: locator.get<ProviderContainer>(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

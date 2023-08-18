@@ -601,10 +601,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
+      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "0.13.6"
   http_multi_server:
     dependency: transitive
     description:
@@ -1002,6 +1002,38 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  soundpool:
+    dependency: "direct main"
+    description:
+      name: soundpool
+      sha256: "4aa6b4950e7853dc7f6318234f12c6f27fe1fa8ee55a002ce7d158bc927f6129"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  soundpool_macos:
+    dependency: transitive
+    description:
+      name: soundpool_macos
+      sha256: dd389a629d32e3960fbe55958f2f7e03e074c4987fadf38fbe6c7e0a1ba32528
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
+  soundpool_platform_interface:
+    dependency: transitive
+    description:
+      name: soundpool_platform_interface
+      sha256: "9787f96b54a12e236cd3715cd2cc4bcd1fc1131e834ea7b295ac849ab4e24eab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  soundpool_web:
+    dependency: transitive
+    description:
+      name: soundpool_web
+      sha256: "5242ebd135c210e6b4239fb2409f2da91af688358e3070c9c33ea625d85b7d22"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   source_gen:
     dependency: transitive
     description:
@@ -1194,6 +1226,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_graphics:
     dependency: transitive
     description:
@@ -1234,6 +1274,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  vibration:
+    dependency: "direct main"
+    description:
+      name: vibration
+      sha256: d81f665bcb201f586c295a21f3fe8f1cb6dc32c81a213a99e9c714ec8e811ce5
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.1"
   watcher:
     dependency: transitive
     description:
