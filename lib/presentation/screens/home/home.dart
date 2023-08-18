@@ -32,8 +32,8 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
 
-    startPrint() async {
-      sprintUsecase.start().then((sprint) {
+    startPrint([QuestionCategory? category]) async {
+      sprintUsecase.start(category).then((sprint) {
         ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
@@ -91,7 +91,7 @@ class HomeScreen extends HookConsumerWidget {
                 const SizedBox(height: 30.0),
                 CategoryItem(
                   category: QuestionCategory.values.first,
-                  onPressed: () => throw UnimplementedError('Should start print for this category'),
+                  onPressed: () => startPrint(QuestionCategory.values.first),
                 ),
                 Wrap(
                   children: QuestionCategory.values.skip(1).map<Widget>((category) {
@@ -101,7 +101,7 @@ class HomeScreen extends HookConsumerWidget {
                       margin: const EdgeInsets.symmetric(vertical: 12.0),
                       child: CategoryItem(
                         category: category,
-                        onPressed: () => throw UnimplementedError('Should start print for this category'),
+                        onPressed: () => startPrint(category),
                       ),
                     );
                   }).toList(),

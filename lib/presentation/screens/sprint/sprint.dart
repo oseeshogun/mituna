@@ -71,7 +71,7 @@ class SprintScreen extends HookConsumerWidget {
                     builder: (context) => FinishedSprint(
                       hasSucceded: sprint.success,
                       topazWon: sprint.topazWon,
-                      category: null,
+                      category: sprint.category,
                     ),
                   ),
                 );
