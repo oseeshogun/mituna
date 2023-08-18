@@ -1,4 +1,3 @@
-import 'package:mituna/core/errors/exceptions.dart';
 import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/domain/entities/question_stat.dart';
@@ -43,8 +42,8 @@ class Sprint {
 
   int get questionOrder => _questionStats.keys.length + 1;
 
-  QuestionWithAnswers get randomQuestion {
-    if (finished) throw SprintFinishedException('Sprint has finished.');
+  QuestionWithAnswers? get randomQuestion {
+    if (finished) return null;
     return randomElement(questions.where((element) => !_questionStats.keys.contains(element)).toList());
   }
 

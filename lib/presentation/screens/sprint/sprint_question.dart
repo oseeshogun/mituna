@@ -71,7 +71,7 @@ class SprintQuestion extends HookConsumerWidget {
 
     Future<void> onStoppedQuestion() async {
       if (questionCounterState.value == QuestionCounterState.stopped) return;
-      sprint.answer(question.value, selectedAnswer.value, timePassed.value);
+      sprint.answer(question.value!, selectedAnswer.value, timePassed.value);
       ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
       final isCorrect = selectedAnswer.value?.isCorrect == true;
       if (!isCorrect) {
@@ -121,13 +121,13 @@ class SprintQuestion extends HookConsumerWidget {
                 child: FadeAnimation(
                   delay: 1.2,
                   child: TextTitleLevelOne(
-                    question.value.question.content,
+                    question.value?.question.content ?? '',
                     textAlign: TextAlign.left,
                   ),
                 ),
               ),
               const SizedBox(height: 15.0),
-              ...question.value.answers.asMap().entries.map<Widget>((entry) {
+              ...(question.value?.answers ?? []).asMap().entries.map<Widget>((entry) {
                 final index = entry.key;
                 final answer = entry.value;
                 return BlinkingAnimation(
@@ -143,8 +143,8 @@ class SprintQuestion extends HookConsumerWidget {
                           if (answered.value) return;
                           questionCounterState.value = QuestionCounterState.paused;
                           answered.value = true;
-                          final answerExists = question.value.answers.any((element) => element == value);
-                          if (!answerExists) {
+                          final answerExists = question.value?.answers.any((element) => element == value);
+                          if (answerExists == false) {
                             return await onStoppedQuestion();
                           }
 
