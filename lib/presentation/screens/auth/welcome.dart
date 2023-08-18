@@ -8,8 +8,8 @@ import 'package:mituna/presentation/widgets/texts/all.dart';
 
 import 'authentication.dart';
 
-class Welcome extends HookWidget {
-  const Welcome({super.key});
+class WelcomeScreen extends HookWidget {
+  const WelcomeScreen({super.key});
 
   static const String route = '/welcome';
 
@@ -46,7 +46,7 @@ class Welcome extends HookWidget {
               PrimaryButton(
                 child: const TextTitleLevelOne('Commencer', color: AppColors.kColorBlack),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(Authentication.route);
+                  Navigator.of(context).pushReplacementNamed(AuthenticationScreen.route);
                 },
               ),
               const SizedBox(height: 20),

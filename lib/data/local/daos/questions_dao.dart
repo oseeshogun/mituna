@@ -12,10 +12,18 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
 
   Future<List<QuestionData>> get getAll => select(question).get();
 
-  Stream<int?> countAllQuestion() {
+  Future<QuestionData?> getById(String id) => (select(question)..where((tbl) => tbl.id.isValue(id))).getSingleOrNull();
+
+  Future<int?> countAllQuestion() {
     final count = countAll(filter: question.id.isNotNull());
     return (selectOnly(question)..addColumns([count])).asyncMap((result) {
       return result.read(count);
-    }).watchSingle();
+    }).getSingleOrNull();
+  }
+
+  Future<void> insertMultipleEntries(List<QuestionCompanion> entries) async {
+    await batch((batch) {
+      batch.insertAll(question, entries, mode: InsertMode.insertOrReplace);
+    });
   }
 }
