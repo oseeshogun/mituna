@@ -14,10 +14,11 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
 
   Future<QuestionData?> getById(String id) => (select(question)..where((tbl) => tbl.id.isValue(id))).getSingleOrNull();
 
-  Future<List<String>> randomQuestionIdList([int limit = 10]) async {
+  Future<List<String>> randomQuestionIdList({int limit = 10, String? category}) async {
     final result = ((selectOnly(question)
       ..addColumns([question.id])
       ..orderBy([OrderingTerm.random()])
+     ..where(category != null ? question.category.isValue(category) : question.category.isNotNull())
       ..limit(limit)));
     return (await result.map((row) => row.read(question.id)).get()).map((e) => e.toString()).toList();
   }

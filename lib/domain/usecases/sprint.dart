@@ -14,11 +14,11 @@ class SprintUsecase extends Usecase {
   final db = locator.get<AppDatabase>();
   final questionsDao = locator.get<QuestionsDao>();
 
-  Future<Sprint> start({QuestionCategory? category}) async {
+  Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
-    final questionsIdList = await questionsDao.randomQuestionIdList();
+    final questionsIdList = await questionsDao.randomQuestionIdList(category: category?.name);
     final questions = await db.getQuestionsWithAnswers(questionsIdList);
-    return Sprint(id: generatedId, questions: questions);
+    return Sprint(id: generatedId, questions: questions, category: category);
   }
 
   Future<void> saveTopazForAuthenticatedUser(int topaz) async {

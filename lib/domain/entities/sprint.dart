@@ -1,3 +1,4 @@
+import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/domain/entities/question_stat.dart';
@@ -7,6 +8,7 @@ class Sprint {
   final int initialHearts;
   final String id;
   final List<QuestionWithAnswers> questions;
+  final QuestionCategory? category;
 
   final Map<QuestionWithAnswers, QuestionStat> _questionStats = {};
   late int _hearts;
@@ -16,6 +18,7 @@ class Sprint {
     required this.questions,
     this.secondsPerQuestion = 20,
     this.initialHearts = 3,
+    this.category,
   })  : _hearts = initialHearts,
         assert(id.trim().isNotEmpty, "Sprint id can not be empty."),
         assert(questions.isNotEmpty, "Questions can be empty"),
