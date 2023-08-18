@@ -9,8 +9,8 @@ import 'package:mituna/presentation/screens/home/home.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
-class Authentication extends HookWidget {
-  Authentication({super.key});
+class AuthenticationScreen extends HookWidget {
+  AuthenticationScreen({super.key});
 
   final authenticationUsecase = AuthenticateUserUsecase();
 
@@ -22,7 +22,7 @@ class Authentication extends HookWidget {
     if (Navigator.canPop(context)) {
       Navigator.of(context).pop();
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(Home.route, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.route, (route) => false);
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/theme/colors.dart';
+import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -18,6 +19,8 @@ Future<void> main() async {
 
   setupLocator();
 
+  await locator.allReady();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUserAuthenticated = FirebaseAuth.instance.currentUser != null;
-    final initialRoute = isUserAuthenticated ? Home.route : Welcome.route;
+    final initialRoute = isUserAuthenticated ? HomeScreen.route : WelcomeScreen.route;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -46,9 +49,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: initialRoute,
       routes: {
-        Welcome.route: (context) => const Welcome(),
-        Home.route: (context) => Home(),
-        Authentication.route: (context) => Authentication(),
+        WelcomeScreen.route: (context) => const WelcomeScreen(),
+        HomeScreen.route: (context) => HomeScreen(),
+        AuthenticationScreen.route: (context) => AuthenticationScreen(),
+        OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
       },
     );
   }

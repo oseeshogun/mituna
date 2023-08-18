@@ -51,3 +51,6 @@ firebase_options.dart
 
 # Generated files
 *.g.dart
+
+# Large datasets of questions
+questions.json

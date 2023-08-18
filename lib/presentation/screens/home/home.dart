@@ -3,15 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/riverpod/providers/user.dart';
+import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
-class Home extends HookConsumerWidget {
-  Home({super.key});
+class HomeScreen extends HookConsumerWidget {
+  HomeScreen({super.key});
 
+  final prefs = locator.get<SharedPreferences>();
+  
   final messaging = FirebaseMessaging.instance;
 
   static const String route = '/home';
@@ -22,6 +28,15 @@ class Home extends HookConsumerWidget {
 
     useEffect(() {
       messaging.requestPermission(alert: true, announcement: true, badge: true, sound: true);
+      return null;
+    }, []);
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if (!prefs.offlineQuestionsLoaded) {
+          Navigator.of(context).pushNamed(OfflineQuestionsLoadScreen.route);
+        }
+      });
       return null;
     }, []);
 
