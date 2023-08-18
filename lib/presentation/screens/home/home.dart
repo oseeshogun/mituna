@@ -6,9 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
+import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
-import 'package:mituna/presentation/riverpod/providers/user.dart';
+import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
+import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,11 +24,20 @@ class HomeScreen extends HookConsumerWidget {
 
   final messaging = FirebaseMessaging.instance;
 
+  final sprintUsecase = SprintUsecase();
+
   static const String route = '/home';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
+
+    startPrint() async {
+      sprintUsecase.start().then((sprint) {
+        ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+      });
+    }
 
     useEffect(() {
       messaging.requestPermission(alert: true, announcement: true, badge: true, sound: true);
@@ -72,7 +84,7 @@ class HomeScreen extends HookConsumerWidget {
                 const SizedBox(height: 30.0),
                 FadeAnimation(
                   delay: 1.0,
-                  child: RunningManLottieButton(onPressed: () => throw UnimplementedError('Should start print')),
+                  child: RunningManLottieButton(onPressed: () => startPrint()),
                 ),
                 const SizedBox(height: 20.0),
                 const TextTitleLevelOne('Appuyez pour commencer'),
