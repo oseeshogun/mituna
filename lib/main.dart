@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/theme/colors.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.route: (context) => HomeScreen(),
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
+        RankingScreen.route: (context) => RankingScreen(),
       },
     );
   }

@@ -4,7 +4,7 @@ import 'package:chopper/chopper.dart';
 
 class TopRewardData implements Converter {
   final int count;
-  final int id;
+  final String id;
 
   const TopRewardData({
     required this.count,
