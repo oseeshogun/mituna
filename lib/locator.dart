@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/db.dart';
+import 'package:mituna/data/network/repositories/rewards.dart';
 import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,8 @@ void setupLocator() {
   locator.registerSingleton(SoundEffects());
 
   locator.registerSingleton(ProviderContainer());
+
+  locator.registerSingleton(RewardsRepository());
   
   locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
 }

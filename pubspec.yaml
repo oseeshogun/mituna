@@ -40,6 +40,8 @@ dependencies:
   cloud_functions: ^4.4.0
   http: ^1.1.0
   chopper: ^7.0.4
+  tuple: ^2.0.2
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
