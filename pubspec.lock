@@ -177,6 +177,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  chopper:
+    dependency: "direct main"
+    description:
+      name: chopper
+      sha256: c761477c011b2d26083b1deadeda6fb1924dfe60449a3aacd555a7c1cc659b79
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.4"
+  chopper_generator:
+    dependency: "direct dev"
+    description:
+      name: chopper_generator
+      sha256: "08f0f56e71c00cb741931ff12e8e0cabeddf1d489079ba22ea1b66a009571d9f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.2"
   cli_util:
     dependency: transitive
     description:
@@ -217,6 +233,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.3"
+  cloud_functions:
+    dependency: "direct main"
+    description:
+      name: cloud_functions
+      sha256: "6c5ce6c78bcf92b422b58e76dc33cd46b16cf421fc4d439fc77b7d44a74dc80d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.0"
+  cloud_functions_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_functions_platform_interface
+      sha256: "2d6bf40c9b9db65f89e97f0e74833794191df4398f7e92a6b1dd3201ec70cfb7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.5.0"
+  cloud_functions_web:
+    dependency: transitive
+    description:
+      name: cloud_functions_web
+      sha256: "3937c217f90a51e251c37fc15a4c1be563b50d1f4268284f3ebf83ed70ba1ff8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.0"
   code_builder:
     dependency: transitive
     description:
@@ -381,10 +421,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "2e9324f719e90200dc7d3c4f5d2abc26052f9f2b995d3b6626c47a0dfe1c8192"
+      sha256: c78132175edda4bc532a71e01a32964e4b4fcf53de7853a422d96dac3725f389
       url: "https://pub.dev"
     source: hosted
-    version: "2.15.0"
+    version: "2.15.1"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -397,10 +437,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: "0fd5c4b228de29b55fac38aed0d9e42514b3d3bd47675de52bf7f8fccaf922fa"
+      sha256: "4cf4d2161530332ddc3c562f19823fb897ff37a9a774090d28df99f47370e973"
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.0"
+    version: "2.7.0"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -598,13 +638,13 @@ packages:
     source: hosted
     version: "0.15.4"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -1030,10 +1070,10 @@ packages:
     dependency: transitive
     description:
       name: soundpool_web
-      sha256: "5242ebd135c210e6b4239fb2409f2da91af688358e3070c9c33ea625d85b7d22"
+      sha256: "3d1eb8d6cceb8a0aec38ff9aec4fbd11a9a8101d27b27a6eb29305b83d46aee5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.0"
   source_gen:
     dependency: transitive
     description:

@@ -57,3 +57,7 @@ questions.json
 
 # Firebase functions
 .firebaserc
+**/network/constants.dart
+
+# env
+*.env
