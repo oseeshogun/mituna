@@ -37,6 +37,9 @@ dependencies:
   uuid: ^3.0.7
   vibration: ^1.8.1
   soundpool: ^2.3.0
+  cloud_functions: ^4.4.0
+  http: ^1.1.0
+  chopper: ^7.0.4
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +49,7 @@ dev_dependencies:
   flutter_native_splash: ^2.3.2
   drift_dev: ^2.11.0
   build_runner: ^2.4.6
+  chopper_generator: ^7.0.2
 
 flutter:
   uses-material-design: true
