@@ -5,6 +5,7 @@ import * as logger from 'firebase-functions/logger'
 
 const authenticatedRequest = async (
   request: Request,
+  auth: admin.auth.Auth,
 ): Promise<{
   authenticated: boolean
   error?: unknown
@@ -16,7 +17,7 @@ const authenticatedRequest = async (
   }
 
   try {
-    const decoded = await admin.auth().verifyIdToken(tokenId)
+    const decoded = await auth.verifyIdToken(tokenId)
 
     return { authenticated: true, decoded }
   } catch (error) {
