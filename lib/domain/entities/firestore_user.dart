@@ -7,6 +7,7 @@ class FirestoreUser extends Equatable {
     required this.avatar,
     required this.diamonds,
     required this.displayName,
+    required this.lastWinDate,
   });
 
   factory FirestoreUser.fromDocument(String uid,  DocumentSnapshot<Map<String, dynamic>>? document) {
@@ -15,7 +16,8 @@ class FirestoreUser extends Equatable {
       uid: uid,
       avatar: data?['avatar'] ?? defaultImageUrl,
       diamonds: data?['diamonds'] ?? 0,
-      displayName: data?['displayName'] ?? 'Aucun Nom'
+      displayName: data?['displayName'] ?? 'Mutu-${uid.substring(0, 4)}',
+      lastWinDate: DateTime.fromMillisecondsSinceEpoch(data?['last_time_win'] ?? DateTime.now().millisecondsSinceEpoch)
     );
   }
 
@@ -26,6 +28,7 @@ class FirestoreUser extends Equatable {
   final String displayName;
   final String avatar;
   final int diamonds;
+  final DateTime lastWinDate;
 
   static get defaultImageUrl => 'https://res.cloudinary.com/dcmzsqq2y/image/upload/v1673795782/profiles/s_udzknr.png';
 }

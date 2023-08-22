@@ -45,6 +45,8 @@ class Sprint {
 
   int get questionOrder => _questionStats.keys.length + 1;
 
+  int get time => _questionStats.values.fold(0, (previousValue, element) => previousValue + element.elapsed);
+
   QuestionWithAnswers? get randomQuestion {
     if (finished) return null;
     return randomElement(questions.where((element) => !_questionStats.keys.contains(element)).toList());

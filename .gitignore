@@ -54,3 +54,10 @@ firebase_options.dart
 
 # Large datasets of questions
 questions.json
+
+# Firebase functions
+.firebaserc
+**/network/constants.dart
+
+# env
+*.env

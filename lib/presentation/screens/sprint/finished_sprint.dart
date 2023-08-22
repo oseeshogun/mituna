@@ -10,6 +10,7 @@ import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
@@ -38,15 +39,6 @@ class FinishedSprint extends HookConsumerWidget {
         ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
-    }
-
-    void showClassment() {
-      // TODO: ranking
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => const RankingScreen(),
-      //   ),
-      // );
     }
 
     useEffect(() {
@@ -102,7 +94,7 @@ class FinishedSprint extends HookConsumerWidget {
             ),
             const SizedBox(height: 15.0),
             PrimaryButton(
-              onPressed: showClassment,
+              onPressed: () => Navigator.of(context).pushReplacementNamed(RankingScreen.route),
               child: const TextTitleLevelTwo(
                 'Classement du jeu',
                 color: AppColors.kColorBlack,

@@ -13,10 +13,10 @@ class FirebaseFailure extends Failure {
 }
 
 class UnknownFailure extends Failure {
-  const UnknownFailure() : super('Une erreur est inattendue est survenue. Si le problème persiste, veuillez le notifier aux développeurs.');
+  const UnknownFailure() : super('Une erreur inattendue est survenue. Si le problème persiste, veuillez le notifier aux développeurs.');
 }
 
 class UnknownAuthenticationFailure extends Failure {
   const UnknownAuthenticationFailure()
-      : super('Une erreur est inattendue est survenue lors de l\'authentification. Si le problème persiste, veuillez le notifier aux développeurs.');
+      : super('Une erreur inattendue est survenue lors de l\'authentification. Si le problème persiste, veuillez le notifier aux développeurs.');
 }
