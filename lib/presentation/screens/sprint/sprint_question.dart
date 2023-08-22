@@ -35,6 +35,7 @@ class SprintQuestion extends HookConsumerWidget {
     final question = useState(sprint.randomQuestion);
     final selectedAnswer = useState<AnswerData?>(null);
     final questionCounterState = useState(QuestionCounterState.running);
+    final order = useState(sprint.questionOrder);
     final timePassed = useState(0);
     final answered = useState(false);
     final blinking = useState(false);
@@ -110,7 +111,7 @@ class SprintQuestion extends HookConsumerWidget {
                 child: FadeAnimation(
                   delay: 1.1,
                   child: TextDescription(
-                    'Question ${sprint.questionOrder} sur ${sprint.questionCount}',
+                    'Question ${order.value} sur ${sprint.questionCount}',
                     textAlign: TextAlign.left,
                   ),
                 ),

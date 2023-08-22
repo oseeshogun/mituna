@@ -16,7 +16,7 @@ class FirestoreUser extends Equatable {
       uid: uid,
       avatar: data?['avatar'] ?? defaultImageUrl,
       diamonds: data?['diamonds'] ?? 0,
-      displayName: data?['displayName'] ?? 'Aucun Nom',
+      displayName: data?['displayName'] ?? 'Mutu-${uid.substring(0, 4)}',
       lastWinDate: DateTime.fromMillisecondsSinceEpoch(data?['last_time_win'] ?? DateTime.now().millisecondsSinceEpoch)
     );
   }

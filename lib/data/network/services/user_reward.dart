@@ -10,5 +10,5 @@ abstract class UserRewardService {
   factory UserRewardService(Dio dio, {String baseUrl}) = _UserRewardService;
 
   @GET('')
-  Future<HttpResponse<List<UserRewardData>>> getUserReward(@Query('period') String period);
+  Future<HttpResponse<UserRewardData>> getUserReward(@Query('period') String period);
 }

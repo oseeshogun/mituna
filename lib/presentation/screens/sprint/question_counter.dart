@@ -29,11 +29,15 @@ class QuestionCounter extends HookWidget {
 
     useEffect(() {
       final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (state.value == QuestionCounterState.paused || state.value == QuestionCounterState.stopped) return;
+        if (state.value == QuestionCounterState.paused || state.value == QuestionCounterState.stopped) {
+          counterAnimationController.stop();
+          return;
+        }
         onTick?.call(time.value);
         if (isMounted()) time.value = max(0, time.value - 1);
         if (time.value == 0) {
           timer.cancel();
+          counterAnimationController.stop();
           onEnd?.call();
         }
       });

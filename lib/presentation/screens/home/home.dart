@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
+import 'package:mituna/domain/usecases/reward.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
@@ -26,6 +29,8 @@ class HomeScreen extends HookConsumerWidget {
   final messaging = FirebaseMessaging.instance;
 
   final sprintUsecase = SprintUsecase();
+
+  final rewardsUsecase = RewardsUsecase();
 
   static const String route = '/home';
 
@@ -52,6 +57,31 @@ class HomeScreen extends HookConsumerWidget {
         }
       });
       return null;
+    }, []);
+
+    useEffect(() {
+      final authStateListener = FirebaseAuth.instance.authStateChanges().listen((user) {
+        if (user == null) return;
+        userRewardsQueuedProvider(user.uid).addListener(
+          locator.get<ProviderContainer>(),
+          (previous, next) {
+            if (next.value != null && next.value?.isNotEmpty == true) {
+              for (final record in next.value!) {
+                rewardsUsecase.saveRecord(record);
+              }
+            }
+          },
+          onError: (err, stack) {
+            debugPrint(err.toString());
+            debugPrint(stack.toString());
+          },
+          onDependencyMayHaveChanged: () {},
+          fireImmediately: true,
+        );
+      });
+      return () {
+        authStateListener.cancel();
+      };
     }, []);
 
     return Scaffold(
