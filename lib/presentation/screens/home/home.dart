@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/core/enums/all.dart';
@@ -144,6 +146,20 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                     );
                   }).toList(),
+                ),
+                const SizedBox(height: 30.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 10.0),
+                    SvgPicture.asset(
+                      'assets/svgs/openai-white-logomark.svg',
+                      height: 40.0,
+                      width: 40.0,
+                    ),
+                    const SizedBox(width: 10.0),
+                    TextTitleLevelTwo('Powered by ChatGPT API'),
+                  ],
                 ),
                 const SizedBox(height: 30.0),
                 Transform.translate(

@@ -4,10 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/domain/services/sound_effect.dart';
+import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/utils/painters/all.dart';
 
 class QuestionCounter extends HookWidget {
-  const QuestionCounter({
+  QuestionCounter({
     super.key,
     required this.count,
     required this.state,
@@ -15,6 +17,7 @@ class QuestionCounter extends HookWidget {
     this.onTick,
   });
 
+  final soundEffect = locator.get<SoundEffects>();
   final int count;
   final void Function()? onEnd;
   final void Function(int time)? onTick;
@@ -31,6 +34,7 @@ class QuestionCounter extends HookWidget {
       final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (state.value == QuestionCounterState.paused || state.value == QuestionCounterState.stopped) {
           counterAnimationController.stop();
+          soundEffect.stop();
           return;
         }
         onTick?.call(time.value);
@@ -38,6 +42,7 @@ class QuestionCounter extends HookWidget {
         if (time.value == 0) {
           timer.cancel();
           counterAnimationController.stop();
+          soundEffect.stop();
           onEnd?.call();
         }
       });
@@ -46,6 +51,7 @@ class QuestionCounter extends HookWidget {
 
     useEffect(() {
       counterAnimationController.forward();
+      soundEffect.play(soundEffect.timeTickingId, 1);
       return null;
     }, []);
 

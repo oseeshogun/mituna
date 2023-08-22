@@ -14,6 +14,11 @@ import 'presentation/screens/auth/authentication.dart';
 import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
 
+// TODO: set settings
+// TODO: show powered by openai
+// TODO: question of the day
+// TODO: question of the day push notification
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
