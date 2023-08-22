@@ -17,29 +17,27 @@ class RewardsUsecase extends Usecase {
       final topRewardsResponse = await rewardsRepository.getTopRewards(period);
       final userRewardResponse = await rewardsRepository.getUserReward(period);
 
-      if (topRewardsResponse.isSuccessful && topRewardsResponse.body != null) {
-        final topPlayers = topRewardsResponse.body!;
-        topPlayers.sort((a, b) => a.count.compareTo(b.count));
-        data.addAll(
-          topPlayers.asMap().entries.map(
-                (top) => Ranking(
-                  ranking: top.key,
-                  uid: top.value.id,
-                  topaz: top.value.count,
-                ),
+      final topPlayers = topRewardsResponse.data;
+      topPlayers.sort((a, b) => b.count.compareTo(a.count));
+      data.addAll(
+        topPlayers.asMap().entries.map(
+              (top) => Ranking(
+                ranking: top.key,
+                uid: top.value.id,
+                topaz: top.value.count,
               ),
-        );
-      } else {
-        throw Exception(topRewardsResponse.error.toString());
-      }
+            ),
+      );
 
-      if (userRewardResponse.isSuccessful && userRewardResponse.body != null) {
-        data.addAll(userRewardResponse.body!.map((userRanking) => Ranking(
-              ranking: userRanking.ranked,
-              uid: FirebaseAuth.instance.currentUser!.uid,
-              topaz: userRanking.score,
-            )));
-      }
+      data.addAll(
+        userRewardResponse.data.map(
+          (userRanking) => Ranking(
+            ranking: userRanking.ranked,
+            uid: FirebaseAuth.instance.currentUser!.uid,
+            topaz: userRanking.score,
+          ),
+        ),
+      );
 
       return data.toSet().toList();
     });

@@ -1,12 +1,14 @@
-import 'package:chopper/chopper.dart';
+import 'package:retrofit/retrofit.dart';
 import 'package:mituna/data/network/entities/user_reward.dart';
+import 'package:mituna/data/network/constants.dart';
+import 'package:dio/dio.dart';
 
-part 'user_reward.chopper.dart';
+part 'user_reward.g.dart';
 
-@ChopperApi(baseUrl: '')
-abstract class UserRewardService extends ChopperService {
-  static UserRewardService create([ChopperClient? client]) => _$UserRewardService(client);
+@RestApi(baseUrl: FunctionsHttpUrls.userReawrd)
+abstract class UserRewardService {
+  factory UserRewardService(Dio dio, {String baseUrl}) = _UserRewardService;
 
-  @Get()
-  Future<Response<List<UserRewardData>>> getUserReward(@Query('period') String period);
+  @GET('')
+  Future<HttpResponse<List<UserRewardData>>> getUserReward(@Query('period') String period);
 }

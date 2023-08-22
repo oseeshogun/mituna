@@ -8,6 +8,7 @@ import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/theme/colors.dart';
 import 'package:mituna/core/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
+import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/reward.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
@@ -27,24 +28,27 @@ class RankingScreen extends HookConsumerWidget {
     final failed = useState(false);
     final rankings = ref.watch(rankingsProvider(period.value.name));
 
-    fetch() => rewardsUsecase.getLeaderBoard(period.value);
-
-    useEffect(() {
+    fetch() {
+      if (loading.value) return;
       loading.value = true;
-      fetch().then((result) {
+      rewardsUsecase.getLeaderBoard(period.value).then((result) {
         result.fold((l) {
-          loading.value = false;
           showOkAlertDialog(
             context: context,
             title: 'Une erreur est survenue',
             message: l.message,
           );
           failed.value = true;
+          loading.value = false;
         }, (r) {
           ref.read(rankingsProvider(period.value.name).notifier).state = r;
           loading.value = false;
         });
       });
+    }
+
+    useEffect(() {
+      fetch();
       return null;
     }, [period.value]);
 
@@ -122,12 +126,83 @@ class RankingScreen extends HookConsumerWidget {
               rankings.length > 3 ? rankings[2] : null,
             ),
           ),
-          RestOfRanking(
-            period,
-            onPeriodChanged: onPeriodChanged,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: RankingPeriods(
+                  currentPeriod: period.value,
+                  onPeriodChanged: (value) => (period.value = value),
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * .35),
+              Expanded(
+                child: ClipPath(
+                  clipper: RankingClipper(),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      left: AppSizes.kScaffoldHorizontalPadding,
+                      right: AppSizes.kScaffoldHorizontalPadding,
+                    ),
+                    child: Builder(builder: (context) {
+                      final list = rankings.length > 3 ? rankings.sublist(3, rankings.length) : [];
+                      return ListView.builder(
+                        itemCount: list.length,
+                        padding: const EdgeInsets.only(top: 30.0),
+                        itemBuilder: (context, index) {
+                          final ranked = list[index];
+                          return ref.watch(firestoreUserDataProvider(ranked.uid)).when(
+                                loading: () => Container(),
+                                error: (error, stackTrace) {
+                                  debugPrint(error.toString());
+                                  debugPrint(stackTrace.toString());
+                                  return Container();
+                                },
+                                data: (userRanked) {
+                                  if (userRanked == null) {
+                                    return Container();
+                                  }
+                                  return RankingItem(
+                                    position: ranked.position,
+                                    imageUrl: userRanked.avatar,
+                                    displayName: userRanked.displayName,
+                                    score: ranked.score,
+                                    date: userRanked.lastWinDate,
+                                  );
+                                },
+                              );
+                        },
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+}
+
+class RankingClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(0, 0);
+    path.lineTo(size.width, 30);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
