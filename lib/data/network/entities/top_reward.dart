@@ -1,9 +1,11 @@
-import 'dart:async';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:chopper/chopper.dart';
+part 'top_reward.g.dart';
 
-class TopRewardData implements Converter {
+@JsonSerializable()
+class TopRewardData {
   final int count;
+  @JsonKey(name: '_id')
   final String id;
 
   const TopRewardData({
@@ -11,17 +13,6 @@ class TopRewardData implements Converter {
     required this.id,
   });
 
-  @override
-  FutureOr<Request> convertRequest(Request request) {
-    return request;
-  }
-
-  @override
-  FutureOr<Response<BodyType>> convertResponse<BodyType, InnerType>(Response response) {
-    final body = (response.body as List).map((element) {
-      final data = Map<String, dynamic>.from(element);
-      return {...data, 'id': data['_id']};
-    }).toList();
-    return response.copyWith(body: body as dynamic);
-  }
+  factory TopRewardData.fromJson(Map<String, dynamic> json) => _$TopRewardDataFromJson(json);
+  Map<String, dynamic> toJson() => _$TopRewardDataToJson(this);
 }

@@ -1,11 +1,13 @@
-import 'package:chopper/chopper.dart';
+import 'package:mituna/data/network/constants.dart';
+import 'package:retrofit/retrofit.dart';
+import 'package:dio/dio.dart';
 
-part 'create_reward.chopper.dart';
+part 'create_reward.g.dart';
 
-@ChopperApi(baseUrl: '')
-abstract class CreateRewardService extends ChopperService {
-  static CreateRewardService create([ChopperClient? client]) => _$CreateRewardService(client);
+@RestApi(baseUrl: FunctionsHttpUrls.createReward)
+abstract class CreateRewardService {
+  factory CreateRewardService(Dio dio, {String baseUrl}) = _CreateRewardService;
 
-  @Post()
-  Future<Response> createReward(@Field('topaz') int topaz, @Field('duration') int duration, @Field('date') String date);
+  @POST('')
+  Future<HttpResponse> createReward(@Field('topaz') int topaz, @Field('duration') int duration, @Field('date') String date);
 }

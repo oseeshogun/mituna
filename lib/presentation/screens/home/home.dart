@@ -11,6 +11,7 @@ import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
@@ -72,6 +73,14 @@ class HomeScreen extends HookConsumerWidget {
                       data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
                     ),
                     const Spacer(),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
+                      icon: const Icon(
+                        Icons.bar_chart,
+                        size: 30,
+                        color: Colors.white,
+                      ),
+                    ),
                     IconButton(
                       onPressed: () => throw UnimplementedError("Add route to settings"),
                       icon: const Icon(
