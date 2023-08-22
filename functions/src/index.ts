@@ -18,10 +18,17 @@ import { authenticatedRequest } from './validators/authentification'
 import { FilterQueries } from './utils/filter.queries'
 import { Utilities } from './utils/utils'
 import { DecodedIdToken } from 'firebase-admin/auth'
+import * as admin from 'firebase-admin'
+
+import * as serviceAccount from './firebase.json'
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+})
 
 setGlobalOptions({ maxInstances: 5 })
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+
+const auth = admin.auth()
 
 const connectionClient = async (mongoUri: string) => {
   await mongoose
@@ -82,7 +89,10 @@ export const topRewards = onRequest(async (request, response) => {
 })
 
 export const getMine = onRequest(async (request, response) => {
-  const { authenticated, error, decoded } = await authenticatedRequest(request)
+  const { authenticated, error, decoded } = await authenticatedRequest(
+    request,
+    auth,
+  )
 
   if (!authenticated) {
     response.status(401).json({ error })
@@ -153,7 +163,10 @@ export const getMine = onRequest(async (request, response) => {
 })
 
 export const createReward = onRequest(async (request, response) => {
-  const { authenticated, error, decoded } = await authenticatedRequest(request)
+  const { authenticated, error, decoded } = await authenticatedRequest(
+    request,
+    auth,
+  )
 
   if (!authenticated) {
     response.status(401).json({ error })

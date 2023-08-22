@@ -2,10 +2,7 @@ import { Reward } from '../models/reward'
 import { FilterQueries } from './filter.queries'
 
 export class Utilities {
-  static monthScore: (uid: string) => Promise<number> | undefined
-  static weekScore: (uid: string) => Promise<number> | undefined
-  static allTimeScore: (uid: string) => Promise<number> | undefined
-  async allTimeScore(uid: string): Promise<number> {
+  static async allTimeScore(uid: string): Promise<number> {
     const result = await Reward.aggregate([
       { $match: FilterQueries.userAllTimeRewards(uid) },
       {
@@ -19,7 +16,7 @@ export class Utilities {
     return score
   }
 
-  async monthScore(uid: string): Promise<number> {
+  static async monthScore(uid: string): Promise<number> {
     const result = await Reward.aggregate([
       { $match: FilterQueries.userMonthRewards(uid) },
       {
@@ -33,7 +30,7 @@ export class Utilities {
     return score
   }
 
-  async weekScore(uid: string): Promise<number> {
+  static async weekScore(uid: string): Promise<number> {
     const result = await Reward.aggregate([
       { $match: FilterQueries.userWeekRewards(uid) },
       {
