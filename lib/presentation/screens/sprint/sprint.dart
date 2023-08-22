@@ -64,7 +64,7 @@ class SprintScreen extends HookConsumerWidget {
             onNext: (timePassed) async {
               if (sprint.finished) {
                 if (sprint.success) {
-                  sprintUsecase.saveTopazForAuthenticatedUser(sprint.topazWon);
+                  sprintUsecase.saveTopazForAuthenticatedUser(sprint.topazWon, sprint.time);
                 }
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(

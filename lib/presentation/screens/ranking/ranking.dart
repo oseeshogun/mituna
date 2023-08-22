@@ -7,6 +7,8 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/core/enums/all.dart';
 import 'package:mituna/core/theme/colors.dart';
 import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/domain/entities/firestore_user.dart';
+import 'package:mituna/domain/entities/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/reward.dart';
@@ -28,10 +30,10 @@ class RankingScreen extends HookConsumerWidget {
     final failed = useState(false);
     final rankings = ref.watch(rankingsProvider(period.value.name));
 
-    fetch() {
+    fetch(bool force) {
       if (loading.value) return;
       loading.value = true;
-      rewardsUsecase.getLeaderBoard(period.value).then((result) {
+      rewardsUsecase.getLeaderBoard(period.value, force).then((result) {
         result.fold((l) {
           showOkAlertDialog(
             context: context,
@@ -48,7 +50,7 @@ class RankingScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      fetch();
+      fetch(false);
       return null;
     }, [period.value]);
 
@@ -56,7 +58,7 @@ class RankingScreen extends HookConsumerWidget {
       title: const TextTitleLevelOne('Classement Général'),
       actions: [
         IconButton(
-          onPressed: () => fetch(),
+          onPressed: () => fetch(true),
           icon: const Icon(Icons.refresh),
         ),
       ],
@@ -104,7 +106,7 @@ class RankingScreen extends HookConsumerWidget {
                   'Réessayer',
                   color: AppColors.kColorBlueRibbon,
                 ),
-                onPressed: () => fetch(),
+                onPressed: () => fetch(true),
               ),
             ),
             const Spacer(),
@@ -151,7 +153,7 @@ class RankingScreen extends HookConsumerWidget {
                       right: AppSizes.kScaffoldHorizontalPadding,
                     ),
                     child: Builder(builder: (context) {
-                      final list = rankings.length > 3 ? rankings.sublist(3, rankings.length) : [];
+                      final List<Ranking> list = rankings.length > 3 ? rankings.sublist(3, rankings.length) : [];
                       return ListView.builder(
                         itemCount: list.length,
                         padding: const EdgeInsets.only(top: 30.0),
@@ -164,15 +166,15 @@ class RankingScreen extends HookConsumerWidget {
                                   debugPrint(stackTrace.toString());
                                   return Container();
                                 },
-                                data: (userRanked) {
+                                data: (FirestoreUser? userRanked) {
                                   if (userRanked == null) {
                                     return Container();
                                   }
                                   return RankingItem(
-                                    position: ranked.position,
+                                    position: ranked.ranking,
                                     imageUrl: userRanked.avatar,
                                     displayName: userRanked.displayName,
-                                    score: ranked.score,
+                                    score: ranked.topaz,
                                     date: userRanked.lastWinDate,
                                   );
                                 },

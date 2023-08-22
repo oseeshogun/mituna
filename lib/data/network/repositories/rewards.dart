@@ -43,7 +43,7 @@ class RewardsRepository {
     return topRewardService.getTopRewards(period.name);
   }
 
-  Future<HttpResponse<List<UserRewardData>>> getUserReward([RankingPeriod period = RankingPeriod.all]) async {
+  Future<HttpResponse<UserRewardData>> getUserReward([RankingPeriod period = RankingPeriod.all]) async {
     final userRewardService = UserRewardService(await _client());
 
     return userRewardService.getUserReward(period.name);

@@ -7,3 +7,5 @@ enum AnswerType { boolean, text }
 enum QuestionCounterState { running, paused, stopped }
 
 enum RankingPeriod { all, month, week }
+
+enum RewardRecordState { queue, recorded }

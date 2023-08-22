@@ -11,17 +11,17 @@ import 'package:mituna/locator.dart';
 import 'package:uuid/uuid.dart';
 
 class SprintUsecase extends Usecase {
-  final db = locator.get<AppDatabase>();
-  final questionsDao = locator.get<QuestionsDao>();
+  final _db = locator.get<AppDatabase>();
+  final _questionsDao = locator.get<QuestionsDao>();
 
   Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
-    final questionsIdList = await questionsDao.randomQuestionIdList(category: category?.name);
-    final questions = await db.getQuestionsWithAnswers(questionsIdList);
+    final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 3);
+    final questions = await _db.getQuestionsWithAnswers(questionsIdList);
     return Sprint(id: generatedId, questions: questions, category: category);
   }
 
-  Future<void> saveTopazForAuthenticatedUser(int topaz) async {
+  Future<void> saveTopazForAuthenticatedUser(int topaz, int duration) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
     final container = locator.get<ProviderContainer>();
@@ -33,5 +33,12 @@ class SprintUsecase extends Usecase {
       },
       SetOptions(merge: true),
     );
+    await FirebaseFirestore.instance.collection('rewards').doc(uid).collection('records').add({
+      'state': RewardRecordState.queue.name,
+      'uid': uid,
+      'score': topaz,
+      'duration': duration,
+      'createdAt': DateTime.now().millisecondsSinceEpoch,
+    });
   }
 }

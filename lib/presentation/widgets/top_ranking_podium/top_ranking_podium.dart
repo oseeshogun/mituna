@@ -21,8 +21,8 @@ class TopRankingPodium extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TopRankedInPodium(
-              uid: podium.item1?.uid,
-              score: podium.item1?.topaz.toString() ?? '',
+              uid: podium.item2?.uid,
+              score: podium.item2?.topaz.toString() ?? '',
               height: MediaQuery.of(context).size.height * .22,
               width: MediaQuery.of(context).size.width * .2,
               color: AppColors.kColorMarigoldYellow,
@@ -31,8 +31,8 @@ class TopRankingPodium extends StatelessWidget {
               profilOffsetY: -100,
             ),
             TopRankedInPodium(
-              uid: podium.item2?.uid,
-              score: podium.item2?.topaz.toString() ?? '',
+              uid: podium.item1?.uid,
+              score: podium.item1?.topaz.toString() ?? '',
               height: MediaQuery.of(context).size.height * .24,
               width: MediaQuery.of(context).size.width * .2,
               color: AppColors.kColorYellow,
