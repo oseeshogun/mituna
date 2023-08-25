@@ -14,6 +14,7 @@ import 'locator.dart';
 import 'presentation/screens/auth/authentication.dart';
 import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
+import 'presentation/screens/settings/report_error.dart';
 
 // TODO: set settings
 // TODO: question of the day push notification
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
         RankingScreen.route: (context) => RankingScreen(),
         SettingsScreen.route:(context) => SettingsScreen(),
+        ReportErrorScreen.route:(context) => ReportErrorScreen(),
       },
     );
   }

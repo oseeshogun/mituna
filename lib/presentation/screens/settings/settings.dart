@@ -12,6 +12,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
+import 'report_error.dart';
+
 class SettingsScreen extends HookConsumerWidget {
   SettingsScreen({super.key});
 
@@ -77,6 +79,32 @@ class SettingsScreen extends HookConsumerWidget {
                 avatar: firestoreUser?.avatar ?? '',
                 onUpdateImage: (loading) => updateAvatar(loading),
               ),
+            ),
+            const SizedBox(height: 10.0),
+            firestoreAuthUserAsyncValue.when(
+              loading: () => SizedBox(),
+              error: (error, stackTrace) => SizedBox(),
+              data: (firestoreUser) => TextTitleLevelOne(firestoreUser?.displayName ?? ''),
+            ),
+            const SizedBox(height: 30.0),
+            SettingTile(
+              leading: const Icon(
+                CupertinoIcons.person_fill,
+                color: Colors.white,
+              ),
+              title: "Nom d'utilisateur",
+              subtitle: "Changer votre nom d'utilisateur",
+              onTap: () {},
+            ),
+            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                CupertinoIcons.flag_fill,
+                color: Colors.white,
+              ),
+              title: 'Rapporter une erreur',
+              subtitle: 'Une réponse n’est pas correcte ? un bug ?',
+              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
             ),
           ],
         ),

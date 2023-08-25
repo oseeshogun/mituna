@@ -61,3 +61,6 @@ questions.json
 
 # env
 *.env
+
+# Google sheet
+**/gsheet_credentials.dart
