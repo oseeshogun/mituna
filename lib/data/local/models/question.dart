@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 
 class Question extends Table {
   TextColumn get id => text()();

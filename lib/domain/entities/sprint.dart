@@ -1,4 +1,4 @@
-import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/domain/entities/question_stat.dart';
@@ -37,7 +37,7 @@ class Sprint {
 
   bool get finished => _hearts <= 0 || questionLeft == 0;
 
-  bool get success => _hearts > 0;
+  bool get success => (_hearts > 0 && topazWon > 0);
 
   int get questionCount => questions.length;
 
@@ -65,7 +65,7 @@ class Sprint {
   }
 
   int get topazWon {
-    if (!success) return 0;
+    if (_hearts <= 0) return 0;
     int topazs = 0;
     int increment = 1;
     for (int i = 0; i < _questionStats.values.length; i++) {

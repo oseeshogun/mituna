@@ -8,6 +8,7 @@ class PrimaryButton extends StatelessWidget {
     this.backgroundColor = AppColors.kColorYellow,
     this.foregroundColor = AppColors.kColorBlack,
     this.padding = const EdgeInsets.symmetric(vertical: 12.0),
+    this.radius = 10.0,
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
   final Color backgroundColor;
   final Color foregroundColor;
   final EdgeInsets padding;
+  final double radius;
   final bool loading;
 
   @override
@@ -41,9 +43,7 @@ class PrimaryButton extends StatelessWidget {
             foregroundColor: MaterialStateProperty.all(foregroundColor),
             padding: MaterialStateProperty.all(padding),
             shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
             ),
           ),
           child: child,

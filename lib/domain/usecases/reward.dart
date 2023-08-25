@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mituna/core/enums/all.dart';
-import 'package:mituna/core/errors/failures.dart';
-import 'package:mituna/core/usecase/usecase.dart';
+import 'package:mituna/core/constants/enums/all.dart';
+import 'package:mituna/core/domain/errors/failures.dart';
+import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/data/network/repositories/rewards.dart';
 import 'package:mituna/domain/entities/ranking.dart';
 import 'package:mituna/domain/entities/reward_record.dart';

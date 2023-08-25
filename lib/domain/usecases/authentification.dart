@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mituna/core/errors/failures.dart';
+import 'package:mituna/core/domain/errors/failures.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mituna/core/usecase/usecase.dart';
+import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/firebase_options.dart';
 
 class AuthenticateUserUsecase extends Usecase {

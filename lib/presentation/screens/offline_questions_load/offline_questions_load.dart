@@ -4,8 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/locator.dart';
-import 'package:mituna/core/theme/colors.dart';
-import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
+import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/usecases/offline_load.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

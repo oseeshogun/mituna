@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/utils/painters/all.dart';

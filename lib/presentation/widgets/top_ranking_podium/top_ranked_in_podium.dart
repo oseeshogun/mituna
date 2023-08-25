@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:mituna/core/theme/colors.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/utils/painters/all.dart';
 import 'package:mituna/presentation/widgets/all.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/data/local/models/answer.dart';
 import 'package:mituna/data/local/models/question.dart';
 import 'package:path_provider/path_provider.dart';

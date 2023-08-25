@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +7,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/preferences.dart';
-import 'package:mituna/core/enums/all.dart';
-import 'package:mituna/core/theme/sizes.dart';
+import 'package:mituna/core/constants/enums/all.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
+import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/usecases/reward.dart';
@@ -37,7 +39,22 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isLoadingTodayQuestion = useState<bool>(false);
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
+
+    todayQuestion() {
+      isLoadingTodayQuestion.value = true;
+      sprintUsecase.sprintQuestionOfTheDay().then((result) {
+        result.fold((l) {
+          showOkAlertDialog(context: context, title: l.message);
+          isLoadingTodayQuestion.value = false;
+        }, (sprint) {
+          isLoadingTodayQuestion.value = false;
+          ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+        });
+      });
+    }
 
     startPrint([QuestionCategory? category]) async {
       sprintUsecase.start(category).then((sprint) {
@@ -128,6 +145,20 @@ class HomeScreen extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 20.0),
                 const TextTitleLevelOne('Appuyez pour commencer'),
+                const SizedBox(height: 30.0),
+                PrimaryButton(
+                  loading: isLoadingTodayQuestion.value,
+                  child: const TextTitleLevelOne(
+                    '🕹️  Question du jour',
+                    color: AppColors.kColorBlueRibbon,
+                  ),
+                  radius: 50.0,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 15.0,
+                  ),
+                  onPressed: () => todayQuestion(),
+                ),
                 const SizedBox(height: 30.0),
                 CategoryItem(
                   category: QuestionCategory.values.first,

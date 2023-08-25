@@ -1,4 +1,4 @@
-import 'package:mituna/core/enums/all.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 
 class RewardRecord {
   final int score;

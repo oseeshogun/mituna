@@ -30,6 +30,10 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
     }).getSingleOrNull();
   }
 
+  Future<int> create(QuestionCompanion entry) async {
+    return into(question).insert(entry);
+  }
+
   Future<void> insertMultipleEntries(List<QuestionCompanion> entries) async {
     await batch((batch) {
       batch.insertAll(question, entries, mode: InsertMode.insertOrReplace);

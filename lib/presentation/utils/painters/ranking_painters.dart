@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:mituna/core/theme/colors.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 
 class RankFirstPainter extends CustomPainter {
   @override
