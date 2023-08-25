@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 import 'package:mituna/presentation/screens/ranking/ranking.dart';
+import 'package:mituna/presentation/screens/settings/settings.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -15,7 +16,6 @@ import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
 
 // TODO: set settings
-// TODO: question of the day
 // TODO: question of the day push notification
 
 Future<void> main() async {
@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
         RankingScreen.route: (context) => RankingScreen(),
+        SettingsScreen.route:(context) => SettingsScreen(),
       },
     );
   }

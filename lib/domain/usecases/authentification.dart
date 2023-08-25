@@ -8,6 +8,12 @@ import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/firebase_options.dart';
 
 class AuthenticateUserUsecase extends Usecase {
+  final _auth = FirebaseAuth.instance;
+
+  AuthenticateUserUsecase() {
+    _auth.setLanguageCode('fr');
+  }
+
   Future<Either<Failure, OAuthCredential>> getGoogleCredential() async {
     return wrapper(() async {
       final GoogleSignInAccount? googleUser =
@@ -26,7 +32,7 @@ class AuthenticateUserUsecase extends Usecase {
 
   Future<Either<Failure, UserCredential>> authenticateAnonymously() async {
     return wrapper(() async {
-      final result = await FirebaseAuth.instance.signInAnonymously();
+      final result = await _auth.signInAnonymously();
       return result;
     });
   }
@@ -34,9 +40,9 @@ class AuthenticateUserUsecase extends Usecase {
   Future<Either<Failure, UserCredential?>> authenticateUsingGoogleCredential(OAuthCredential credential) async {
     return wrapper(() async {
       if (FirebaseAuth.instance.currentUser?.isAnonymous == true) {
-        return await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+        return await _auth.currentUser?.linkWithCredential(credential);
       }
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return await _auth.signInWithCredential(credential);
     });
   }
 }

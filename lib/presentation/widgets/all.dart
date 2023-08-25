@@ -33,3 +33,4 @@ part 'ranking_periods.dart';
 part 'elevated_container.dart';
 part 'top_ranking_podium/top_ranking_podium.dart';
 part 'ranking_item.dart';
+part 'user_avatar.dart';

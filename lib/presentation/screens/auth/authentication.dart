@@ -34,7 +34,6 @@ class AuthenticationScreen extends HookWidget {
           context: context,
           message: l.message,
         );
-        laoding.value = false;
       }, (credential) {
         authenticationUsecase.authenticateUsingGoogleCredential(credential).then((result) {
           result.fold((l) {
@@ -42,12 +41,12 @@ class AuthenticationScreen extends HookWidget {
               context: context,
               message: l.message,
             );
-            laoding.value = false;
           }, (r) {
             afterAuthRedirect(context);
           });
         });
       });
+      laoding.value = false;
     });
   }
 

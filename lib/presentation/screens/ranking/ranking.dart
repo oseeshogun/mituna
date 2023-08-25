@@ -41,11 +41,10 @@ class RankingScreen extends HookConsumerWidget {
             message: l.message,
           );
           failed.value = true;
-          loading.value = false;
         }, (r) {
           ref.read(rankingsProvider(period.value.name).notifier).state = r;
-          loading.value = false;
         });
+        loading.value = false;
       });
     }
 

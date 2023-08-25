@@ -18,6 +18,7 @@ import 'package:mituna/locator.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 import 'package:mituna/presentation/screens/ranking/ranking.dart';
+import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
@@ -47,12 +48,11 @@ class HomeScreen extends HookConsumerWidget {
       sprintUsecase.sprintQuestionOfTheDay().then((result) {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
-          isLoadingTodayQuestion.value = false;
         }, (sprint) {
-          isLoadingTodayQuestion.value = false;
           ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
           Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
+        isLoadingTodayQuestion.value = false;
       });
     }
 
@@ -130,7 +130,7 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () => throw UnimplementedError("Add route to settings"),
+                      onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
                       icon: const Icon(
                         CupertinoIcons.settings,
                         color: Colors.white,
