@@ -71,6 +71,7 @@ class SprintQuestion extends HookConsumerWidget {
     }
 
     Future<void> onStoppedQuestion() async {
+      prefs.setBool('answered_${question.value?.question.id}', true);
       if (questionCounterState.value == QuestionCounterState.stopped) return;
       sprint.answer(question.value!, selectedAnswer.value, timePassed.value);
       ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;

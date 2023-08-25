@@ -19,7 +19,7 @@ export const createReward = onRequest(async (request, response) => {
   const result = await functionValidators(
     [
       body('topaz').isNumeric(),
-      body('date').isDate(),
+      body('date').isString().isISO8601().withMessage('Iso Date Required'),
       body('duration').isNumeric(),
     ],
     request,

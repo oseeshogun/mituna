@@ -24,16 +24,25 @@ class SprintUsecase extends Usecase {
   final _questionOfTheDayRepository = locator.get<QuestionOfTheDayRepository>();
   final prefs = locator.get<SharedPreferences>();
 
+  List<String> _getAnsweredQuestions(List<QuestionWithAnswers> questions) {
+    return questions.where((q) => prefs.getBool('answered_${q.question.id}') == true).map((q) => q.question.id).toList();
+  }
+
   Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
     final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 3);
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
-    return Sprint(id: generatedId, questions: questions, category: category);
+    return Sprint(
+      id: generatedId,
+      questions: questions,
+      category: category,
+      answered: _getAnsweredQuestions(questions),
+    );
   }
 
   Future<void> saveTopazForAuthenticatedUser(int topaz, int duration) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return;
+    if (uid == null && topaz <= 0) return;
     final container = locator.get<ProviderContainer>();
     final firestoreUser = await container.read(firestoreAuthenticatedUserStreamProvider.future);
     FirebaseFirestore.instance.collection('users').doc(uid).set(
@@ -96,7 +105,13 @@ class SprintUsecase extends Usecase {
 
       final List<QuestionWithAnswers> questions = await _db.getQuestionsWithAnswers([todayQuestionId]);
 
-      return Sprint(id: generatedId, questions: questions, category: null);
+      return Sprint(
+        id: generatedId,
+        questions: questions,
+        category: null,
+        initialHearts: 1,
+        answered: _getAnsweredQuestions(questions),
+      );
     });
   }
 }

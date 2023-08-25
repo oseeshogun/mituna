@@ -9,6 +9,7 @@ class Sprint {
   final String id;
   final List<QuestionWithAnswers> questions;
   final QuestionCategory? category;
+  final List<String> answered;
 
   final Map<QuestionWithAnswers, QuestionStat> _questionStats = {};
   late int _hearts;
@@ -19,6 +20,7 @@ class Sprint {
     this.secondsPerQuestion = 20,
     this.initialHearts = 3,
     this.category,
+    this.answered = const [],
   })  : _hearts = initialHearts,
         assert(id.trim().isNotEmpty, "Sprint id can not be empty."),
         assert(questions.isNotEmpty, "Questions can be empty"),
@@ -37,7 +39,7 @@ class Sprint {
 
   bool get finished => _hearts <= 0 || questionLeft == 0;
 
-  bool get success => (_hearts > 0 && topazWon > 0);
+  bool get success => (_hearts > 0);
 
   int get questionCount => questions.length;
 
@@ -65,7 +67,7 @@ class Sprint {
   }
 
   int get topazWon {
-    if (_hearts <= 0) return 0;
+    if (!success) return 0;
     int topazs = 0;
     int increment = 1;
     for (int i = 0; i < _questionStats.values.length; i++) {
@@ -74,7 +76,7 @@ class Sprint {
       if (previousQuestionInfo == null || !previousQuestionInfo.foundCorrect) {
         increment = 1;
       }
-      if (stat.foundCorrect) {
+      if (stat.foundCorrect && !answered.contains(stat.question.question.id)) {
         topazs += increment;
         increment++;
       }
