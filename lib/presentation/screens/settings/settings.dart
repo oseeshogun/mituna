@@ -1,17 +1,22 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mituna/core/constants/preferences.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/user.dart';
+import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/auth/authentication.dart';
 import 'package:mituna/presentation/utils/file_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
+import 'about_the_app.dart';
 import 'report_error.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -25,6 +30,13 @@ class SettingsScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final firebaseAuthUserAsyncValue = ref.watch(firebaseAuthUserStreamProvider);
     final firestoreAuthUserAsyncValue = ref.watch(firestoreAuthenticatedUserStreamProvider);
+    final prefs = locator.get<SharedPreferences>();
+    final volume = useState(prefs.volume);
+
+    useEffect(() {
+      prefs.volume = volume.value;
+      return null;
+    }, [volume.value]);
 
     Future<void> updateAvatar(ValueNotifier<bool> loading) async {
       final source = await selectPickImageSource(context);
@@ -105,6 +117,21 @@ class SettingsScreen extends HookConsumerWidget {
               title: 'Rapporter une erreur',
               subtitle: 'Une réponse n’est pas correcte ? un bug ?',
               onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
+            ),
+            const SizedBox(height: 10.0),
+            SoundSlider(
+              value: volume.value,
+              onChanged: (value) => (volume.value = value),
+            ),
+            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                CupertinoIcons.flag_fill,
+                color: Colors.white,
+              ),
+              title: 'A propos',
+              subtitle: "A propos de l'application",
+              onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
             ),
           ],
         ),
