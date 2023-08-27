@@ -9,8 +9,11 @@
 import * as dotenv from 'dotenv'
 
 import { setGlobalOptions } from 'firebase-functions/v2'
+import { onSchedule } from 'firebase-functions/v2/scheduler'
 import * as logger from 'firebase-functions/logger'
 import mongoose from 'mongoose'
+import { QuestionOfTheDay } from './models/question_of_the_day'
+import { messaging } from './admin'
 
 setGlobalOptions({ maxInstances: 10 })
 
@@ -35,3 +38,31 @@ export { getMine as getMineFunction } from './controllers/get_mine'
 export { getQuestionOfTheDay as getQuestionOfTheDayFunction } from './controllers/get_question_of_the_day'
 export { createQuestionOfTheDay as createQuestionOfTheDayFunction } from './controllers/create_question_of_the_day'
 export { deleteRewards as deleteRewardsFunctions } from './controllers/delete_rewards'
+
+export const remindQuestionOfTheDay = onSchedule(
+  '45 9 * * *',
+  async (event) => {
+    const d = new Date()
+
+    const date =
+      ('0' + d.getDate()).slice(-2) +
+      '/' +
+      ('0' + (d.getMonth() + 1)).slice(-2) +
+      '/' +
+      d.getFullYear()
+
+    QuestionOfTheDay.findOne({ date })
+      .then((value) => {
+        messaging.sendToTopic('question_of_the_day', {
+          notification: {
+            title: 'Question du jour',
+            body: value?.question,
+            color: '#374e86',
+          },
+        })
+      })
+      .catch((error) => {
+        logger.error(error)
+      })
+  },
+)

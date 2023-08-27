@@ -8,4 +8,6 @@ admin.initializeApp({
 
 const auth = admin.auth()
 
-export { admin, auth }
+const messaging = admin.messaging()
+
+export { admin, auth, messaging }
