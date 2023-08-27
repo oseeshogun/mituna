@@ -10,6 +10,7 @@ class Sprint {
   final List<QuestionWithAnswers> questions;
   final QuestionCategory? category;
   final List<String> answered;
+  final int topazMultiplier;
 
   final Map<QuestionWithAnswers, QuestionStat> _questionStats = {};
   late int _hearts;
@@ -20,6 +21,7 @@ class Sprint {
     this.secondsPerQuestion = 20,
     this.initialHearts = 3,
     this.category,
+    this.topazMultiplier = 1,
     this.answered = const [],
   })  : _hearts = initialHearts,
         assert(id.trim().isNotEmpty, "Sprint id can not be empty."),
@@ -69,12 +71,12 @@ class Sprint {
   int get topazWon {
     if (!success) return 0;
     int topazs = 0;
-    int increment = 1;
+    int increment = 1 * topazMultiplier;
     for (int i = 0; i < _questionStats.values.length; i++) {
       final stat = _questionStats.values.toList()[i];
       final QuestionStat? previousQuestionInfo = i - 1 < 0 ? null : _questionStats.values.toList()[i - 1];
       if (previousQuestionInfo == null || !previousQuestionInfo.foundCorrect) {
-        increment = 1;
+        increment = 1 * topazMultiplier;
       }
       if (stat.foundCorrect && !answered.contains(stat.question.question.id)) {
         topazs += increment;

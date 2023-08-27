@@ -65,6 +65,7 @@ class HomeScreen extends HookConsumerWidget {
 
     useEffect(() {
       messaging.requestPermission(alert: true, announcement: true, badge: true, sound: true);
+      messaging.subscribeToTopic('question_of_the_day');
       return null;
     }, []);
 

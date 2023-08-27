@@ -111,6 +111,7 @@ class SprintUsecase extends Usecase {
         category: null,
         initialHearts: 1,
         answered: _getAnsweredQuestions(questions),
+        topazMultiplier: 10
       );
     });
   }

@@ -18,9 +18,6 @@ import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
 import 'presentation/screens/settings/report_error.dart';
 
-// TODO: set settings
-// TODO: question of the day push notification
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -68,10 +65,10 @@ class MyApp extends StatelessWidget {
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
         RankingScreen.route: (context) => RankingScreen(),
-        SettingsScreen.route:(context) => SettingsScreen(),
-        ReportErrorScreen.route:(context) => ReportErrorScreen(),
-        AboutTheApp.route:(context) => const AboutTheApp(),
-        Donation.route:(context) => const Donation(),
+        SettingsScreen.route: (context) => SettingsScreen(),
+        ReportErrorScreen.route: (context) => ReportErrorScreen(),
+        AboutTheApp.route: (context) => const AboutTheApp(),
+        Donation.route: (context) => const Donation(),
       },
     );
   }
