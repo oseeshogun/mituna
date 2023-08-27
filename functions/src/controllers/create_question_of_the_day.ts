@@ -4,6 +4,10 @@ import { body } from 'express-validator'
 import { QuestionOfTheDay } from '../models/question_of_the_day'
 
 export const createQuestionOfTheDay = onRequest(async (request, response) => {
+  if (request.method !== 'POST') {
+    response.sendStatus(405)
+    return
+  }
   if (request.headers.authorization !== process.env.QUESTION_OF_THE_DAY_KEY) {
     response.sendStatus(401)
     return

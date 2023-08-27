@@ -51,6 +51,7 @@ dependencies:
   flutter_form_builder: ^9.1.0
   gsheets: ^0.5.0
   package_info_plus: ^4.1.0
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:

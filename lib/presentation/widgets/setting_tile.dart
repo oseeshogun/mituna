@@ -7,12 +7,14 @@ class SettingTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.onTap,
+    this.onLongPress,
   });
 
   final Widget leading;
   final String title;
   final String? subtitle;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   ShapeBorder get listTileShape {
     return RoundedRectangleBorder(
@@ -40,6 +42,7 @@ class SettingTile extends StatelessWidget {
               ),
             ),
       onTap: onTap,
+      onLongPress: onLongPress,
     );
   }
 }

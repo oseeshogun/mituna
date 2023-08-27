@@ -8,6 +8,7 @@ import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/about_the_app.dart';
+import 'package:mituna/presentation/screens/settings/donation.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 
 import 'firebase_options.dart';
@@ -69,7 +70,8 @@ class MyApp extends StatelessWidget {
         RankingScreen.route: (context) => RankingScreen(),
         SettingsScreen.route:(context) => SettingsScreen(),
         ReportErrorScreen.route:(context) => ReportErrorScreen(),
-        AboutTheApp.route:(context) => AboutTheApp(),
+        AboutTheApp.route:(context) => const AboutTheApp(),
+        Donation.route:(context) => const Donation(),
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +11,7 @@ import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/user.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/auth/authentication.dart';
+import 'package:mituna/presentation/screens/settings/logout_or_delete_account.dart';
 import 'package:mituna/presentation/utils/file_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,6 +19,7 @@ import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
 import 'about_the_app.dart';
+import 'donation.dart';
 import 'report_error.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -37,6 +40,24 @@ class SettingsScreen extends HookConsumerWidget {
       prefs.volume = volume.value;
       return null;
     }, [volume.value]);
+
+    Future<void> changeUserDisplayName(String displayName) async {
+      final inputs = await showTextInputDialog(
+        context: context,
+        textFields: [
+          DialogTextField(
+            initialText: displayName,
+            hintText: "Nom d'utilisateur",
+            maxLength: 9,
+            textCapitalization: TextCapitalization.words,
+          ),
+        ],
+      );
+      if (inputs == null) return;
+      final newDisplayName = inputs.first;
+      if (newDisplayName == displayName) return;
+      userUsecase.updateDisplayName(newDisplayName);
+    }
 
     Future<void> updateAvatar(ValueNotifier<bool> loading) async {
       final source = await selectPickImageSource(context);
@@ -99,14 +120,18 @@ class SettingsScreen extends HookConsumerWidget {
               data: (firestoreUser) => TextTitleLevelOne(firestoreUser?.displayName ?? ''),
             ),
             const SizedBox(height: 30.0),
-            SettingTile(
-              leading: const Icon(
-                CupertinoIcons.person_fill,
-                color: Colors.white,
+            firestoreAuthUserAsyncValue.when(
+              loading: () => SizedBox(),
+              error: (error, stackTrace) => SizedBox(),
+              data: (firestoreUser) => SettingTile(
+                leading: const Icon(
+                  CupertinoIcons.person_fill,
+                  color: Colors.white,
+                ),
+                title: "Nom d'utilisateur",
+                subtitle: "Changer votre nom d'utilisateur",
+                onTap: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
               ),
-              title: "Nom d'utilisateur",
-              subtitle: "Changer votre nom d'utilisateur",
-              onTap: () {},
             ),
             const SizedBox(height: 10.0),
             SettingTile(
@@ -124,6 +149,26 @@ class SettingsScreen extends HookConsumerWidget {
               onChanged: (value) => (volume.value = value),
             ),
             const SizedBox(height: 10.0),
+            Builder(builder: (context) {
+              return SettingTile(
+                leading: const Icon(
+                  Icons.code,
+                  color: Colors.white,
+                ),
+                title: 'Code source',
+                subtitle: "L'application est gratuite et open source.",
+                onLongPress: () async {
+                  await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
+                  ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                    SnackBar(
+                      content: Text('Lien copié'),
+                    ),
+                  );
+                },
+                onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
+              );
+            }),
+            const SizedBox(height: 10.0),
             SettingTile(
               leading: const Icon(
                 CupertinoIcons.flag_fill,
@@ -133,6 +178,35 @@ class SettingsScreen extends HookConsumerWidget {
               subtitle: "A propos de l'application",
               onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
             ),
+            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                Icons.diversity_1,
+                color: Colors.white,
+              ),
+              title: 'Faire un don',
+              subtitle: "Faîtes un geste positif pour encourager notre travail.",
+              onTap: () => Navigator.of(context).pushNamed(Donation.route),
+            ),
+            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              title: 'Déconnexion',
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: false))),
+            ),
+            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                CupertinoIcons.trash,
+                color: Colors.white,
+              ),
+              title: 'Supprimer mon compte',
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: true))),
+            ),
+            const SizedBox(height: 20.0),
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:mituna/core/data/network/repositories/base_repository.dart';
 import 'package:mituna/data/network/entities/top_reward.dart';
 import 'package:mituna/data/network/entities/user_reward.dart';
 import 'package:mituna/data/network/services/create_reward.dart';
+import 'package:mituna/data/network/services/delete_rewards.dart';
 import 'package:mituna/data/network/services/top_rewards.dart';
 import 'package:mituna/data/network/services/user_reward.dart';
 import 'package:retrofit/retrofit.dart';
@@ -28,5 +29,11 @@ class RewardsRepository extends BaseRepository {
     final userRewardService = UserRewardService(await client());
 
     return userRewardService.getUserReward(period.name);
+  }
+
+  Future<HttpResponse<dynamic>> deleteRewards() async {
+    final deleteRewardsService = DeleteRewardsService(await client());
+
+    return deleteRewardsService.deleteRewards();
   }
 }

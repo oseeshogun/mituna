@@ -30,7 +30,7 @@ class SprintUsecase extends Usecase {
 
   Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
-    final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 3);
+    final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 10);
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
     return Sprint(
       id: generatedId,

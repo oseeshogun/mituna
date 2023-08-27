@@ -8,6 +8,10 @@ import { authenticatedRequest } from '../validators/authentification'
 import { auth } from '../admin'
 
 export const topRewards = onRequest(async (request, response) => {
+  if (request.method !== 'GET') {
+    response.sendStatus(405)
+    return
+  }
   const { authenticated, error } = await authenticatedRequest(request, auth)
 
   if (!authenticated) {

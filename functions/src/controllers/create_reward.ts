@@ -6,6 +6,10 @@ import { auth } from '../admin'
 import { onRequest } from 'firebase-functions/v2/https'
 
 export const createReward = onRequest(async (request, response) => {
+  if (request.method !== 'POST') {
+    response.sendStatus(405)
+    return
+  }
   const { authenticated, error, decoded } = await authenticatedRequest(
     request,
     auth,

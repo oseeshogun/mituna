@@ -10,6 +10,10 @@ import { DecodedIdToken } from 'firebase-admin/auth'
 import { FilterQuery } from 'mongoose'
 
 export const getMine = onRequest(async (request, response) => {
+  if (request.method !== 'GET') {
+    response.sendStatus(405)
+    return
+  }
   const { authenticated, error, decoded } = await authenticatedRequest(
     request,
     auth,

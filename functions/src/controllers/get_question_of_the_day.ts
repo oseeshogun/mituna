@@ -4,6 +4,10 @@ import { auth } from '../admin'
 import { QuestionOfTheDay } from '../models/question_of_the_day'
 
 export const getQuestionOfTheDay = onRequest(async (request, response) => {
+  if (request.method !== 'GET') {
+    response.sendStatus(405)
+    return
+  }
   const { authenticated, error } = await authenticatedRequest(request, auth)
 
   if (!authenticated) {
