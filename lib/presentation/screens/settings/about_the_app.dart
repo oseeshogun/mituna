@@ -151,6 +151,11 @@ class AboutTheApp extends HookWidget {
                   child: const TextTitleLevelTwo('Contactez le développeur'),
                 ),
                 const SizedBox(height: 30.0),
+                InkWell(
+                  onTap: () => launchUrlString('https://mituna.oseemasuaku.com', mode: LaunchMode.externalApplication),
+                  child: const TextTitleLevelTwo('Visitez le site internet'),
+                ),
+                const SizedBox(height: 30.0),
                 const TextTitleLevelTwo('Rémerciements à:'),
                 const SizedBox(height: 10.0),
                 Text.rich(
