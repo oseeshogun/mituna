@@ -10,9 +10,11 @@ Mituna est une application de quiz passionnante qui met à l'épreuve vos connai
 
 Quelques captures d'écran de l'application :
 
-<img src="assets/captures/Accueil.png" alt="Accueil" width="180px" />
-<img src="assets/captures/LeaderBoard.png" alt="LeaderBoard" width="180px" />
-<img src="assets/captures/Question.png" alt="Question" width="180px" />
+<div style="display: flex;">
+    <img src="assets/captures/Accueil.png" alt="Accueil" width="180px" />
+    <img src="assets/captures/LeaderBoard.png" alt="LeaderBoard" width="180px" style="margin-left: 20px" />
+    <img src="assets/captures/Question.png" alt="Question" width="180px" style="margin-left: 20px" />
+</div>
 
 ## Fonctionnalités
 
