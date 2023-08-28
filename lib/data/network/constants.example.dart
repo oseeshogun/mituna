@@ -4,4 +4,8 @@ class FunctionsHttpUrlsExample {
   static const topReward = '';
 
   static const userReawrd = '';
+
+  static const getQuestionOfTheDay = '';
+
+  static const deleteRewards = '';
 }
