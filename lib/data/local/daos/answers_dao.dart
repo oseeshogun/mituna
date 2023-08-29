@@ -12,7 +12,7 @@ class AnswersDao extends DatabaseAccessor<AppDatabase> with _$AnswersDaoMixin {
 
   Future<List<AnswerData>> get getAll => select(answer).get();
 
-  Future<int?> countAllAnswer() {
+  Future<int?> count() {
     final count = countAll(filter: answer.id.isNotNull());
     return (selectOnly(answer)..addColumns([count])).asyncMap((result) {
       return result.read(count);

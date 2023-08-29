@@ -25,6 +25,8 @@ class QuestionWithAnswers extends Equatable {
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
+  AppDatabase.forTesting(super.e);
+
   @override
   int get schemaVersion => 1;
 
@@ -50,7 +52,8 @@ class AppDatabase extends _$AppDatabase {
       final a = row.readTable(answer);
 
       final list = groupedData.putIfAbsent(q, () => []);
-      list.add(a);
+
+      if (list.length <= 4) list.add(a);
     }
 
     return [for (final entry in groupedData.entries) QuestionWithAnswers(entry.key, entry.value)];

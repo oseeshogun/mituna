@@ -18,21 +18,21 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
     final result = ((selectOnly(question)
       ..addColumns([question.id])
       ..orderBy([OrderingTerm.random()])
-     ..where(category != null ? question.category.isValue(category) : question.category.isNotNull())
+      ..where(category != null ? question.category.isValue(category) : question.category.isNotNull())
       ..limit(limit)));
     return (await result.map((row) => row.read(question.id)).get()).map((e) => e.toString()).toList();
   }
 
-  Future<int?> countAllQuestion() {
+  Future<int?> count() {
     final count = countAll(filter: question.id.isNotNull());
     return (selectOnly(question)..addColumns([count])).asyncMap((result) {
       return result.read(count);
     }).getSingleOrNull();
   }
 
-  Future<int> create(QuestionCompanion entry) async {
-    return into(question).insert(entry);
-  }
+  Future<QuestionData> create(QuestionCompanion entry) async {
+    return into(question).insertReturning(entry);
+  }   
 
   Future<void> insertMultipleEntries(List<QuestionCompanion> entries) async {
     await batch((batch) {
