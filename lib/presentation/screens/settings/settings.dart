@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mituna/core/constants/preferences.dart';
+import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/user.dart';
