@@ -42,5 +42,5 @@ export const createReward = onRequest(async (request, response) => {
     uid: decoded?.uid,
     createdAt: new Date(date),
   })
-  response.json(obj)
+  response.status(201).json(obj)
 })
