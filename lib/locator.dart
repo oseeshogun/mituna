@@ -8,6 +8,7 @@ import 'package:mituna/data/network/repositories/question_of_the_day.dart';
 import 'package:mituna/data/network/repositories/rewards.dart';
 import 'package:mituna/data/network/services/create_reward.dart';
 import 'package:mituna/data/network/services/delete_rewards.dart';
+import 'package:mituna/data/network/services/question_of_the_day.dart';
 import 'package:mituna/data/network/services/top_rewards.dart';
 import 'package:mituna/data/network/services/user_reward.dart';
 import 'package:mituna/domain/services/sound_effect.dart';
@@ -37,7 +38,7 @@ void setupLocator() {
     ),
   );
 
-  locator.registerSingleton(QuestionOfTheDayRepository());
+  locator.registerSingleton(QuestionOfTheDayRepository(QuestionOfTheDayService(dio)));
 
   locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
 }
