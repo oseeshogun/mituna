@@ -65,6 +65,7 @@ dev_dependencies:
   retrofit_generator: ^7.0.8
   mockito: ^5.4.2
   firebase_auth_mocks: ^0.12.0
+  fake_cloud_firestore: ^2.4.1+1
 
 flutter:
   uses-material-design: true

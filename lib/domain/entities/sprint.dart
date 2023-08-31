@@ -5,7 +5,6 @@ import 'package:mituna/domain/entities/question_stat.dart';
 
 class Sprint {
   final int secondsPerQuestion;
-  final int initialHearts;
   final String id;
   final List<QuestionWithAnswers> questions;
   final QuestionCategory? category;
@@ -19,7 +18,7 @@ class Sprint {
     required this.id,
     required this.questions,
     this.secondsPerQuestion = 20,
-    this.initialHearts = 3,
+    int initialHearts = 3,
     this.category,
     this.topazMultiplier = 1,
     this.answered = const [],
@@ -39,15 +38,15 @@ class Sprint {
 
   int get hearts => _hearts;
 
-  bool get finished => _hearts <= 0 || questionLeft == 0;
+  bool get finished => _hearts <= 0 || remainingQuestionCount == 0;
 
   bool get success => (_hearts > 0);
 
   int get questionCount => questions.length;
 
-  int get questionLeft => questions.length - _questionStats.keys.length;
+  int get remainingQuestionCount => questions.length - _questionStats.keys.length;
 
-  int get questionOrder => _questionStats.keys.length + 1;
+  int get questionIndexPlusOne => _questionStats.keys.length + 1;
 
   int get time => _questionStats.values.fold(0, (previousValue, element) => previousValue + element.elapsed);
 

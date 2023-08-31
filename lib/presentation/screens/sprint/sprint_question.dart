@@ -35,7 +35,7 @@ class SprintQuestion extends HookConsumerWidget {
     final question = useState(sprint.randomQuestion);
     final selectedAnswer = useState<AnswerData?>(null);
     final questionCounterState = useState(QuestionCounterState.running);
-    final order = useState(sprint.questionOrder);
+    final order = useState(sprint.questionIndexPlusOne);
     final timePassed = useState(0);
     final answered = useState(false);
     final blinking = useState(false);
