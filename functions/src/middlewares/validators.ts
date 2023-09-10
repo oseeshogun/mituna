@@ -5,7 +5,7 @@ import {
   ValidationError,
 } from 'express-validator'
 
-const functionValidators = async (
+export const functionValidators = async (
   validations: ValidationChain[],
   request: Request,
 ): Promise<{ valid: boolean; errors?: ValidationError[] }> => {
@@ -21,5 +21,3 @@ const functionValidators = async (
 
   return { valid: false, errors: errors.array() }
 }
-
-export { functionValidators }

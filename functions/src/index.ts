@@ -9,13 +9,10 @@
 import * as dotenv from 'dotenv'
 
 import { setGlobalOptions } from 'firebase-functions/v2'
-import { onSchedule } from 'firebase-functions/v2/scheduler'
 import * as logger from 'firebase-functions/logger'
 import mongoose from 'mongoose'
-import { QuestionOfTheDay } from './models/question_of_the_day'
-import { messaging } from './admin'
 
-setGlobalOptions({ maxInstances: 10 })
+setGlobalOptions({ maxInstances: 10, region: 'europe-west2' })
 
 dotenv.config()
 
@@ -32,34 +29,10 @@ connectionClient(
   `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
 )
 
-export { createReward as createRewardFunction } from './controllers/create_reward'
-export { topRewards as topRewardsFunction } from './controllers/top_rewards'
-export { getMine as getMineFunction } from './controllers/get_mine'
-export { getQuestionOfTheDay as getQuestionOfTheDayFunction } from './controllers/get_question_of_the_day'
-export { createQuestionOfTheDay as createQuestionOfTheDayFunction } from './controllers/create_question_of_the_day'
-export { deleteRewards as deleteRewardsFunctions } from './controllers/delete_rewards'
-
-export const remindQuestionOfTheDay = onSchedule('45 13 * * *', async () => {
-  const d = new Date()
-
-  const date =
-    ('0' + d.getDate()).slice(-2) +
-    '/' +
-    ('0' + (d.getMonth() + 1)).slice(-2) +
-    '/' +
-    d.getFullYear()
-
-  QuestionOfTheDay.findOne({ date })
-    .then((value) => {
-      messaging.sendToTopic('question_of_the_day', {
-        notification: {
-          title: 'Question du jour',
-          body: value?.question,
-          color: '#374e86',
-        },
-      })
-    })
-    .catch((error) => {
-      logger.error(error)
-    })
-})
+export { createReward as createRewardFunction } from './modules/rewards/controllers/create'
+export { deleteRewards as deleteRewardsFunctions } from './modules/rewards/controllers/delete'
+export { topRewards as topRewardsFunction } from './modules/rewards/controllers/top'
+export { getMine as getMineFunction } from './modules/rewards/controllers/mine'
+export { getQuestionOfTheDay as getQuestionOfTheDayFunction } from './modules/question_of_the_day/controllers/get'
+export { createQuestionOfTheDay as createQuestionOfTheDayFunction } from './modules/question_of_the_day/controllers/create'
+export { remindQuestionOfTheDay as remindQuestionOfTheDayFunction } from './modules/question_of_the_day/jobs/remind'

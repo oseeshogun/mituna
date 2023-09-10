@@ -1,19 +1,12 @@
 import { onRequest } from 'firebase-functions/v2/https'
-import { functionValidators } from '../validators/validators'
+import { ControllerRequest } from '../../../core/controllers/methods'
 import { body } from 'express-validator'
-import { QuestionOfTheDay } from '../models/question_of_the_day'
+import { QuestionOfTheDayService } from '../question_of_the_day.service'
 
-export const createQuestionOfTheDay = onRequest(async (request, response) => {
-  if (request.method !== 'POST') {
-    response.sendStatus(405)
-    return
-  }
-  if (request.headers.authorization !== process.env.QUESTION_OF_THE_DAY_KEY) {
-    response.sendStatus(401)
-    return
-  }
-  const result = await functionValidators(
-    [
+export const createQuestionOfTheDay = onRequest((_, __) => {
+  ControllerRequest(_, __, {
+    method: 'POST',
+    validators: [
       body('questions')
         .isArray()
         .withMessage('Questions must be array')
@@ -67,20 +60,17 @@ export const createQuestionOfTheDay = onRequest(async (request, response) => {
         return true
       }),
     ],
-    request,
-  )
-  if (!result.valid) {
-    response.status(400).json({ errors: result.errors })
-    return
-  }
-
-  const { questions } = request.body
-
-  QuestionOfTheDay.insertMany(questions)
-    .then((value) => {
-      response.json(value)
-    })
-    .catch((error) => {
-      response.status(400).json(error)
-    })
+    callback: function ({ request, response }) {
+      if (
+        request.headers['question-of-the-day-key'] !==
+        process.env.QUESTION_OF_THE_DAY_KEY
+      ) {
+        response.sendStatus(401)
+        return
+      }
+      const { questions } = request.body
+      const service = new QuestionOfTheDayService()
+      return service.create(questions)
+    },
+  })
 })

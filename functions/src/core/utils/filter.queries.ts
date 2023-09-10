@@ -1,6 +1,6 @@
 import { FilterQuery } from 'mongoose'
 import { CronDateUtils } from './cron.date'
-import { Reward } from '../models/reward'
+import { Reward } from '../../modules/rewards/reward.model'
 
 export class FilterQueries {
   static allTimeTopRewards = (): FilterQuery<typeof Reward> => {

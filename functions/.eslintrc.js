@@ -20,13 +20,17 @@ module.exports = {
   },
   ignorePatterns: [
     '/lib/**/*', // Ignore built files.
+    '/node_modules/**/*',
+    '**/node_modules/',
+    '/**/node_modules/*',
   ],
   plugins: ['prettier', '@typescript-eslint', 'import'],
   rules: {
     quotes: ['error', 'single'],
     'import/no-unresolved': 0,
-    indent: ['error', 2],
+    indent: 0,
     'prettier/prettier': ['error'],
     'require-jsdoc': 0,
+    'new-cap': 0,
   },
 }

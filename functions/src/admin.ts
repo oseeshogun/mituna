@@ -1,8 +1,9 @@
+import { initializeApp } from 'firebase-admin/app'
 import admin from 'firebase-admin'
 
 import * as serviceAccount from './firebase.json'
 
-admin.initializeApp({
+initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 })
 
