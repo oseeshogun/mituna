@@ -80,7 +80,7 @@ class SprintUsecase extends Usecase {
             id: questionOfTheDayData.id,
             content: questionOfTheDayData.question,
             type: QuestionType.choice,
-            category: QuestionCategory.history,
+            category: QuestionCategory.values.firstWhere((v) => v.name == questionOfTheDayData.category, orElse: () => QuestionCategory.history),
           );
           final answerCompanions = questionOfTheDayData.assertions
               .asMap()

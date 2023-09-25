@@ -8,6 +8,7 @@ class QuestionOfTheDayData {
   final String id;
   final String question;
   final String date;
+  final String category;
   final String reponse;
   final List<String> assertions;
 
@@ -16,6 +17,7 @@ class QuestionOfTheDayData {
     required this.question,
     required this.assertions,
     required this.date,
+    required this.category,
     required this.reponse,
   });
 
