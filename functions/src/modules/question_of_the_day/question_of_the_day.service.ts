@@ -6,6 +6,7 @@ import {
 export interface IQuestionOfTheDay {
   question: string
   date: string
+  category: string
   assertions: string[]
   reponse: string
 }

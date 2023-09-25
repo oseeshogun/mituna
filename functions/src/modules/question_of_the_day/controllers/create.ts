@@ -6,6 +6,7 @@ import { QuestionOfTheDayService } from '../question_of_the_day.service'
 export const createQuestionOfTheDay = onRequest((_, __) => {
   ControllerRequest(_, __, {
     method: 'POST',
+    authenticated: false,
     validators: [
       body('questions')
         .isArray()
