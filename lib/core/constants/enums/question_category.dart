@@ -1,16 +1,6 @@
 part of 'all.dart';
 
-enum QuestionCategory {
-  history,
-  geography,
-  sciences,
-  nature,
-  gastronomy,
-  arts,
-  sports,
-  programmation,
-  otaku,
-}
+enum QuestionCategory { history, geography, sciences, nature, gastronomy, arts, sports, programmation, otaku }
 
 extension QuestionCategoryAsset on QuestionCategory {
   String get asset => 'assets/images/categories/$name.jpg';

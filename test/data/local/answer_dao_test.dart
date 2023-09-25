@@ -48,6 +48,7 @@ void main() {
 
     test('Answers Length', () async {
       final count = await answersDao.count();
+      print(count);
       expect(count, 8);
     });
 

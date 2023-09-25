@@ -19,6 +19,11 @@ export const createQuestionOfTheDay = onRequest((_, __) => {
         .withMessage('Question must be a string')
         .notEmpty()
         .withMessage('Question content can not be empty'),
+      body('questions.*.category')
+        .isString()
+        .withMessage('Question category must be a string')
+        .notEmpty()
+        .withMessage('Question category can not be empty'),
       body('questions.*.date')
         .isString()
         .withMessage('Question date must be a string')
