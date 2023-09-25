@@ -32,9 +32,6 @@ class SprintUsecase extends Usecase {
     final generatedId = const Uuid().v4();
     final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 10);
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
-    for (final q in questions) {
-      print('${q.question.category}  ${q.question.content}');
-    }
     return Sprint(
       id: generatedId,
       questions: questions,
