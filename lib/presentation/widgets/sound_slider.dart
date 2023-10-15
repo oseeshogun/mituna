@@ -13,10 +13,6 @@ class SoundSlider extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: const BorderSide(color: Colors.white70),
-      ),
       leading: const Icon(
         CupertinoIcons.volume_up,
         color: Colors.white,

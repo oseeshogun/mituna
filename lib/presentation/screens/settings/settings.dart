@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
@@ -112,30 +113,32 @@ class SettingsScreen extends HookConsumerWidget {
             firestoreAuthUserAsyncValue.when(
               loading: () => SizedBox(),
               error: (error, stackTrace) => SizedBox(),
-              data: (firestoreUser) => TextTitleLevelOne(firestoreUser?.displayName ?? ''),
-            ),
-            const SizedBox(height: 30.0),
-            firestoreAuthUserAsyncValue.when(
-              loading: () => SizedBox(),
-              error: (error, stackTrace) => SizedBox(),
-              data: (firestoreUser) => SettingTile(
-                leading: const Icon(
-                  CupertinoIcons.person_fill,
-                  color: Colors.white,
-                ),
-                title: "Nom d'utilisateur",
-                subtitle: "Changer votre nom d'utilisateur",
-                onTap: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
+              data: (firestoreUser) => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextTitleLevelOne(firestoreUser?.displayName ?? ''),
+                  firestoreAuthUserAsyncValue.when(
+                    loading: () => SizedBox(),
+                    error: (error, stackTrace) => SizedBox(),
+                    data: (firestoreUser) => IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.pencil,
+                        size: 14.0,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 30.0),
             SettingTile(
               leading: const Icon(
                 CupertinoIcons.flag_fill,
                 color: Colors.white,
               ),
               title: 'Rapporter une erreur',
-              subtitle: 'Une réponse n’est pas correcte ? un bug ?',
               onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
             ),
             const SizedBox(height: 10.0),
@@ -151,7 +154,6 @@ class SettingsScreen extends HookConsumerWidget {
                   color: Colors.white,
                 ),
                 title: 'Code source',
-                subtitle: "L'application est gratuite et open source.",
                 onLongPress: () async {
                   await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
                   ScaffoldMessenger.maybeOf(context)?.showSnackBar(
@@ -166,24 +168,22 @@ class SettingsScreen extends HookConsumerWidget {
             const SizedBox(height: 10.0),
             SettingTile(
               leading: const Icon(
-                CupertinoIcons.flag_fill,
-                color: Colors.white,
-              ),
-              title: 'A propos',
-              subtitle: "A propos de l'application",
-              onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
-            ),
-            const SizedBox(height: 10.0),
-            SettingTile(
-              leading: const Icon(
                 Icons.diversity_1,
                 color: Colors.white,
               ),
               title: 'Faire un don',
-              subtitle: "Faîtes un geste positif pour encourager notre travail.",
               onTap: () => Navigator.of(context).pushNamed(Donation.route),
             ),
             const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(
+                CupertinoIcons.flag_fill,
+                color: Colors.white,
+              ),
+              title: 'A propos',
+              onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
+            ),
+            const SizedBox(height: 30.0),
             SettingTile(
               leading: const Icon(
                 Icons.logout,
@@ -192,12 +192,9 @@ class SettingsScreen extends HookConsumerWidget {
               title: 'Déconnexion',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: false))),
             ),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.trash,
-                color: Colors.white,
-              ),
+              foregroundColor: AppColors.kColorYellow,
+              leading: const Icon(CupertinoIcons.trash),
               title: 'Supprimer mon compte',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: true))),
             ),
