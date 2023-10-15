@@ -54,7 +54,7 @@ void main() {
     });
 
     test('Random question by category', () async {
-      final list = await questionsDao.randomQuestionIdList(category: QuestionCategory.history.name);
+      final list = await questionsDao.randomQuestionIdList(categories: [QuestionCategory.history.name]);
 
       expect(list.length, 1);
 

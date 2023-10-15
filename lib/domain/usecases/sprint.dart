@@ -30,7 +30,14 @@ class SprintUsecase extends Usecase {
 
   Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
-    final questionsIdList = await _questionsDao.randomQuestionIdList(category: category?.name, limit: 10);
+    final questionsIdList = await _questionsDao.randomQuestionIdList(
+      categories: category != null
+          ? <String>[category.name]
+          : <String>[
+              ...QuestionCategory.values.where((element) => element.isFavorite).map((e) => e.name).toList(),
+            ],
+      limit: 10,
+    );
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
     return Sprint(
       id: generatedId,
@@ -105,14 +112,7 @@ class SprintUsecase extends Usecase {
 
       final List<QuestionWithAnswers> questions = await _db.getQuestionsWithAnswers([todayQuestionId]);
 
-      return Sprint(
-        id: generatedId,
-        questions: questions,
-        category: null,
-        initialHearts: 1,
-        answered: _getAnsweredQuestions(questions),
-        topazMultiplier: 10
-      );
+      return Sprint(id: generatedId, questions: questions, category: null, initialHearts: 1, answered: _getAnsweredQuestions(questions), topazMultiplier: 10);
     });
   }
 }

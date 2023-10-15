@@ -49,14 +49,7 @@ class RankingScreen extends HookConsumerWidget {
         loading.value = false;
       });
       rewardsUsecase.userRanking(period.value).then((result) {
-        result.fold((l) {
-          showOkAlertDialog(
-            context: context,
-            title: 'Une erreur est survenue',
-            message: l.message,
-          );
-          failed.value = true;
-        }, (r) {
+        result.fold((l) {}, (r) {
           ref.read(rankingsProvider(period.value.name).notifier).state = [...ref.read(rankingsProvider(period.value.name)), ...r].toSet().toList();
         });
       });

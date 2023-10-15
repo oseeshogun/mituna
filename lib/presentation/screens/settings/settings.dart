@@ -21,6 +21,7 @@ import 'package:mituna/presentation/widgets/texts/all.dart';
 
 import 'about_the_app.dart';
 import 'donation.dart';
+import 'favorites_categories.dart';
 import 'report_error.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -134,25 +135,22 @@ class SettingsScreen extends HookConsumerWidget {
             ),
             const SizedBox(height: 30.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.flag_fill,
-                color: Colors.white,
-              ),
-              title: 'Rapporter une erreur',
-              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
+              leading: const Icon(Icons.category),
+              title: 'Catégories favorites',
+              onTap: () => Navigator.of(context).pushNamed(FavoritesCategories.route),
             ),
-            const SizedBox(height: 10.0),
             SoundSlider(
               value: volume.value,
               onChanged: (value) => (volume.value = value),
             ),
-            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(CupertinoIcons.flag_fill),
+              title: 'Rapporter une erreur',
+              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
+            ),
             Builder(builder: (context) {
               return SettingTile(
-                leading: const Icon(
-                  Icons.code,
-                  color: Colors.white,
-                ),
+                leading: const Icon(Icons.code),
                 title: 'Code source',
                 onLongPress: () async {
                   await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
@@ -165,30 +163,19 @@ class SettingsScreen extends HookConsumerWidget {
                 onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
               );
             }),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                Icons.diversity_1,
-                color: Colors.white,
-              ),
+              leading: const Icon(Icons.diversity_1),
               title: 'Faire un don',
               onTap: () => Navigator.of(context).pushNamed(Donation.route),
             ),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.flag_fill,
-                color: Colors.white,
-              ),
+              leading: const Icon(CupertinoIcons.flag_fill),
               title: 'A propos',
               onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
             ),
             const SizedBox(height: 30.0),
             SettingTile(
-              leading: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
+              leading: const Icon(Icons.logout),
               title: 'Déconnexion',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: false))),
             ),
