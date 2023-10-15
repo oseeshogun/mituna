@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/data/network/entities/question_of_the_day.dart';
 import 'package:mituna/data/network/repositories/question_of_the_day.dart';
 import 'package:mituna/data/network/services/question_of_the_day.dart';
@@ -29,6 +30,7 @@ void main() {
           assertions: ['1', '2', '3', '4'],
           date: DateTime.now().toIso8601String(),
           reponse: '4',
+          category: QuestionCategory.history.name,
         ),
         Response(
           requestOptions: RequestOptions(),

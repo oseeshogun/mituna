@@ -33,7 +33,9 @@ class RankingScreen extends HookConsumerWidget {
     fetch(bool force) {
       if (loading.value) return;
       loading.value = true;
-      rewardsUsecase.getLeaderBoard(period.value, force).then((result) {
+      final stateValue = ref.read(rankingsProvider(period.value.name));
+      if (stateValue.isNotEmpty && !force) return;
+      rewardsUsecase.topRankings(period.value).then((result) {
         result.fold((l) {
           showOkAlertDialog(
             context: context,
@@ -42,9 +44,21 @@ class RankingScreen extends HookConsumerWidget {
           );
           failed.value = true;
         }, (r) {
-          ref.read(rankingsProvider(period.value.name).notifier).state = r;
+          ref.read(rankingsProvider(period.value.name).notifier).state = [...r, ...ref.read(rankingsProvider(period.value.name))].toSet().toList();
         });
         loading.value = false;
+      });
+      rewardsUsecase.userRanking(period.value).then((result) {
+        result.fold((l) {
+          showOkAlertDialog(
+            context: context,
+            title: 'Une erreur est survenue',
+            message: l.message,
+          );
+          failed.value = true;
+        }, (r) {
+          ref.read(rankingsProvider(period.value.name).notifier).state = [...ref.read(rankingsProvider(period.value.name)), ...r].toSet().toList();
+        });
       });
     }
 
