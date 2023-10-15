@@ -77,11 +77,6 @@ class SettingsScreen extends HookConsumerWidget {
       appBar: PrimaryAppBar(
         title: const TextTitleLevelOne('Paramètres'),
         actions: [
-          IconButton(
-            tooltip: 'Réjoignez-nous sur Discord',
-            onPressed: () => launchUrl(Uri.parse('https://discord.gg/TSqVPtaQ4A')),
-            icon: const Icon(Icons.discord),
-          ),
           firebaseAuthUserAsyncValue.when(
             loading: () => Container(),
             error: (error, stackTrace) => Container(),
