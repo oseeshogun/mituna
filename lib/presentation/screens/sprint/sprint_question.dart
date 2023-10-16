@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,10 +25,12 @@ class SprintQuestion extends HookConsumerWidget {
     super.key,
     required this.sprint,
     required this.onNext,
+    required this.onStartAnimation,
   });
 
   final Sprint sprint;
   final Future<void> Function(int timePassed)? onNext;
+  final Future<void> Function(bool isCorrect)? onStartAnimation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,6 +87,7 @@ class SprintQuestion extends HookConsumerWidget {
       }
       questionCounterState.value = QuestionCounterState.stopped;
 
+      if (Random().nextBool()) await onStartAnimation?.call(isCorrect);
       Future.delayed(const Duration(seconds: 2), () => onNext?.call(timePassed.value));
     }
 
