@@ -10,6 +10,8 @@ class Question extends Table {
 
   TextColumn get category => textEnum<QuestionCategory>()();
 
+  IntColumn get picked => integer().withDefault(const Constant(0))();
+
   @override
   Set<Column> get primaryKey => {id};
 }

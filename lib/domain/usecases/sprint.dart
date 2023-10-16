@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mituna/core/constants/enums/all.dart';
@@ -30,15 +33,21 @@ class SprintUsecase extends Usecase {
 
   Future<Sprint> start([QuestionCategory? category]) async {
     final generatedId = const Uuid().v4();
+    final categories = category != null
+        ? <String>[category.name]
+        : <String>[
+            ...QuestionCategory.values.where((element) => element.isFavorite).map((e) => e.name).toList(),
+          ];
     final questionsIdList = await _questionsDao.randomQuestionIdList(
-      categories: category != null
-          ? <String>[category.name]
-          : <String>[
-              ...QuestionCategory.values.where((element) => element.isFavorite).map((e) => e.name).toList(),
-            ],
+      categories: categories,
       limit: 10,
+      mostPickedLimit: kDebugMode ? (categories.length < 2 ? 10 : 20) : (categories.length < 2 ? 20 : 40),
     );
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
+
+    // increment picked
+    _questionsDao.incrementPicked(questionsIdList, questions.fold(0, (previousValue, element) => max(previousValue, element.question.picked)) + 1);
+
     return Sprint(
       id: generatedId,
       questions: questions,
