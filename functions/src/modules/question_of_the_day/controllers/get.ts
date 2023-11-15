@@ -5,9 +5,9 @@ import { QuestionOfTheDayService } from '../question_of_the_day.service'
 export const getQuestionOfTheDay = onRequest((_, __) => {
   ControllerRequest(_, __, {
     method: 'GET',
-    callback: function () {
+    callback: async function () {
       const service = new QuestionOfTheDayService()
-      return service.get()
+      return await service.get()
     },
   })
 })

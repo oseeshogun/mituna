@@ -3,6 +3,35 @@ import { ControllerRequest } from '../../../core/controllers/methods'
 import { body } from 'express-validator'
 import { QuestionOfTheDayService } from '../question_of_the_day.service'
 
+/**
+* POST /question-of-the-day
+* @param {Array} questions
+* @param {string} questions[].question
+* @param {string} questions[].category
+* @param {string} questions[].date
+* @param {Array} questions[].assertions
+* @param {string} questions[].reponse
+* @return {Object}
+
+Example:
+
+{
+  "questions": [
+    {
+      "question": "Quelle est la montagne la plus haute d'Afrique, située en Tanzanie ?",
+      "date": "15/11/2023",
+      "category": "geography",
+      "assertions": [
+      "Mont Everest",
+      "Mont Kilimandjaro",
+      "Mont Fuji",
+      "Mont McKinley"
+      ],
+      "reponse": "Mont Kilimandjaro"
+    }
+  ]
+}
+*/
 export const createQuestionOfTheDay = onRequest((_, __) => {
   ControllerRequest(_, __, {
     method: 'POST',

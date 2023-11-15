@@ -57,6 +57,12 @@ export const ControllerRequest = async (
 
   try {
     const result = await callback({ request, response, decoded })
+
+    if (result === null) {
+      response.sendStatus(404)
+      return
+    }
+
     response.status(method === 'POST' ? 201 : 200).json(result)
   } catch (error) {
     logger.error(error)
