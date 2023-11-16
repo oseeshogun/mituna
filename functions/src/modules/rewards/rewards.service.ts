@@ -23,6 +23,16 @@ export class RewardService {
     })
   }
 
+  async getRewardByDate({
+    date,
+    uid,
+  }: {
+    uid: string
+    date: string | Date | number
+  }) {
+    return await RewardModel.findOne({ uid, createdAt: new Date(date) })
+  }
+
   async topRewards(period: 'all' | 'month' | 'week') {
     const filters: {
       [key: string]: () => FilterQuery<typeof Reward> | undefined

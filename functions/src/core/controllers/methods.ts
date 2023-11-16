@@ -23,7 +23,7 @@ export const ControllerRequest = async (
       request: Request
       response: Response
       decoded: DecodedIdToken | undefined
-    }) => unknown
+    }) => Promise<unknown> | unknown
   },
 ) => {
   if (request.method !== method) {

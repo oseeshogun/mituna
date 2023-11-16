@@ -11,10 +11,20 @@ export const createReward = onRequest(async (_, __) => {
       body('date').isString().isISO8601().withMessage('Iso Date Required'),
       body('duration').isNumeric(),
     ],
-    callback: function ({ decoded, response, request }) {
+    callback: async function ({ decoded, response, request }) {
       const { topaz, duration, date } = request.body
       if (!decoded) return response.sendStatus(401)
       const service = new RewardService()
+
+      const reward = await service.getRewardByDate({
+        date,
+        uid: decoded?.uid,
+      })
+
+      if (reward) {
+        return response.sendStatus(409)
+      }
+
       return service.create({ topaz, duration, date, uid: decoded?.uid })
     },
   })
