@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -86,7 +87,17 @@ class HomeScreen extends HookConsumerWidget {
           (previous, next) {
             if (next.value != null && next.value?.isNotEmpty == true) {
               for (final record in next.value!) {
-                rewardsUsecase.saveRecord(record);
+                rewardsUsecase.saveRecord(record).then((value) {
+                  value.fold((l) {
+                    if (l.exception is DioException) {
+                      if ((l.exception as DioException).response?.statusCode == 409) {
+                        rewardsUsecase.markAsSaved(record);
+                      }
+                    }
+                  }, (r) {
+                    rewardsUsecase.markAsSaved(record);
+                  });
+                });
               }
             }
           },

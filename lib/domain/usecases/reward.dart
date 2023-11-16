@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mituna/core/constants/enums/all.dart';
@@ -49,6 +50,14 @@ class RewardsUsecase extends Usecase {
   Future<Either<Failure, void>> saveRecord(RewardRecord record) {
     return wrapper(() async {
       await _rewardsRepository.create(topaz: record.score, duration: record.duration, date: record.createdAt);
+    });
+  }
+
+  Future<Either<Failure, void>> markAsSaved(RewardRecord record) {
+    return wrapper(() async {
+      await FirebaseFirestore.instance.collection('rewards').doc(record.uid).collection('records').doc(record.id).update({
+        'state': RewardRecordState.recorded.name,
+      });
     });
   }
 }
