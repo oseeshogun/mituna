@@ -41,7 +41,7 @@ class SprintUsecase extends Usecase {
     final questionsIdList = await _questionsDao.randomQuestionIdList(
       categories: categories,
       limit: 10,
-      mostPickedLimit: kDebugMode ? (categories.length < 2 ? 10 : 20) : (categories.length < 2 ? 20 : 40),
+      mostPickedLimit: kDebugMode ? (categories.length < 2 ? 5 : 10) : (categories.length < 2 ? 20 : 40),
     );
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
 

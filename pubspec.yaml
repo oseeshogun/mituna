@@ -2,7 +2,7 @@ name: mituna
 description: Mituna est une application de quiz passionnante qui met à l'épreuve vos connaissances sur la République Démocratique du Congo (RDC) ainsi que sur diverses questions liées au monde.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+15
+version: 1.0.0+16
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -58,7 +58,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.3.2
+  flutter_native_splash: ^2.3.6
   drift_dev: ^2.11.0
   build_runner: ^2.4.6
   json_serializable: ^6.7.1
@@ -94,13 +94,11 @@ flutter:
 flutter_native_splash:
   color: "#1d87ff"
   image: "assets/images/mituna.png"
-  branding: "assets/images/mituna.png"
   branding_mode: center
 
   android_12:
     color: "#1d87ff"
     image: "assets/images/mituna.png"
-    branding: "assets/images/mituna.png"
     branding_mode: center
 
   fullscreen: true
