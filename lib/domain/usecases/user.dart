@@ -38,9 +38,10 @@ class UserUsecase extends Usecase {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
       await _rewardsRepository.deleteRewards();
-      _prefs.clear();
-      await _messaging.unsubscribeFromTopic(user.uid);
       await _firestore.collection('users').doc(user.uid).delete();
+      await _messaging.unsubscribeFromTopic(user.uid);
+      await _prefs.clear();
+      await FirebaseAuth.instance.currentUser?.delete();
     });
   }
 
@@ -59,7 +60,7 @@ class UserUsecase extends Usecase {
 
   Future<Either<Failure, void>> updateDisplayName(String displayName) async {
     return wrapper(() async {
-       final currentUser = FirebaseAuth.instance.currentUser;
+      final currentUser = FirebaseAuth.instance.currentUser;
       await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).update({"displayName": displayName});
     });
   }
