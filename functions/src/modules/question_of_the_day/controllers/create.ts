@@ -2,6 +2,7 @@ import { onRequest } from 'firebase-functions/v2/https'
 import { ControllerRequest } from '../../../core/controllers/methods'
 import { body } from 'express-validator'
 import { QuestionOfTheDayService } from '../question_of_the_day.service'
+import { QuestionCategory } from '../question_of_the_day.model'
 
 /**
 * POST /question-of-the-day
@@ -53,7 +54,11 @@ export const createQuestionOfTheDay = onRequest((_, __) => {
         .isString()
         .withMessage('Question category must be a string')
         .notEmpty()
-        .withMessage('Question category can not be empty'),
+        .withMessage('Question category can not be empty')
+        .custom((category) => {
+          return Object.values(QuestionCategory).includes(category);
+        })
+        .withMessage("Question category doesn't exist"),
       body('questions.*.date')
         .isString()
         .withMessage('Question date must be a string')

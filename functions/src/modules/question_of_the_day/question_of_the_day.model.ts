@@ -1,6 +1,6 @@
 import { ModelOptions, Prop, getModelForClass } from '@typegoose/typegoose'
 
-enum QuestionCategory {
+export enum QuestionCategory {
   history = 'history',
   geography = 'geography',
   sciences = 'sciences',
@@ -10,6 +10,7 @@ enum QuestionCategory {
   sports = 'sports',
   programmation = 'programmation',
   otaku = 'otaku',
+  religion = 'religion',
 }
 
 @ModelOptions({
