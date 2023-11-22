@@ -58,7 +58,7 @@ export const createQuestionOfTheDay = onRequest((_, __) => {
         .custom((category) => {
           return Object.values(QuestionCategory).includes(category)
         })
-        .withMessage("Question category doesn't exist"),
+        .withMessage('Question category doesn\'t exist'),
       body('questions.*.date')
         .isString()
         .withMessage('Question date must be a string')
