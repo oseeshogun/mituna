@@ -56,7 +56,7 @@ export const createQuestionOfTheDay = onRequest((_, __) => {
         .notEmpty()
         .withMessage('Question category can not be empty')
         .custom((category) => {
-          return Object.values(QuestionCategory).includes(category);
+          return Object.values(QuestionCategory).includes(category)
         })
         .withMessage("Question category doesn't exist"),
       body('questions.*.date')
