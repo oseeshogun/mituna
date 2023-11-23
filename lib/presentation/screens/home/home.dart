@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
+import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/usecases/reward.dart';
@@ -152,100 +154,112 @@ class HomeScreen extends HookConsumerWidget {
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Stack(
               children: [
-                Row(
+                if (isDecember()) Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Lottie.asset(
+                    'assets/lottiefiles/bells.json',
+                    width: MediaQuery.of(context).size.width * 0.9,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const TopazIcon(),
-                    const SizedBox(width: 5.0),
-                    firestoreAuthUserStreamProvider.when(
-                      loading: () => TextTitleLevelTwo(0.toString()),
-                      error: (error, stackTrace) => TextTitleLevelTwo(0.toString()),
-                      data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
+                    Row(
+                      children: [
+                        const TopazIcon(),
+                        const SizedBox(width: 5.0),
+                        firestoreAuthUserStreamProvider.when(
+                          loading: () => TextTitleLevelTwo(0.toString()),
+                          error: (error, stackTrace) => TextTitleLevelTwo(0.toString()),
+                          data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
+                          icon: const Icon(
+                            Icons.bar_chart,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
+                          icon: const Icon(
+                            CupertinoIcons.settings,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
-                      icon: const Icon(
-                        Icons.bar_chart,
-                        size: 30,
-                        color: Colors.white,
+                    const SizedBox(height: 30.0),
+                    FadeAnimation(
+                      delay: 1.0,
+                      child: RunningManLottieButton(onPressed: () => startPrint()),
+                    ),
+                    const SizedBox(height: 20.0),
+                    const TextTitleLevelOne('Appuyez pour commencer'),
+                    const SizedBox(height: 30.0),
+                    PrimaryButton(
+                      loading: isLoadingTodayQuestion.value,
+                      child: const TextTitleLevelOne(
+                        '🕹️  Question du jour',
+                        color: AppColors.kColorBlueRibbon,
                       ),
+                      radius: 50.0,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                        vertical: 15.0,
+                      ),
+                      onPressed: () => todayQuestion(),
                     ),
-                    IconButton(
-                      onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
-                      icon: const Icon(
-                        CupertinoIcons.settings,
-                        color: Colors.white,
+                    const SizedBox(height: 30.0),
+                    CategoryItem(
+                      category: QuestionCategory.values.first,
+                      onPressed: () => startPrint(QuestionCategory.values.first),
+                    ),
+                    Wrap(
+                      children: QuestionCategory.values.skip(1).map<Widget>((category) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width * .45,
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: CategoryItem(
+                            category: category,
+                            onPressed: () => startPrint(category),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 30.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 10.0),
+                        SvgPicture.asset(
+                          'assets/svgs/openai-white-logomark.svg',
+                          height: 40.0,
+                          width: 40.0,
+                        ),
+                        const SizedBox(width: 10.0),
+                        TextTitleLevelTwo('Powered by ChatGPT API'),
+                      ],
+                    ),
+                    const SizedBox(height: 30.0),
+                    Transform.translate(
+                      offset: const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Image.asset(
+                          'assets/images/jaguar-42010_640.png',
+                          fit: BoxFit.contain,
+                          width: MediaQuery.of(context).size.width * .5,
+                        ),
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 30.0),
-                FadeAnimation(
-                  delay: 1.0,
-                  child: RunningManLottieButton(onPressed: () => startPrint()),
-                ),
-                const SizedBox(height: 20.0),
-                const TextTitleLevelOne('Appuyez pour commencer'),
-                const SizedBox(height: 30.0),
-                PrimaryButton(
-                  loading: isLoadingTodayQuestion.value,
-                  child: const TextTitleLevelOne(
-                    '🕹️  Question du jour',
-                    color: AppColors.kColorBlueRibbon,
-                  ),
-                  radius: 50.0,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 15.0,
-                  ),
-                  onPressed: () => todayQuestion(),
-                ),
-                const SizedBox(height: 30.0),
-                CategoryItem(
-                  category: QuestionCategory.values.first,
-                  onPressed: () => startPrint(QuestionCategory.values.first),
-                ),
-                Wrap(
-                  children: QuestionCategory.values.skip(1).map<Widget>((category) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width * .45,
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: CategoryItem(
-                        category: category,
-                        onPressed: () => startPrint(category),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 30.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 10.0),
-                    SvgPicture.asset(
-                      'assets/svgs/openai-white-logomark.svg',
-                      height: 40.0,
-                      width: 40.0,
-                    ),
-                    const SizedBox(width: 10.0),
-                    TextTitleLevelTwo('Powered by ChatGPT API'),
-                  ],
-                ),
-                const SizedBox(height: 30.0),
-                Transform.translate(
-                  offset: const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Image.asset(
-                      'assets/images/jaguar-42010_640.png',
-                      fit: BoxFit.contain,
-                      width: MediaQuery.of(context).size.width * .5,
-                    ),
-                  ),
                 ),
               ],
             ),

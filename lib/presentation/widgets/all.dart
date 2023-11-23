@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
+import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/domain/entities/ranking.dart';
 import 'package:mituna/presentation/utils/painters/all.dart';
 import 'package:mituna/presentation/utils/painters/ranking_painters.dart';
