@@ -12,7 +12,7 @@ import 'package:mituna/locator.dart';
 
 class OfflineLoadUsecase extends Usecase {
   Future<List<Map<String, dynamic>>> loadQuestionsFromAsset() async {
-    final jsonString = await rootBundle.loadString(kReleaseMode ? 'assets/data/questions.json' : 'assets/data/sample.json');
+    final jsonString = await rootBundle.loadString(kDebugMode ? 'assets/data/sample.json' : 'assets/data/questions.json');
     return (json.decode(jsonString)['questions'] as List).map<Map<String, dynamic>>((data) => Map<String, dynamic>.from(data)).toList();
   }
 

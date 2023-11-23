@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,7 @@ import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -76,6 +79,35 @@ class HomeScreen extends HookConsumerWidget {
           Navigator.of(context).pushNamed(OfflineQuestionsLoadScreen.route);
         }
       });
+      return null;
+    }, []);
+
+    useEffect(() {
+      RateMyApp rateMyApp = RateMyApp(
+        preferencesPrefix: 'rateMyApp_',
+        minDays: 7,
+        minLaunches: 10,
+        remindDays: 7,
+        remindLaunches: 10,
+        googlePlayIdentifier: 'deepcolt.com.mituna',
+      );
+
+      rateMyApp.init().then((_) {
+        if (rateMyApp.shouldOpenDialog) {
+          rateMyApp.showRateDialog(
+            context,
+            title: 'Notez cette application',
+            message:
+                "Si vous aimez cette application, veuillez prendre un petit moment pour laisser un avis ! Cela nous aide vraiment et cela ne devrait pas vous prendre plus d'une minute.",
+            rateButton: 'NOTEZ',
+            noButton: 'NON MERCI',
+            laterButton: 'PLUS TARD',
+            ignoreNativeDialog: Platform.isAndroid,
+            onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+          );
+        }
+      });
+
       return null;
     }, []);
 
