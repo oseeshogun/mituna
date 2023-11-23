@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dio/dio.dart';
@@ -48,6 +49,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoadingTodayQuestion = useState<bool>(false);
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
+    final categories = QuestionCategory.values;
 
     todayQuestion() {
       isLoadingTodayQuestion.value = true;
@@ -67,6 +69,28 @@ class HomeScreen extends HookConsumerWidget {
         ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
+    }
+
+    void _handleMessage(RemoteMessage message) {
+    if (message.data['type'] == 'question_of_the_day') {
+      todayQuestion();
+    }
+  }
+
+    Future<void> setupInteractedMessage() async {
+      // Get any messages which caused the application to open from
+      // a terminated state.
+      RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+      // If the message also contains a data property with a "type" of "chat",
+      // navigate to a chat screen
+      if (initialMessage != null) {
+        _handleMessage(initialMessage);
+      }
+
+      // Also handle any interaction when the app is in the background via a
+      // Stream listener
+      FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
     }
 
     useEffect(() {
@@ -148,6 +172,11 @@ class HomeScreen extends HookConsumerWidget {
       };
     }, []);
 
+    useEffect(() {
+      setupInteractedMessage();
+      return null;
+    }, []);
+
     return Scaffold(
       body: UpgradeAlert(
         upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
@@ -156,14 +185,15 @@ class HomeScreen extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
             child: Stack(
               children: [
-                if (isDecember()) Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Lottie.asset(
-                    'assets/lottiefiles/bells.json',
-                    width: MediaQuery.of(context).size.width * 0.9,
+                if (isDecember())
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Lottie.asset(
+                      'assets/lottiefiles/bells.json',
+                      width: MediaQuery.of(context).size.width * 0.9,
+                    ),
                   ),
-                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -221,7 +251,9 @@ class HomeScreen extends HookConsumerWidget {
                       onPressed: () => startPrint(QuestionCategory.values.first),
                     ),
                     Wrap(
-                      children: QuestionCategory.values.skip(1).map<Widget>((category) {
+                      children: QuestionCategory.values
+                          .getRange(1, max(categories.length.isOdd ? categories.length : categories.length - 1, 1))
+                          .map<Widget>((category) {
                         return Container(
                           width: MediaQuery.of(context).size.width * .45,
                           alignment: Alignment.center,
@@ -233,6 +265,11 @@ class HomeScreen extends HookConsumerWidget {
                         );
                       }).toList(),
                     ),
+                    if (categories.length.isEven)
+                      CategoryItem(
+                        category: QuestionCategory.values.last,
+                        onPressed: () => startPrint(QuestionCategory.values.last),
+                      ),
                     const SizedBox(height: 30.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

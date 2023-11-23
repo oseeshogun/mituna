@@ -14,7 +14,7 @@ export const remindQuestionOfTheDay = onSchedule('45 13 * * *', async () => {
       color: '#374e86',
     },
     data: {
-      type: 'question_of_the_day'
-    }
+      type: 'question_of_the_day',
+    },
   })
 })
