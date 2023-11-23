@@ -42,15 +42,11 @@ class RunningManLottieButton extends StatelessWidget {
         ),
         if (isDecember())
           Transform.translate(
-            offset: Offset(0, 0),
-            child: Positioned(
-              top: 0,
-              right: 0,
-              child: Lottie.asset(
-                'assets/lottiefiles/christmas_hat.json',
-                width: 200,
-                height: 200,
-              ),
+            offset: const Offset(0, 0),
+            child: Lottie.asset(
+              'assets/lottiefiles/christmas_hat.json',
+              width: 200,
+              height: 200,
             ),
           ),
       ],
