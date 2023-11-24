@@ -34,7 +34,10 @@ class RankingScreen extends HookConsumerWidget {
       if (loading.value) return;
       loading.value = true;
       final stateValue = ref.read(rankingsProvider(period.value.name));
-      if (stateValue.isNotEmpty && !force) return;
+      if (stateValue.isNotEmpty && !force) {
+        loading.value = false;
+        return;
+      }
       rewardsUsecase.topRankings(period.value).then((result) {
         result.fold((l) {
           showOkAlertDialog(
