@@ -40,7 +40,7 @@ class RunningManLottieButton extends StatelessWidget {
             ),
           ),
         ),
-        if (isDecember())
+        if (isDecember)
           Transform.translate(
             offset: const Offset(0, 0),
             child: Lottie.asset(

@@ -11,4 +11,4 @@ num degToRad(num deg) => deg * (pi / 180.0);
 num radToDeg(num rad) => rad * (180.0 / pi);
 
 
-bool isDecember() => DateTime.now().month == DateTime.december; 
+bool get isDecember => DateTime.now().month == DateTime.december; 
