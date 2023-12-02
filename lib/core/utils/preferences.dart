@@ -11,4 +11,9 @@ extension SharedPreferencesKeys on SharedPreferences {
 
   double get volume => getDouble('volume') ?? 1.0;
   set volume(double value) => setDouble('volume', value > 1.0 ? min(1.0, value) : max(0.0, value));
+
+  String get _qotdLaunchedByNofifKey => 'key_${DateTime.now().day}_${DateTime.now().month}_${DateTime.now().year}_qotd_launched_by_notif';
+
+  bool get qotdLaunchedByNotif => getBool(_qotdLaunchedByNofifKey) ?? false;
+  set qotdLaunchedByNotif(bool value) => setBool(_qotdLaunchedByNofifKey, value);
 }

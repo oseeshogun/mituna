@@ -72,8 +72,9 @@ class HomeScreen extends HookConsumerWidget {
     }
 
     void _handleMessage(RemoteMessage message) {
-    if (message.data['type'] == 'question_of_the_day') {
+    if (message.data['type'] == 'question_of_the_day' && !prefs.qotdLaunchedByNotif) {
       todayQuestion();
+      prefs.qotdLaunchedByNotif = true;
     }
   }
 
