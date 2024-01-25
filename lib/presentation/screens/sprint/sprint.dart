@@ -74,12 +74,13 @@ class SprintScreen extends HookConsumerWidget {
       );
     }
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
         final result = await showOkCancelAlertDialog(context: context, title: 'Etes-vous sûr de vouloir quitter le sprint ?', cancelLabel: 'Non', okLabel: 'Oui');
         final quit = result == OkCancelResult.ok;
-        if (quit) soundEffect.stop();
-        return quit;
+        if (quit) Navigator.of(context).pop();
       },
       child: Scaffold(
         appBar: PrimaryAppBar(

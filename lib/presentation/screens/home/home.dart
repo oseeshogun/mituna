@@ -186,13 +186,15 @@ class HomeScreen extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
             child: Stack(
               children: [
-                if (isDecember)
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: Lottie.asset(
-                      'assets/lottiefiles/bells.json',
-                      width: MediaQuery.of(context).size.width * 0.9,
+                    child: Opacity(
+                      opacity: 0.5,
+                      child: Lottie.asset(
+                        'assets/lottiefiles/bells.json',
+                        width: MediaQuery.of(context).size.width * 0.9,
+                      ),
                     ),
                   ),
                 Column(
