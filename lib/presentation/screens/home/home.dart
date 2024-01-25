@@ -15,7 +15,6 @@ import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
-import 'package:mituna/core/utils/utils.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/usecases/reward.dart';

@@ -53,6 +53,7 @@ dependencies:
   package_info_plus: ^4.1.0
   confetti: ^0.7.0
   rate_my_app: ^2.0.0
+  faker: ^2.1.0
 
 dev_dependencies:
   flutter_test:

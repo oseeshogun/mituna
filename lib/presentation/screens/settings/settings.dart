@@ -44,21 +44,47 @@ class SettingsScreen extends HookConsumerWidget {
     }, [volume.value]);
 
     Future<void> changeUserDisplayName(String displayName) async {
-      final inputs = await showTextInputDialog(
+      String newDisplayName = displayName;
+
+      final input = await showModalBottomSheet(
         context: context,
-        textFields: [
-          DialogTextField(
-            initialText: displayName,
-            hintText: "Nom d'utilisateur",
-            maxLength: 9,
-            textCapitalization: TextCapitalization.words,
-          ),
-        ],
+        backgroundColor: AppColors.kColorBlueRibbon,
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 26.0),
+                  TextTitleLevelOne("Changer votre nom d'utilisateur"),
+                  const SizedBox(height: 30.0),
+                  TextFormField(
+                    initialValue: displayName,
+                    maxLength: 9,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      hintText: 'Nom d\'utilisateur',
+                      hintStyle: TextStyle(color: Colors.white38),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    onChanged: (value) => (newDisplayName = value),
+                  ),
+                  const SizedBox(height: 20.0),
+                  PrimaryButton(
+                    child: TextDescription('Confirmer', color: AppColors.kColorBlueRibbon),
+                    onPressed: () => Navigator.of(context).pop(newDisplayName),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                ],
+              ),
+            ),
+          );
+        },
       );
-      if (inputs == null) return;
-      final newDisplayName = inputs.first;
-      if (newDisplayName == displayName) return;
-      userUsecase.updateDisplayName(newDisplayName);
+      print(input);
+      if (input == null) return;
+      if (input == displayName) return;
+      userUsecase.updateDisplayName(input);
     }
 
     Future<void> updateAvatar(ValueNotifier<bool> loading) async {

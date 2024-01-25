@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:faker/faker.dart';
 
 class FirestoreUser extends Equatable {
   const FirestoreUser({
@@ -16,7 +17,7 @@ class FirestoreUser extends Equatable {
       uid: uid,
       avatar: data?['avatar'] ?? defaultImageUrl,
       diamonds: data?['diamonds'] ?? 0,
-      displayName: data?['displayName'] ?? 'Mutu-${uid.substring(0, 4)}',
+      displayName: data?['displayName'] ?? faker.person.firstName(),
       lastWinDate: DateTime.fromMillisecondsSinceEpoch(data?['last_time_win'] ?? DateTime.now().millisecondsSinceEpoch)
     );
   }
