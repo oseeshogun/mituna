@@ -28,12 +28,12 @@ class RankingScreen extends HookConsumerWidget {
     final period = useState(RankingPeriod.all);
     final loading = useState(false);
     final failed = useState(false);
-    final rankings = ref.watch(rankingsProvider(period.value.name));
+    final rankings = ref.watch(rankingsNotifierProvider(period.value.name));
 
     fetch(bool force) {
       if (loading.value) return;
       loading.value = true;
-      final stateValue = ref.read(rankingsProvider(period.value.name));
+      final stateValue = ref.read(rankingsNotifierProvider(period.value.name));
       if (stateValue.isNotEmpty && !force) {
         loading.value = false;
         return;
@@ -47,13 +47,13 @@ class RankingScreen extends HookConsumerWidget {
           );
           failed.value = true;
         }, (r) {
-          ref.read(rankingsProvider(period.value.name).notifier).state = [...r, ...ref.read(rankingsProvider(period.value.name))].toSet().toList();
+          ref.read(rankingsNotifierProvider(period.value.name).notifier).preppendAll(r);
         });
         loading.value = false;
       });
       rewardsUsecase.userRanking(period.value).then((result) {
         result.fold((l) {}, (r) {
-          ref.read(rankingsProvider(period.value.name).notifier).state = [...ref.read(rankingsProvider(period.value.name)), ...r].toSet().toList();
+          ref.read(rankingsNotifierProvider(period.value.name).notifier).appendAll(r);
         });
       });
     }

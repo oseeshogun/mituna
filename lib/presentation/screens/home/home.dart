@@ -56,7 +56,7 @@ class HomeScreen extends HookConsumerWidget {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (sprint) {
-          ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
           Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
         isLoadingTodayQuestion.value = false;
@@ -65,17 +65,17 @@ class HomeScreen extends HookConsumerWidget {
 
     startPrint([QuestionCategory? category]) async {
       sprintUsecase.start(category).then((sprint) {
-        ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+        ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
         Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
     }
 
     void _handleMessage(RemoteMessage message) {
-    if (message.data['type'] == 'question_of_the_day' && !prefs.qotdLaunchedByNotif) {
-      todayQuestion();
-      prefs.qotdLaunchedByNotif = true;
+      if (message.data['type'] == 'question_of_the_day' && !prefs.qotdLaunchedByNotif) {
+        todayQuestion();
+        prefs.qotdLaunchedByNotif = true;
+      }
     }
-  }
 
     Future<void> setupInteractedMessage() async {
       // Get any messages which caused the application to open from
@@ -185,17 +185,17 @@ class HomeScreen extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
             child: Stack(
               children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: Lottie.asset(
-                        'assets/lottiefiles/bells.json',
-                        width: MediaQuery.of(context).size.width * 0.9,
-                      ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Opacity(
+                    opacity: 0.5,
+                    child: Lottie.asset(
+                      'assets/lottiefiles/bells.json',
+                      width: MediaQuery.of(context).size.width * 0.9,
                     ),
                   ),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

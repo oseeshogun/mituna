@@ -36,7 +36,7 @@ class FinishedSprint extends HookConsumerWidget {
 
     void newSprint([QuestionCategory? category]) {
       sprintUsecase.start().then((sprint) {
-        ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+        ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
     }

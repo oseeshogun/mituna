@@ -1,12 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/domain/entities/ranking.dart';
 import 'package:mituna/domain/entities/reward_record.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final rankingsProvider = StateProvider.family<List<Ranking>, String>((ref, period) => []);
+part 'ranking.g.dart';
 
-final userRewardsQueuedProvider = StreamProvider.family<List<RewardRecord>, String>((ref, uid) {
+@riverpod
+class RankingsNotifier extends _$RankingsNotifier {
+  @override
+  List<Ranking> build(String period) => [];
+
+  void preppendAll(List<Ranking> value) {
+    state = [...value, ...state].toSet().toList();
+  }
+
+  void appendAll(List<Ranking> value) {
+    state = [...state, ...value].toSet().toList();
+  }
+}
+
+@riverpod
+Stream<List<RewardRecord>> userRewardsQueued(UserRewardsQueuedRef ref, String uid) {
   return FirebaseFirestore.instance
       .collection('rewards')
       .doc(uid)
@@ -30,4 +45,4 @@ final userRewardsQueuedProvider = StreamProvider.family<List<RewardRecord>, Stri
         )
         .toList();
   });
-});
+}

@@ -34,6 +34,7 @@ class FavoritesCategories extends HookConsumerWidget {
                   category.title,
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
+                fillColor: MaterialStatePropertyAll(AppColors.kColorBlueRibbon),
                 checkColor: AppColors.kColorYellow,
                 onChanged: (value) {
                   category.isFavorite = value ?? category.isFavorite;
