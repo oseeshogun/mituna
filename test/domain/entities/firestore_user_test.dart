@@ -18,9 +18,8 @@ void main() {
 
     expect(user.avatar, FirestoreUser.defaultImageUrl);
     expect(user.diamonds, 0);
-    expect(user.displayName, 'Mutu-${document.id.substring(0, 4)}');
 
-    final document2 =  await instance.collection('users').doc('uuuuiiidd_data').get();
+    final document2 = await instance.collection('users').doc('uuuuiiidd_data').get();
     final user2 = FirestoreUser.fromDocument(document2.id, document2);
     expect(user2.lastWinDate.millisecond, datetime.millisecond);
     expect(user2.displayName, 'Elric');

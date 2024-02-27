@@ -28,20 +28,6 @@ void main() {
     });
   });
 
-  group('Shared Preferences offline question loaded', () {
-    test('Default value', () {
-      expect(prefs.offlineQuestionsLoaded, false);
-    });
-
-    test('Setter Match getter', () {
-      prefs.offlineQuestionsLoaded = true;
-      expect(prefs.offlineQuestionsLoaded, true);
-
-      prefs.offlineQuestionsLoaded = false;
-      expect(prefs.offlineQuestionsLoaded, false);
-    });
-  });
-
   group('Shared Preferences show lost screen', () {
     test('Default value', () {
       expect(prefs.isShowLostHeartScreenAllowed, true);
@@ -49,7 +35,6 @@ void main() {
 
     test('Setter Match getter', () {
       prefs.isShowLostHeartScreenAllowed = false;
-      expect(prefs.offlineQuestionsLoaded, false);
 
       prefs.isShowLostHeartScreenAllowed = true;
       expect(prefs.isShowLostHeartScreenAllowed, true);

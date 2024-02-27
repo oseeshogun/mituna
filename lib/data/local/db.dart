@@ -6,14 +6,15 @@ import 'package:equatable/equatable.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/data/local/models/answer.dart';
 import 'package:mituna/data/local/models/question.dart';
+import 'package:mituna/data/local/models/youtube_video.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
 part 'db.g.dart';
 
 class QuestionWithAnswers extends Equatable {
-  final QuestionData question;
-  final List<AnswerData> answers;
+  final Question question;
+  final List<Answer> answers;
 
   const QuestionWithAnswers(this.question, this.answers);
 
@@ -21,14 +22,14 @@ class QuestionWithAnswers extends Equatable {
   List<Object?> get props => [question.id];
 }
 
-@DriftDatabase(tables: [Question, Answer])
+@DriftDatabase(tables: [Questions, Answers, YoutubeVideos])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   AppDatabase.forTesting(super.e);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -36,20 +37,29 @@ class AppDatabase extends _$AppDatabase {
       beforeOpen: (details) async {
         await customStatement('PRAGMA foreign_keys = ON');
       },
+      onUpgrade: (m, from, to) async {
+        if (from == 1) {
+          await m.createTable(questions);
+          await m.createTable(answers);
+          await m.createTable(youtubeVideos);
+          await m.deleteTable('question');
+          await m.deleteTable('answer');
+        }
+      },
     );
   }
 
   Future<List<QuestionWithAnswers>> getQuestionsWithAnswers(List<String> questionsIdList) async {
     final questionsQuery =
-        (select(question)..where((question) => question.id.isIn(questionsIdList))).join([innerJoin(answer, answer.question.equalsExp(question.id))]);
+        (select(questions)..where((question) => question.id.isIn(questionsIdList))).join([innerJoin(answers, answers.question.equalsExp(questions.id))]);
 
     final rows = await questionsQuery.get();
 
-    final groupedData = <QuestionData, List<AnswerData>>{};
+    final groupedData = <Question, List<Answer>>{};
 
     for (final row in rows) {
-      final q = row.readTable(question);
-      final a = row.readTable(answer);
+      final q = row.readTable(questions);
+      final a = row.readTable(answers);
 
       final list = groupedData.putIfAbsent(q, () => []);
 
