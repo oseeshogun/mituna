@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
+import 'package:mituna/data/local/daos/youtube_dao.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/data/network/client.dart';
 import 'package:mituna/data/network/repositories/question_of_the_day.dart';
@@ -22,12 +23,13 @@ void setupLocator() {
   locator.registerSingleton(db);
   locator.registerSingleton(QuestionsDao(db));
   locator.registerSingleton(AnswersDao(db));
+  locator.registerSingleton(YoutubeDao(db));
 
   locator.registerSingleton(SoundEffects());
 
   locator.registerSingleton(ProviderContainer());
 
-  final dio = client();
+  final dio = DioClient.create();
 
   locator.registerSingleton(
     RewardsRepository(

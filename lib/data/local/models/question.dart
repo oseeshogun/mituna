@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 
-class Question extends Table {
+class Questions extends Table {
   TextColumn get id => text()();
 
   TextColumn get content => text().unique().withLength(min: 4)();

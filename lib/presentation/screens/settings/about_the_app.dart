@@ -25,7 +25,7 @@ class AboutTheApp extends HookWidget {
   }
 
   Future<void> contactThankfulPerson(BuildContext context, PersonToBeThankful person) async {
-    showBottomSheet<String?>(
+    showBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       enableDrag: true,

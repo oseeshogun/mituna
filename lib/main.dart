@@ -11,6 +11,7 @@ import 'package:mituna/presentation/screens/settings/about_the_app.dart';
 import 'package:mituna/presentation/screens/settings/donation.dart';
 import 'package:mituna/presentation/screens/settings/favorites_categories.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
+import 'package:mituna/presentation/screens/youtube/youtube_screen.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -18,6 +19,8 @@ import 'presentation/screens/auth/authentication.dart';
 import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
 import 'presentation/screens/settings/report_error.dart';
+
+final providerContainer = ProviderContainer();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +34,7 @@ Future<void> main() async {
   Intl.defaultLocale = 'fr';
 
   runApp(UncontrolledProviderScope(
-    container: locator.get<ProviderContainer>(),
+    container: providerContainer,
     child: const MyApp(),
   ));
 }
@@ -70,7 +73,8 @@ class MyApp extends StatelessWidget {
         ReportErrorScreen.route: (context) => ReportErrorScreen(),
         AboutTheApp.route: (context) => const AboutTheApp(),
         Donation.route: (context) => const Donation(),
-        FavoritesCategories.route:(context) => const FavoritesCategories(),
+        FavoritesCategories.route: (context) => const FavoritesCategories(),
+        YoutubeScreen.route: (context) => const YoutubeScreen(),
       },
     );
   }

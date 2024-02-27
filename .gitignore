@@ -52,15 +52,9 @@ firebase_options.dart
 # Generated files
 *.g.dart
 
-# Large datasets of questions
-questions.json
-
 # Firebase functions
 .firebaserc
 **/network/constants.dart
-
-# env
-*.env
 
 # Google sheet
 **/gsheet_credentials.dart

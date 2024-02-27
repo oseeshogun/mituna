@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mituna/core/constants/enums/all.dart';
@@ -41,7 +40,7 @@ class SprintUsecase extends Usecase {
     final questionsIdList = await _questionsDao.randomQuestionIdList(
       categories: categories,
       limit: 10,
-      mostPickedLimit: kDebugMode ? (categories.length < 2 ? 5 : 10) : (categories.length < 2 ? 20 : 40),
+      mostPickedLimit:(categories.length < 2 ? 20 : 40),
     );
     final questions = await _db.getQuestionsWithAnswers(questionsIdList);
 
@@ -92,7 +91,7 @@ class SprintUsecase extends Usecase {
         final questionOnPhone = await _questionsDao.getById(questionOfTheDayData.id);
 
         if (questionOnPhone == null) {
-          final questionEntry = QuestionCompanion.insert(
+          final questionEntry = QuestionsCompanion.insert(
             id: questionOfTheDayData.id,
             content: questionOfTheDayData.question,
             type: QuestionType.choice,
@@ -102,7 +101,7 @@ class SprintUsecase extends Usecase {
               .asMap()
               .entries
               .map(
-                (assertionEntry) => AnswerCompanion.insert(
+                (assertionEntry) => AnswersCompanion.insert(
                   value: assertionEntry.value,
                   isCorrect: Value(assertionEntry.value == questionOfTheDayData.reponse),
                   type: AnswerType.text,

@@ -37,7 +37,7 @@ class SprintQuestion extends HookConsumerWidget {
     final prefs = locator.get<SharedPreferences>();
     final soundEffect = locator.get<SoundEffects>();
     final question = useState(sprint.randomQuestion);
-    final selectedAnswer = useState<AnswerData?>(null);
+    final selectedAnswer = useState<Answer?>(null);
     final questionCounterState = useState(QuestionCounterState.running);
     final order = useState(sprint.questionIndexPlusOne);
     final timePassed = useState(0);
@@ -142,7 +142,7 @@ class SprintQuestion extends HookConsumerWidget {
                   builder: (context, animatedBlinking) {
                     return FadeAnimation(
                       delay: 1.3 + (index / 10),
-                      child: PrimaryRadioButton<AnswerData>(
+                      child: PrimaryRadioButton<Answer>(
                         value: answer,
                         forceSelected: animatedBlinking,
                         groupValue: selectedAnswer.value,

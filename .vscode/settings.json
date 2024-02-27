@@ -1,4 +1,7 @@
 {
     "dart.lineLength": 160,
-    "dart.additionalAnalyzerFileExtensions": ["drift"]
+    "dart.additionalAnalyzerFileExtensions": [
+        "drift"
+    ],
+    "CodeGPT.apiKey": "OpenAI"
 } 

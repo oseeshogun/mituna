@@ -15,16 +15,20 @@ import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
+import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/domain/riverpod/providers/ranking.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
+import 'package:mituna/domain/usecases/offline_load.dart';
 import 'package:mituna/domain/usecases/reward.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
+import 'package:mituna/domain/usecases/youtube_videos.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
 import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
+import 'package:mituna/presentation/screens/youtube/youtube_screen.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 import 'package:rate_my_app/rate_my_app.dart';
@@ -49,6 +53,8 @@ class HomeScreen extends HookConsumerWidget {
     final isLoadingTodayQuestion = useState<bool>(false);
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
     final categories = QuestionCategory.values;
+
+    goYoutube() => Navigator.of(context).pushNamed(YoutubeScreen.route);
 
     todayQuestion() {
       isLoadingTodayQuestion.value = true;
@@ -100,8 +106,9 @@ class HomeScreen extends HookConsumerWidget {
     }, []);
 
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        if (!prefs.offlineQuestionsLoaded) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        final QuestionsDao questionsDao = locator.get<QuestionsDao>();
+        if (await questionsDao.isEmpty()) {
           Navigator.of(context).pushNamed(OfflineQuestionsLoadScreen.route);
         }
       });
@@ -177,12 +184,31 @@ class HomeScreen extends HookConsumerWidget {
       return null;
     }, []);
 
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        try {
+          // background save of questions
+          final offlineLoadUsecase = OfflineLoadUsecase();
+          final rawQuestions = await offlineLoadUsecase.loadQuestionsFromAsset();
+          await offlineLoadUsecase.saveQuestions(rawQuestions);
+
+          // background save of videos
+          final youtubeUsecase = YoutubeUsecase();
+          final rawVideos = await youtubeUsecase.loadVideosFromAsset();
+          await youtubeUsecase.saveVideos(rawVideos);
+        } catch (err, st) {
+          debugPrint(err.toString());
+          debugPrint(st.toString());
+        }
+      });
+      return null;
+    }, []);
+
     return Scaffold(
       body: UpgradeAlert(
         upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
             child: Stack(
               children: [
                 Positioned(
@@ -199,32 +225,35 @@ class HomeScreen extends HookConsumerWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        const TopazIcon(),
-                        const SizedBox(width: 5.0),
-                        firestoreAuthUserStreamProvider.when(
-                          loading: () => TextTitleLevelTwo(0.toString()),
-                          error: (error, stackTrace) => TextTitleLevelTwo(0.toString()),
-                          data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
-                          icon: const Icon(
-                            Icons.bar_chart,
-                            size: 30,
-                            color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+                      child: Row(
+                        children: [
+                          const TopazIcon(),
+                          const SizedBox(width: 5.0),
+                          firestoreAuthUserStreamProvider.when(
+                            loading: () => TextTitleLevelTwo(0.toString()),
+                            error: (error, stackTrace) => TextTitleLevelTwo(0.toString()),
+                            data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
-                          icon: const Icon(
-                            CupertinoIcons.settings,
-                            color: Colors.white,
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
+                            icon: const Icon(
+                              Icons.bar_chart,
+                              size: 30,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                          IconButton(
+                            onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
+                            icon: const Icon(
+                              CupertinoIcons.settings,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 30.0),
                     FadeAnimation(
@@ -234,18 +263,50 @@ class HomeScreen extends HookConsumerWidget {
                     const SizedBox(height: 20.0),
                     const TextTitleLevelOne('Appuyez pour commencer'),
                     const SizedBox(height: 30.0),
-                    PrimaryButton(
-                      loading: isLoadingTodayQuestion.value,
-                      child: const TextTitleLevelOne(
-                        '🕹️  Question du jour',
-                        color: AppColors.kColorBlueRibbon,
+                    SizedBox(
+                      height: 50.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.65),
+                            child: PrimaryButton(
+                              loading: isLoadingTodayQuestion.value,
+                              child: const TextTitleLevelTwo(
+                                '🕹️  Question du jour',
+                                color: AppColors.kColorBlueRibbon,
+                                maxLines: 1,
+                              ),
+                              radius: 50.0,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              onPressed: () => todayQuestion(),
+                            ),
+                          ),
+                          const SizedBox(width: 30.0),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.65),
+                            child: PrimaryButton(
+                              loading: isLoadingTodayQuestion.value,
+                              child: const TextTitleLevelTwo(
+                                '🎥 Youtube',
+                                color: AppColors.kColorBlueRibbon,
+                                maxLines: 1,
+                              ),
+                              radius: 50.0,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              onPressed: () => goYoutube(),
+                            ),
+                          ),
+                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
+                        ],
                       ),
-                      radius: 50.0,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 15.0,
-                      ),
-                      onPressed: () => todayQuestion(),
                     ),
                     const SizedBox(height: 30.0),
                     CategoryItem(

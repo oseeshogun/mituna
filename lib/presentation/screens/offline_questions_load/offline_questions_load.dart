@@ -2,7 +2,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
@@ -39,7 +38,6 @@ class OfflineQuestionsLoadScreen extends HookWidget {
         try {
           final rawQuestions = await offlineLoadUsecase.loadQuestionsFromAsset();
           await offlineLoadUsecase.saveQuestions(rawQuestions);
-          prefs.offlineQuestionsLoaded = true;
           // ignore: use_build_context_synchronously
           if (Navigator.of(context).canPop()) Navigator.of(context).pop();
         } catch (err, st) {

@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/data/local/models/question.dart';
 
-class Answer extends Table {
+class Answers extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get value => text()();
@@ -11,5 +11,5 @@ class Answer extends Table {
 
   TextColumn get type => textEnum<AnswerType>()();
 
-  TextColumn get question => text().references(Question, #id, onDelete: KeyAction.cascade)();
+  TextColumn get question => text().references(Questions, #id, onDelete: KeyAction.cascade)();
 }
