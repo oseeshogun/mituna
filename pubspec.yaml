@@ -57,6 +57,7 @@ dependencies:
   riverpod_annotation: ^2.3.3
   yaml: ^3.1.2
   string_extensions: ^0.6.13
+  envied: ^0.5.3
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ dev_dependencies:
   riverpod_generator: ^2.3.9
   custom_lint: ^0.5.8
   riverpod_lint: ^2.3.7
+  envied_generator: ^0.5.3
 
 flutter:
   uses-material-design: true

@@ -1,10 +1,10 @@
-import 'package:mituna/data/network/constants.dart';
+import 'package:mituna/core/constants/env.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
 part 'delete_rewards.g.dart';
 
-@RestApi(baseUrl: FunctionsHttpUrls.deleteRewards)
+@RestApi(baseUrl: Env.deleteRewardUrl)
 abstract class DeleteRewardsService {
   factory DeleteRewardsService(Dio dio, {String baseUrl}) = _DeleteRewardsService;
 

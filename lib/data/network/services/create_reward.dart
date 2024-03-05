@@ -1,10 +1,10 @@
-import 'package:mituna/data/network/constants.dart';
+import 'package:mituna/core/constants/env.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
 part 'create_reward.g.dart';
 
-@RestApi(baseUrl: FunctionsHttpUrls.createReward)
+@RestApi(baseUrl: Env.createRewardUrl)
 abstract class CreateRewardService {
   factory CreateRewardService(Dio dio, {String baseUrl}) = _CreateRewardService;
 

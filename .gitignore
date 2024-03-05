@@ -54,7 +54,9 @@ firebase_options.dart
 
 # Firebase functions
 .firebaserc
-**/network/constants.dart
 
 # Google sheet
 **/gsheet_credentials.dart
+
+.env/
+.env
