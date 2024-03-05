@@ -9,8 +9,9 @@ class CircleColor {
   });
   final Color start;
   final Color end;
+
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     if (other.runtimeType != runtimeType) {
       return false;
     }
@@ -42,13 +43,6 @@ class CirclePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final double center = size.width * 0.5;
     _updateCircleColor();
-    // canvas.saveLayer(Offset.zero & size, Paint());
-    // canvas.drawCircle(Offset(center, center),
-    //     outerCircleRadiusProgress * center, circlePaint);
-    // canvas.drawCircle(Offset(center, center),
-    //     innerCircleRadiusProgress * center + 1, maskPaint);
-    // canvas.restore();
-    //flutter web don't support BlendMode.clear.
     final double strokeWidth = outerCircleRadiusProgress * center -
         (innerCircleRadiusProgress * center);
     if (strokeWidth > 0.0) {

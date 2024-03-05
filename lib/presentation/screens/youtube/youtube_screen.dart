@@ -5,6 +5,7 @@ import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/youtube_videos.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 import 'youtube_video_tile.dart';
 
@@ -13,11 +14,9 @@ class YoutubeScreen extends HookConsumerWidget {
 
   static const route = '/youtube';
 
-  // TODO: ask for age first
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncVideos = ref.watch(watchYoutubeVideosProvider);
+    final asyncCategories = ref.watch(watchCategoriesProvider);
 
     return Scaffold(
       appBar: PrimaryAppBar(title: TextTitleLevelTwo('Youtube')),
@@ -38,30 +37,34 @@ class YoutubeScreen extends HookConsumerWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
-              height: 50.0,
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: 'Rechercher...',
-                  prefixIcon: const Icon(Icons.search),
-                ),
-              ),
-            ),
-          ),
-          switch (asyncVideos) {
+          const SliverToBoxAdapter(child: SizedBox(height: 20.0)),
+          switch (asyncCategories) {
             AsyncData(:final value) => SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final video = value[index];
-                    return YoutubeVideoTile(video);
+                    final category = value[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+                          child: TextTitleLevelTwo(category.capitalize ?? ''),
+                        ),
+                        ref.watch(watchYoutubeVideosProvider(category)).when(
+                              loading: () => const SizedBox(),
+                              error: (error, stackTrace) => SizedBox(),
+                              data: (videos) => SizedBox(
+                                height: 200.0,
+                                child: ListView.builder(
+                                  itemCount: videos.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => YoutubeVideoTile(videos[index]),
+                                ),
+                              ),
+                            ),
+                        // ...category.videos.map((video) => YoutubeVideoTile(video: video)),
+                      ],
+                    );
                   },
                   childCount: value.length,
                 ),

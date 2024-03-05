@@ -44,7 +44,6 @@ class SprintScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hearts = ref.watch(sprintHeartsProvider(sprint.id));
     final pageController = usePageController();
-    final isMounted = useIsMounted();
     final startCountdownLottie = useState(false);
     final stopCountdownLottie = useState(false);
     final showLottieAnimation = useState(false);
@@ -66,7 +65,7 @@ class SprintScreen extends HookConsumerWidget {
             'assets/lottiefiles/lf30_editor_uli4x0lo.json',
             onLoaded: (c) {
               Future.delayed(const Duration(seconds: 4), () {
-                if (isMounted()) stopCountdownLottie.value = true;
+                if (context.mounted) stopCountdownLottie.value = true;
               });
             },
           ),
@@ -122,7 +121,7 @@ class SprintScreen extends HookConsumerWidget {
                         ),
                       );
                     } else {
-                      if (isMounted()) {
+                      if (context.mounted) {
                         pageController.nextPage(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.ease,

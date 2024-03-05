@@ -13,7 +13,7 @@ class YoutubeVideos extends Table {
 
   TextColumn get videoId => text().unique()();
 
-  IntColumn get age => integer().withDefault(const Constant(3))();
+  IntColumn get clicked => integer().withDefault(const Constant(0))();
 
   TextColumn get category => textEnum<YoutubeVideoCategory>()();
 

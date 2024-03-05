@@ -6,6 +6,7 @@ class TextDescription extends StatelessWidget {
     this.color = Colors.white,
     this.opacity = 0.8,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     Key? key,
   }) : super(key: key);
 
@@ -13,6 +14,7 @@ class TextDescription extends StatelessWidget {
   final Color color;
   final double opacity;
   final TextAlign textAlign;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class TextDescription extends StatelessWidget {
         fontSize: 18,
       ),
       textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:flutter/services.dart';
 import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/data/local/daos/youtube_dao.dart';
@@ -21,7 +20,6 @@ class YoutubeUsecase extends Usecase {
           (rawVideo) => YoutubeVideosCompanion.insert(
             title: rawVideo['title'],
             videoId: rawVideo['video_id'],
-            age: rawVideo['age'] is! int ? Value.absent() : Value(rawVideo['age']),
             category: youtubeCategoryFromString(rawVideo['category']),
           ),
         )
