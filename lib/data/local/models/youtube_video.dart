@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-enum YoutubeVideoCategory { histoire, religion, reportage }
+enum YoutubeVideoCategory { histoire, science }
 
 YoutubeVideoCategory youtubeCategoryFromString(String value) {
   return YoutubeVideoCategory.values.firstWhere((e) => e.name == value.toLowerCase(), orElse: () => YoutubeVideoCategory.histoire);

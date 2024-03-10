@@ -14,5 +14,8 @@ Stream<List<YoutubeVideo>> watchYoutubeVideos(WatchYoutubeVideosRef ref, String 
 @riverpod
 Stream<List<String>> watchCategories(WatchCategoriesRef ref) {
   final dao = locator.get<YoutubeDao>();
-  return dao.watchCategories();
+  return dao.watchCategories().asyncMap((event) {
+    print(event);
+    return event;
+  });
 }

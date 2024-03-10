@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/core/utils/youtube_thumbnail.dart';
 import 'package:mituna/data/local/db.dart';
@@ -35,31 +36,23 @@ class _YoutubeVideoTileState extends State<YoutubeVideoTile> {
               fit: BoxFit.cover,
             ),
           ),
-          Container(
-            decoration: BoxDecoration(color: Colors.black38),
-            alignment: Alignment.bottomLeft,
-            padding: const EdgeInsets.all(4.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: const Icon(Icons.play_arrow, color: Colors.white),
-                  ),
-                  onTap: () => launchUrlString('https://youtube.com/watch?v=${widget.video.videoId}'),
+          GestureDetector(
+            onTap: () => launchUrlString('https://youtube.com/watch?v=${widget.video.videoId}'),
+            child: Tooltip(
+              message: widget.video.title,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black38,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                const SizedBox(height: 8.0),
-                TextDescription(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.all(6.0),
+                child: TextDescription(
                   widget.video.title,
                   textAlign: TextAlign.left,
                   maxLines: 2,
                 ),
-              ],
+              ),
             ),
           )
         ],
