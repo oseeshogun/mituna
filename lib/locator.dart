@@ -33,14 +33,14 @@ void setupLocator() {
 
   locator.registerSingleton(
     RewardsRepository(
-      CreateRewardService(dio),
-      TopRewardService(dio),
-      UserRewardService(dio),
-      DeleteRewardsService(dio),
+      CreateRewardService(dio, baseUrl: String.fromEnvironment('CREATE_REWARD_URL')),
+      TopRewardService(dio, baseUrl: String.fromEnvironment('TOP_REWARD_URL')),
+      UserRewardService(dio, baseUrl: String.fromEnvironment('USER_REWARD_URL')),
+      DeleteRewardsService(dio, baseUrl: String.fromEnvironment('DELETE_REWARD_URL')),
     ),
   );
 
-  locator.registerSingleton(QuestionOfTheDayRepository(QuestionOfTheDayService(dio)));
+  locator.registerSingleton(QuestionOfTheDayRepository(QuestionOfTheDayService(dio, baseUrl: String.fromEnvironment('GET_QUESTION_OF_THE_DAY_URL'))));
 
   locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
 }
