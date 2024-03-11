@@ -32,7 +32,13 @@ class CategoryItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10.0),
-          TextTitleLevelTwo(category.title),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 140),
+            child: TextTitleLevelTwo(
+              category.title,
+              maxLines: 1,
+            ),
+          ),
         ],
       ),
     );

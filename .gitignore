@@ -58,5 +58,6 @@ firebase_options.dart
 # Google sheet
 **/gsheet_credentials.dart
 
-.env/
-.env
+
+env/*
+!env/example.json

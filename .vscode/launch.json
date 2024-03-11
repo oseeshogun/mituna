@@ -8,22 +8,19 @@
             "name": "mituna",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug",
-            "toolArgs": ["--dart-define-from-file", "./env/debug.json"]
+            "flutterMode": "debug"
         },
         {
             "name": "mituna (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile",
-            "toolArgs": ["--dart-define-from-file", "./env/debug.json"]
+            "flutterMode": "profile"
         },
         {
             "name": "mituna (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release",
-            "toolArgs": ["--dart-define-from-file", "./env/release.json"]
+            "flutterMode": "release"
         }
     ]
 }

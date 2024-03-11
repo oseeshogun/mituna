@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mituna/core/constants/env.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/daos/youtube_dao.dart';
@@ -33,14 +34,14 @@ void setupLocator() {
 
   locator.registerSingleton(
     RewardsRepository(
-      CreateRewardService(dio, baseUrl: String.fromEnvironment('CREATE_REWARD_URL')),
-      TopRewardService(dio, baseUrl: String.fromEnvironment('TOP_REWARD_URL')),
-      UserRewardService(dio, baseUrl: String.fromEnvironment('USER_REWARD_URL')),
-      DeleteRewardsService(dio, baseUrl: String.fromEnvironment('DELETE_REWARD_URL')),
+      CreateRewardService(dio, baseUrl: Env.createRewardUrl),
+      TopRewardService(dio, baseUrl: Env.topRewardUrl),
+      UserRewardService(dio, baseUrl: Env.userRewardUrl),
+      DeleteRewardsService(dio, baseUrl: Env.deleteRewardUrl),
     ),
   );
 
-  locator.registerSingleton(QuestionOfTheDayRepository(QuestionOfTheDayService(dio, baseUrl: String.fromEnvironment('GET_QUESTION_OF_THE_DAY_URL'))));
+  locator.registerSingleton(QuestionOfTheDayRepository(QuestionOfTheDayService(dio, baseUrl: Env.getQuestionOfTheDayUrl)));
 
   locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
 }

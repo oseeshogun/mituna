@@ -130,6 +130,7 @@ class SprintQuestion extends HookConsumerWidget {
                   child: TextTitleLevelOne(
                     question.value?.question.content ?? '',
                     textAlign: TextAlign.left,
+                    maxLines: 5,
                   ),
                 ),
               ),
