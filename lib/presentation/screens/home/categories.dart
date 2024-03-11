@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/presentation/widgets/all.dart';
@@ -14,11 +13,6 @@ class QuestionCategoriesHomeList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final width = 200.0;
-    final dragging = useState<bool>(false);
-    final dragIndex = useState<Offset>(Offset.zero);
-    final dragMap = useState<Map<QuestionCategory, bool>>({});
-
     return SizedBox(
       height: 190,
       child: ListView.builder(
