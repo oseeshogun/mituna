@@ -7,15 +7,17 @@ import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/db.dart';
+import 'package:mituna/domain/usecases/youtube_videos.dart';
 import 'package:mituna/locator.dart';
 
 class OfflineLoadUsecase extends Usecase {
-  Future<List<Map<String, dynamic>>> loadQuestionsFromAsset() async {
+  Future<List<Map<String, dynamic>>> _loadQuestionsFromAsset() async {
     final jsonString = await rootBundle.loadString('assets/data/questions.json');
     return (json.decode(jsonString)['questions'] as List).map<Map<String, dynamic>>((data) => Map<String, dynamic>.from(data)).toList();
   }
 
-  Future<void> saveQuestions(List<Map<String, dynamic>> rawQuestions) async {
+  Future<void> saveQuestions() async {
+    final rawQuestions = await _loadQuestionsFromAsset();
     final questionsDao = locator.get<QuestionsDao>();
     final answersDao = locator.get<AnswersDao>();
     final questionCompanions = rawQuestions
@@ -41,5 +43,11 @@ class OfflineLoadUsecase extends Usecase {
     });
     await questionsDao.insertMultipleEntries(questionCompanions);
     await answersDao.insertMultipleEntries(answerCompanions);
+  }
+
+  Future<void> saveYoutubeVideos() async {
+    final youtubeUsecase = YoutubeUsecase();
+    final rawVideos = await youtubeUsecase.loadVideosFromAsset();
+    await youtubeUsecase.saveVideos(rawVideos);
   }
 }

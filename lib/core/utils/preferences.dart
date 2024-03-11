@@ -13,4 +13,7 @@ extension SharedPreferencesKeys on SharedPreferences {
 
   bool get qotdLaunchedByNotif => getBool(_qotdLaunchedByNofifKey) ?? false;
   set qotdLaunchedByNotif(bool value) => setBool(_qotdLaunchedByNofifKey, value);
+
+  bool offlineSaved(String version) => getBool('offline_$version') ?? false;
+  offlineSavedDone(String version) => setBool('offline_$version', true);
 }
