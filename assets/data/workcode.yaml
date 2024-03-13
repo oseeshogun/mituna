@@ -1353,39 +1353,39 @@ articles:
 
 titles:
     - title_1:
-        - name: DES DISPOSITIONS GENERALES
-        - chapters:
+        name: DES DISPOSITIONS GENERALES
+        chapters:
             - chapter_1:
-                - name: CHAMP D'APPLICATION
-                - articles:
+                name: CHAMP D'APPLICATION
+                articles:
                     - 1
             - chapter_2:
-                - name: DU DROIT AU TRAVAIL
-                - articles:
+                name: DU DROIT AU TRAVAIL
+                articles:
                     - 2
                     - 3
                     - 4
                     - 5
             - chapter_3:
-                - name: DE LA CAPACITE DE CONTRACTER
-                - articles:
+                name: DE LA CAPACITE DE CONTRACTER
+                articles:
                     - 6
             - chapter_4:
-                - name: DES DEFINITIONS
-                - articles:
+                name: DES DEFINITIONS
+                articles:
                     - 7
     - title_2:
-        - name: DE LA FORMATION ET DU PERFECTIONNEMENT PROFESSIONNELS
-        - chapters:
+        name: DE LA FORMATION ET DU PERFECTIONNEMENT PROFESSIONNELS
+        chapters:
             - chapter_1:
-                - name: DE LA FORMATION ET DU PERFECTIONNEMENT PROFESSIONNELS
-                - articles:
+                name: DE LA FORMATION ET DU PERFECTIONNEMENT PROFESSIONNELS
+                articles:
                     - 8
                     - 9
                     - 10
             - chapter_2:
-                - name: DE L'INSTITUT NATIONAL DE PREPARATION PROFESSIONNELLE
-                - articles:
+                name: DE L'INSTITUT NATIONAL DE PREPARATION PROFESSIONNELLE
+                articles:
                     - 11
                     - 12
                     - 13
@@ -1394,70 +1394,70 @@ titles:
                     - 16
                     - 17
     - title_3:
-        - name: DU CONTRAT D'APPRENTISSAGE
-        - chapters:
+        name: DU CONTRAT D'APPRENTISSAGE
+        chapters:
             - chapter_1:
-                - name: DES DISPOSITIONS GENERALES
-                - articles:
+                name: DES DISPOSITIONS GENERALES
+                articles:
                     - 18
             - chapter_2:
-                - name: DE LA FORME ET DE LA PREUVE DUCONTRAT D'APPRENTISSAGE
-                - articles:
+                name: DE LA FORME ET DE LA PREUVE DUCONTRAT D'APPRENTISSAGE
+                articles:
                     - 19
                     - 20
                     - 21
                     - 22
                     - 23
             - chapter_3:
-                - name: DES OBLIGATIONS DU MAITRE ET DE L'APPRENTI
-                - sections:
+                name: DES OBLIGATIONS DU MAITRE ET DE L'APPRENTI
+                sections:
                     - section_1:
-                        - name: Des obligations du maître d'apprentissage
-                        - articles:
+                        name: Des obligations du maître d'apprentissage
+                        articles:
                             - 24
                             - 25
                     - section_2:
-                        - name: Des obligations de l'apprenti
-                        - articles:
+                        name: Des obligations de l'apprenti
+                        articles:
                             - 26
                             - 27
             - chapter_4:
-                - name: DE LA SUSPENSION ET DE LA FIN DU CONTRAT D'APPRENTISSAGE
-                - articles:
+                name: DE LA SUSPENSION ET DE LA FIN DU CONTRAT D'APPRENTISSAGE
+                articles:
                     - 28
                     - 29
                     - 30
                     - 31
                     - 32
             - chapter_5:
-                - name: DES MESURES DE CONTROLE
-                - articles:
+                name: DES MESURES DE CONTROLE
+                articles:
                     - 33
             - chapter_6:
-                - name: DES DISPOSITIONS DIVERSES
-                - articles:
+                name: DES DISPOSITIONS DIVERSES
+                articles:
                     - 34
                     - 35
     - title_4:
-        - name: DU CONTRAT DE TRAVAIL
-        - chapters:
+        name: DU CONTRAT DE TRAVAIL
+        chapters:
             - chapter_1:
-                - name: DES DISPOSITIONS GENERALES
-                - articles:
+                name: DES DISPOSITIONS GENERALES
+                articles:
                     - 36
                     - 37
                     - 38
             - chapter_2:
-                - name: DE LA DUREE DU CONTRAT ET DE LA CLAUSE D'ESSAI
-                - articles:
+                name: DE LA DUREE DU CONTRAT ET DE LA CLAUSE D'ESSAI
+                articles:
                     - 39
                     - 40
                     - 41
                     - 42
                     - 43
             - chapter_3:
-                - name: DE LA FORME ET DE LA PREUVE DU CONTRAT DE TRAVAIL
-                - articles:
+                name: DE LA FORME ET DE LA PREUVE DU CONTRAT DE TRAVAIL
+                articles:
                     - 44
                     - 45
                     - 46
@@ -1465,34 +1465,34 @@ titles:
                     - 48
                     - 49
             - chapter_4:
-                - name: DES OBLIGATIONS DU TRAVAILLEUR ET DE L'EMPLOYEUR
-                - sections:
+                name: DES OBLIGATIONS DU TRAVAILLEUR ET DE L'EMPLOYEUR
+                sections:
                     - section_1:
-                        - name: Des obligations du travailleur
-                        - articles:
+                        name: Des obligations du travailleur
+                        articles:
                             - 50
                             - 51
                             - 52
                             - 53
                             - 54
                     - section_2:
-                        - name: Des obligations de l'employeur
-                        - articles:
+                        name: Des obligations de l'employeur
+                        articles:
                             - 55
                             - 56
             - chapter_5:
-                - name: DE LA SUSPENSION DU CONTRAT
-                - articles:
+                name: DE LA SUSPENSION DU CONTRAT
+                articles:
                     - 57
                     - 58
                     - 59
                     - 60
             - chapter_6:
-                - name: DE LA RESILIATION DU CONTRAT ET DU CERTIFICAT DE FIN DE SERVICE
-                - sections:
+                name: DE LA RESILIATION DU CONTRAT ET DU CERTIFICAT DE FIN DE SERVICE
+                sections:
                     - section_1:
-                        - name: De la résiliation du contrat
-                        - articles:
+                        name: De la résiliation du contrat
+                        articles:
                             - 61
                             - 62
                             - 63
@@ -1512,27 +1512,27 @@ titles:
                             - 77
                             - 78
                     - section_2:
-                        - name: Du certificat de fin de service
-                        - articles:
+                        name: Du certificat de fin de service
+                        articles:
                             - 79
             - chapter_7:
-                - name: DE LA SUBSTITUTION ET DU TRANSFERT D'EMPLOYEUR
-                - articles:
+                name: DE LA SUBSTITUTION ET DU TRANSFERT D'EMPLOYEUR
+                articles:
                     - 80
                     - 81
             - chapter_8:
-                - name: DE LA SOUS-ENTREPRISE
-                - articles:
+                name: DE LA SOUS-ENTREPRISE
+                articles:
                     - 82
                     - 83
                     - 84
                     - 85
     - title_5:
-        - name: DU SALAIRE
-        - chapters:
+        name: DU SALAIRE
+        chapters:
             - chapter_1:
-                - name: DE LA DETERMINATION DU SALAIRE
-                - articles:
+                name: DE LA DETERMINATION DU SALAIRE
+                articles:
                     - 86
                     - 87
                     - 88
@@ -1546,8 +1546,8 @@ titles:
                     - 96
                     - 97
             - chapter_2:
-                - name: DU MODE DE PAIEMENT DU SALAIRE
-                - articles:
+                name: DU MODE DE PAIEMENT DU SALAIRE
+                articles:
                     - 98
                     - 99
                     - 100
@@ -1555,59 +1555,59 @@ titles:
                     - 102
                     - 103
             - chapter_3:
-                - name: DU PAIEMENT EN CAS DE MALADIE OU D'ACCIDENT
-                - articles:
+                name: DU PAIEMENT EN CAS DE MALADIE OU D'ACCIDENT
+                articles:
                     - 104
                     - 105
                     - 106
                     - 107
                     - 108
             - chapter_4:
-                - name: DES PRIVILEGES ET DES GARANTIES DE LA CREANCE DE SALAIRE
-                - articles:
+                name: DES PRIVILEGES ET DES GARANTIES DE LA CREANCE DE SALAIRE
+                articles:
                     - 109
                     - 110
             - chapter_5:
-                - name: DES RETENUES ET DES REDUCTIONS SUR SALAIRE
-                - articles:
+                name: DES RETENUES ET DES REDUCTIONS SUR SALAIRE
+                articles:
                     - 111
                     - 112
                     - 113
             - chapter_6:
-                - name: DE LA SAISIE ET DES CESSIONS
-                - articles:
+                name: DE LA SAISIE ET DES CESSIONS
+                articles:
                     - 114
             - chapter_7:
-                - name: DES ECONOMATS
-                - articles:
+                name: DES ECONOMATS
+                articles:
                     - 115
                     - 116
                     - 117
                     - 118
     - title_6:
-        - name: DES CONDITIONS GENERALES DE TRAVAIL
-        - chapters:
+        name: DES CONDITIONS GENERALES DE TRAVAIL
+        chapters:
             - chapter_1:
-                - name: DE LA DUREE DU TRAVAIL
-                - articles:
+                name: DE LA DUREE DU TRAVAIL
+                articles:
                     - 119
                     - 120
             - chapter_2:
-                - name: DU REPOS HEBDOMADAIRE ET DES JOURS FERIES LEGAUX
-                - articles:
+                name: DU REPOS HEBDOMADAIRE ET DES JOURS FERIES LEGAUX
+                articles:
                     - 121
                     - 122
                     - 123
             - chapter_3:
-                - name: DU TRAVAIL DE NUIT
-                - articles:
+                name: DU TRAVAIL DE NUIT
+                articles:
                     - 124
                     - 125
                     - 126
                     - 127
             - chapter_4:
-                - name: DU TRAVAIL DES FEMMES, DES ENFANTS ET DES PERSONNES AVEC HANDICAP
-                - articles:
+                name: DU TRAVAIL DES FEMMES, DES ENFANTS ET DES PERSONNES AVEC HANDICAP
+                articles:
                     - 128
                     - 129
                     - 130
@@ -1619,13 +1619,13 @@ titles:
                     - 136
                     - 137
             - chapter_5:
-                - name: DU LOGEMENT ET DE LA RATION ALIMENTAIRE
-                - articles:
+                name: DU LOGEMENT ET DE LA RATION ALIMENTAIRE
+                articles:
                     - 138
                     - 139
             - chapter_6:
-                - name: DES CONGES
-                - articles:
+                name: DES CONGES
+                articles:
                     - 140
                     - 141
                     - 142
@@ -1634,8 +1634,8 @@ titles:
                     - 145
                     - 146
             - chapter_7:
-                - name: DES VOYAGES ET DES TRANSPORTS
-                - articles:
+                name: DES VOYAGES ET DES TRANSPORTS
+                articles:
                     - 147
                     - 148
                     - 149
@@ -1647,39 +1647,39 @@ titles:
                     - 155
                     - 156
             - chapter_8:
-                - name: DU REGLEMENT D'ENTREPRISE
-                - articles:
+                name: DU REGLEMENT D'ENTREPRISE
+                articles:
                     - 157
                     - 158
     - title_7:
-        - name: DE LA SANTE ET DE LA SECURITE AU TRAVAIL
-        - chapters:
+        name: DE LA SANTE ET DE LA SECURITE AU TRAVAIL
+        chapters:
             - chapter_1:
-                - name: DES OBJECTIFS
-                - articles:
+                name: DES OBJECTIFS
+                articles:
                     - 159
             - chapter_2:
-                - name: DE LA SANTE AU TRAVAIL
-                - articles:
+                name: DE LA SANTE AU TRAVAIL
+                articles:
                     - 160
                     - 161
                     - 162
             - chapter_3:
-                - name: DE LA SECURITE AU TRAVAIL
-                - articles:
+                name: DE LA SECURITE AU TRAVAIL
+                articles:
                     - 163
                     - 164
                     - 165
                     - 166
             - chapter_4:
-                - name: DU COMITE DE SECURITE, D'HYGIENE ET D'EMBELLISSEMENT DES LIEUX DE TRAVAIL
-                - articles:
+                name: DU COMITE DE SECURITE, D'HYGIENE ET D'EMBELLISSEMENT DES LIEUX DE TRAVAIL
+                articles:
                     - 167
                     - 168
                     - 169
             - chapter_5:
-                - name: DE LA LUTTE CONTRE LES NUISANCES
-                - articles:
+                name: DE LA LUTTE CONTRE LES NUISANCES
+                articles:
                     - 170
                     - 171
                     - 172
@@ -1688,8 +1688,8 @@ titles:
                     - 175
                     - 176
     - title_8:
-        - name: DU SERVICE MEDICAL D'ENTREPRISE
-        - articles:
+        name: DU SERVICE MEDICAL D'ENTREPRISE
+        articles:
             - 177
             - 178
             - 179
@@ -1699,16 +1699,16 @@ titles:
             - 183
             - 184
     - title_9:
-        - name: DE L'ADMINISTRATION DU TRAVAIL
-        - chapters:
+        name: DE L'ADMINISTRATION DU TRAVAIL
+        chapters:
             - chapter_1:
-                - name: DES DISPOSITIONS GENERALES
-                - articles:
+                name: DES DISPOSITIONS GENERALES
+                articles:
                     - 185
                     - 186
             - chapter_2:
-                - name: DE L'INSPECTION DU TRAVAIL
-                - articles:
+                name: DE L'INSPECTION DU TRAVAIL
+                articles:
                     - 187
                     - 188
                     - 189
@@ -1723,36 +1723,36 @@ titles:
                     - 198
                     - 199
             - chapter_3:
-                - name: DE L'EMPLOI
-                - articles:
+                name: DE L'EMPLOI
+                articles:
                     - 200
                     - 201
                     - 202
-                - sections:
+                sections:
                     - section_1:
-                        - name: De la Direction de l'Emploi
-                        - articles:
+                        name: De la Direction de l'Emploi
+                        articles:
                             - 203
                     - section_2:
-                        - name: De l'Office National de l'Emploi
-                        - articles:
+                        name: De l'Office National de l'Emploi
+                        articles:
                             - 204
                             - 205
                             - 206
                             - 207
             - chapter_4:
-                - name: DE LA COMMISSION NATIONALE DE L'EMPLOI DES ETRANGERS
-                - articles:
+                name: DE LA COMMISSION NATIONALE DE L'EMPLOI DES ETRANGERS
+                articles:
                     - 208
                     - 209
                     - 210
                     - 211
     - title_10:
-        - name:  DES MOYENS DE CONTROLE
-        - chapters:
+        name:  DES MOYENS DE CONTROLE
+        chapters:
             - chapter_1:
-                - name: DES DOCUMENTS
-                - articles:
+                name: DES DOCUMENTS
+                articles:
                     - 212
                     - 213
                     - 214
@@ -1762,14 +1762,14 @@ titles:
                     - 218
                     - 219
             - chapter_2:
-                - name: DES SECRETARIATS SOCIAUX
-                - articles:
+                name: DES SECRETARIATS SOCIAUX
+                articles:
                     - 220
                     - 221
                     - 222
     - title_11:
-        - name: DU CONSEIL NATIONAL DU TRAVAIL
-        - articles:
+        name: DU CONSEIL NATIONAL DU TRAVAIL
+        articles:
             - 223
             - 224
             - 225
@@ -1778,11 +1778,11 @@ titles:
             - 228
             - 229
     - title_12:
-        - name: DES RELATIONS PROFESSIONNELLES
-        - chapters:
+        name: DES RELATIONS PROFESSIONNELLES
+        chapters:
             - chapter_1:
-                - name: DES ORGANISATIONS PROFESSIONNELLES
-                - articles:
+                name: DES ORGANISATIONS PROFESSIONNELLES
+                articles:
                     - 230
                     - 231
                     - 232
@@ -1809,8 +1809,8 @@ titles:
                     - 253
                     - 254
             - chapter_2:
-                - name: DE LA REPRESENTATION DES TRAVAILLEURS DANS L'ENTREPRISE
-                - articles:
+                name: DE LA REPRESENTATION DES TRAVAILLEURS DANS L'ENTREPRISE
+                articles:
                     - 255
                     - 256
                     - 257
@@ -1824,16 +1824,16 @@ titles:
                     - 265
                     - 266
             - chapter_3:
-                - name: DE L'EDUCATION OUVRIERE
-                - articles:
+                name: DE L'EDUCATION OUVRIERE
+                articles:
                     - 267
                     - 268
                     - 269
                     - 270
                     - 271
             - chapter_4:
-                - name: DES CONVENTIONS COLLECTIVES
-                - articles:
+                name: DES CONVENTIONS COLLECTIVES
+                articles:
                     - 272
                     - 273
                     - 274
@@ -1860,24 +1860,24 @@ titles:
                     - 295
                     - 296
     - title_13:
-        - name: DES LITIGES INDIVIDUELS ET DES CONFLITS COLLECTIFS DU TRAVAIL
-        - articles:
+        name: DES LITIGES INDIVIDUELS ET DES CONFLITS COLLECTIFS DU TRAVAIL
+        articles:
             - 297
-        - chapters:
+        chapters:
             - chapter_1:
-                - name: DE LA CONCILIATION PREALABLE DES LITIGES INDIVIDUELS
-                - articles:
+                name: DE LA CONCILIATION PREALABLE DES LITIGES INDIVIDUELS
+                articles:
                     - 298
                     - 299
                     - 300
                     - 301
                     - 302
             - chapter_2:
-                - name: DE LA CONCILIATION PREALABLE ET DE LA MEDIATION DES CONFLITS COLLECTIFS DE TRAVAIL
-                - sections:
+                name: DE LA CONCILIATION PREALABLE ET DE LA MEDIATION DES CONFLITS COLLECTIFS DE TRAVAIL
+                sections:
                     - section_1:
-                        - name: La conciliation préalable des conflits collectifs de travail
-                        - articles:
+                        name: La conciliation préalable des conflits collectifs de travail
+                        articles:
                             - 303
                             - 304
                             - 305
@@ -1885,8 +1885,8 @@ titles:
                             - 307
                             - 308
                     - section_2:
-                        - name: De la médiation des conflits collectifs de travail
-                        - articles:
+                        name: De la médiation des conflits collectifs de travail
+                        articles:
                             - 309
                             - 310
                             - 311
@@ -1895,21 +1895,21 @@ titles:
                             - 314
                             - 315
             - chapter_3:
-                - name: DES TRIBUNAUX DU TRAVAIL
-                - articles:
+                name: DES TRIBUNAUX DU TRAVAIL
+                articles:
                     - 316
             - chapter_4:
-                - name: DES PRESCRIPTIONS
-                - articles:
+                name: DES PRESCRIPTIONS
+                articles:
                     - 317
     - title_14:
-        - name: DES SANCTIONS ADMINISTRATIVES
-        - articles:
+        name: DES SANCTIONS ADMINISTRATIVES
+        articles:
             - 318
             - 319
     - title_15:
-        - name: DES PENALITES
-        - articles:
+        name: DES PENALITES
+        articles:
             - 320
             - 321
             - 322
@@ -1921,8 +1921,8 @@ titles:
             - 328
             - 329
     - title_16:
-        - name: DES DISPOSITIONS TRANSITOIRES
-        - articles:
+        name: DES DISPOSITIONS TRANSITOIRES
+        articles:
             - 330
             - 331
             - 332

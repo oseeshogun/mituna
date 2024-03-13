@@ -7,6 +7,7 @@ import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/db.dart';
+import 'package:mituna/domain/usecases/law.dart';
 import 'package:mituna/domain/usecases/youtube_videos.dart';
 import 'package:mituna/locator.dart';
 
@@ -49,5 +50,10 @@ class OfflineLoadUsecase extends Usecase {
     final youtubeUsecase = YoutubeUsecase();
     final rawVideos = await youtubeUsecase.loadVideosFromAsset();
     await youtubeUsecase.saveVideos(rawVideos);
+  }
+
+  Future<void> saveWorkcode() async {
+    final lawsUsecase = LawsUsecase();
+    await lawsUsecase.saveWorkcode();
   }
 }

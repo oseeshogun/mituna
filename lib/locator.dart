@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/env.dart';
 import 'package:mituna/data/local/daos/answers_dao.dart';
+import 'package:mituna/data/local/daos/laws_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/daos/youtube_dao.dart';
 import 'package:mituna/data/local/db.dart';
@@ -25,6 +26,7 @@ void setupLocator() {
   locator.registerSingleton(QuestionsDao(db));
   locator.registerSingleton(AnswersDao(db));
   locator.registerSingleton(YoutubeDao(db));
+  locator.registerSingleton(LawsDao(db));
 
   locator.registerSingleton(SoundEffects());
 
