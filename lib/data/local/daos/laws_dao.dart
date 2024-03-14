@@ -70,4 +70,20 @@ class LawsDao extends DatabaseAccessor<AppDatabase> with _$LawsDaoMixin {
       }
     });
   }
+
+  Stream<List<LawTitle>> streamAllTitles(LawCategory workCode) {
+    return (select(lawTitles)..where((t) => t.category.equals(workCode.name))).watch();
+  }
+
+  Stream<LawArticle?> streamSingleArticle(int number) {
+    return (select(lawArticles)..where((tbl) => tbl.number.equals(number))).watchSingleOrNull();
+  }
+
+  Stream<List<LawChapter>> streamChapters(int titleId) {
+    return (select(lawChapters)..where((tbl) => tbl.title.equals(titleId))).watch();
+  }
+
+  Stream<List<LawSection>> streamSections(int chapterId) {
+    return (select(lawSections)..where((tbl) => tbl.chapter.equals(chapterId))).watch();
+  }
 }

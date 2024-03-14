@@ -17,6 +17,7 @@ import 'package:mituna/presentation/screens/home/categories.dart';
 import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
+import 'package:mituna/presentation/screens/workcode/workcode.dart';
 import 'package:mituna/presentation/screens/youtube/youtube_screen.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
@@ -148,6 +149,34 @@ class HomeScreen extends HookConsumerWidget {
                             ),
                           ),
                           SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 30.0),
+                    SizedBox(
+                      height: 40.0,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding * 3),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+                            child: PrimaryButton(
+                              loading: isLoadingTodayQuestion,
+                              backgroundColor: Colors.white,
+                              child: const TextTitleLevelTwo(
+                                'Code du travail',
+                                color: AppColors.kColorBlueRibbon,
+                                maxLines: 1,
+                              ),
+                              radius: 20.0,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 5.0,
+                              ),
+                              onPressed: () => Navigator.of(context).pushNamed(WorkcodeScreen.route),
+                            ),
+                          ),
                         ],
                       ),
                     ),
