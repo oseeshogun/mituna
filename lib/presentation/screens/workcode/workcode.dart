@@ -1,16 +1,15 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/enums/law_category.dart';
 import 'package:mituna/domain/riverpod/providers/laws.dart';
-import 'package:mituna/presentation/screens/workcode/article.dart';
 import 'package:mituna/presentation/widgets/all.dart';
+import 'package:mituna/presentation/widgets/laws/build_law_section.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
-// TODO: Code refactoring
-// TODO: search by title, chapters, sections and articles
-// TODO: add optional daily remainder for users
+import 'article_search_delegate.dart';
+
+// TODO: add optional daily remainde r for users
 
 class WorkcodeScreen extends HookConsumerWidget {
   const WorkcodeScreen({super.key});
@@ -23,6 +22,13 @@ class WorkcodeScreen extends HookConsumerWidget {
     final chapterExpanded = useState<Map<int, List<int>>>({});
     final sectionExpanded = useState<Map<int, List<int>>>({});
     final asyncTitles = ref.watch(lawTitleStreamProvider(LawCategory.workCode));
+    final asyncArticles = ref.watch(lawArticlesProvider(LawCategory.workCode));
+    final asyncChapters = ref.watch(lawChaptersProvider(LawCategory.workCode));
+    final asyncSections = ref.watch(lawSectionsProvider(LawCategory.workCode));
+    final canSearch = useMemoized(
+      () => asyncArticles.value != null && asyncChapters.value != null && asyncSections.value != null && asyncTitles.value != null,
+      [asyncArticles, asyncChapters, asyncSections, asyncTitles],
+    );
 
     useEffect(() {
       final keys = chapterExpanded.value.keys;
@@ -43,37 +49,35 @@ class WorkcodeScreen extends HookConsumerWidget {
       return null;
     }, [chapterExpanded.value, titleExpanded.value]);
 
-    List<Widget> buildArticles(List<int> articles) {
-      return articles.map<Widget>((article) {
-        return ref.watch(lawArticleStreamProvider(article)).when(
-              error: (error, stackTrace) {
-                debugPrint(error.toString());
-                debugPrint(stackTrace.toString());
-                return Container();
-              },
-              loading: () => CircularProgressIndicator(),
-              data: (data) {
-                return TextButton(
-                  child: AutoSizeText(
-                    data == null ? '' : 'Article ${data.number}:  ${data.value}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    if (data != null) {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ArticleScreen(data)));
-                    }
-                  },
-                );
-              },
-            );
-      }).toList();
+    Future<void> search() async {
+      await showSearch(
+        context: context,
+        delegate: ArticleSearchDelegate(
+          titles: asyncTitles.value!,
+          chapters: asyncChapters.value!,
+          sections: asyncSections.value!,
+          articles: asyncArticles.value!,
+          searchFieldDecorationTheme: InputDecorationTheme(
+            fillColor: Colors.transparent,
+            filled: true,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            border: InputBorder.none,
+          ),
+        ),
+      );
     }
 
     return Scaffold(
       appBar: PrimaryAppBar(
         title: TextTitleLevelOne('Code du travail'),
+        actions: [
+          if (canSearch)
+            IconButton(
+              onPressed: () => search(),
+              icon: const Icon(Icons.search),
+            ),
+        ],
       ),
       body: asyncTitles.when(
         data: (titles) {
@@ -85,44 +89,33 @@ class WorkcodeScreen extends HookConsumerWidget {
                 data: ThemeData().copyWith(dividerColor: Colors.white38),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 600),
-                    opacity: titleExpanded.value.isEmpty ? 1 : (titleExpanded.value.contains(title.id) ? 1 : 0.4),
-                    child: ExpansionTile(
-                      iconColor: Colors.white,
-                      collapsedIconColor: Colors.white,
-                      onExpansionChanged: (value) {
-                        if (value)
-                          titleExpanded.value = [...titleExpanded.value, title.id].toSet().toList();
-                        else
-                          titleExpanded.value = [...titleExpanded.value].where((element) => element != title.id).toList();
-                      },
-                      title: Text(
-                        "Titre ${title.number}: ${title.name}",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                      children: [
-                        ...ref.watch(lawChaptersStreamProvider(title.id)).when(
-                              error: (error, stackTrace) {
-                                debugPrint(error.toString());
-                                debugPrint(stackTrace.toString());
-                                return [Container()];
-                              },
-                              loading: () => [CircularProgressIndicator()],
-                              data: (chapters) {
-                                return chapters.map<Widget>((chapter) {
-                                  return AnimatedOpacity(
-                                    duration: const Duration(milliseconds: 600),
-                                    opacity: (chapterExpanded.value[title.id] ?? []).isEmpty
-                                        ? 1
-                                        : ((chapterExpanded.value[title.id] ?? []).contains(chapter.id) ? 1 : 0.4),
-                                    child: ExpansionTile(
-                                      iconColor: Colors.white,
-                                      collapsedIconColor: Colors.white,
+                  child: BuildLawSection(
+                    visible: titleExpanded.value.isEmpty || titleExpanded.value.contains(title.id),
+                    title: Text(
+                      "Titre ${title.number}: ${title.name}",
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    articles: title.articles,
+                    onExpansionChanged: (value) {
+                      if (value)
+                        titleExpanded.value = [...titleExpanded.value, title.id].toSet().toList();
+                      else
+                        titleExpanded.value = [...titleExpanded.value].where((element) => element != title.id).toList();
+                    },
+                    child: ref.watch(lawChaptersStreamProvider(title.id)).when(
+                          error: (error, stackTrace) => Container(),
+                          loading: () => CircularProgressIndicator(),
+                          data: (chapters) {
+                            final expandables = (chapterExpanded.value[title.id] ?? []);
+                            return Column(
+                              children: chapters
+                                  .map<BuildLawSection>(
+                                    (chapter) => BuildLawSection(
                                       title: Text(
                                         "Chapitre ${chapter.number}: ${chapter.name}",
                                         style: TextStyle(color: Colors.white),
                                       ),
+                                      visible: expandables.isEmpty || expandables.contains(chapter.id),
                                       onExpansionChanged: (value) {
                                         if (value)
                                           chapterExpanded.value = {
@@ -135,60 +128,48 @@ class WorkcodeScreen extends HookConsumerWidget {
                                             title.id: [...(chapterExpanded.value[title.id] ?? <int>[])].where((element) => element != chapter.id).toList()
                                           };
                                       },
-                                      children: [
-                                        ...ref.watch(lawSectionsStreamProvider(chapter.id)).when(
-                                              error: (error, stackTrace) {
-                                                debugPrint(error.toString());
-                                                debugPrint(stackTrace.toString());
-                                                return [Container()];
-                                              },
-                                              loading: () => [CircularProgressIndicator()],
-                                              data: (sections) {
-                                                return sections.map<Widget>((section) {
-                                                  return AnimatedOpacity(
-                                                    duration: const Duration(milliseconds: 600),
-                                                    opacity: (sectionExpanded.value[chapter.id] ?? []).isEmpty
-                                                        ? 1
-                                                        : ((sectionExpanded.value[chapter.id] ?? []).contains(section.id) ? 1 : 0.4),
-                                                    child: ExpansionTile(
-                                                      iconColor: Colors.white,
-                                                      collapsedIconColor: Colors.white,
-                                                      title: Text(
-                                                        "Section ${section.number}: ${section.name}",
-                                                        style: TextStyle(color: Colors.white),
+                                      articles: chapter.articles,
+                                      child: ref.watch(lawSectionsStreamProvider(chapter.id)).when(
+                                            error: (error, stackTrace) => Container(),
+                                            loading: () => CircularProgressIndicator(),
+                                            data: (sections) {
+                                              final expandables = (sectionExpanded.value[chapter.id] ?? []);
+                                              return Column(
+                                                children: sections
+                                                    .map<BuildLawSection>(
+                                                      (section) => BuildLawSection(
+                                                        title: Text(
+                                                          "Section ${section.number}: ${section.name}",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        visible: expandables.isEmpty || expandables.contains(section.id),
+                                                        onExpansionChanged: (value) {
+                                                          if (value)
+                                                            sectionExpanded.value = {
+                                                              ...sectionExpanded.value,
+                                                              chapter.id: [...(sectionExpanded.value[chapter.id] ?? <int>[]), section.id].toSet().toList()
+                                                            };
+                                                          else
+                                                            sectionExpanded.value = {
+                                                              ...sectionExpanded.value,
+                                                              chapter.id: [...(sectionExpanded.value[chapter.id] ?? <int>[])]
+                                                                  .where((element) => element != section.id)
+                                                                  .toList()
+                                                            };
+                                                        },
+                                                        articles: section.articles,
                                                       ),
-                                                      onExpansionChanged: (value) {
-                                                        if (value)
-                                                          sectionExpanded.value = {
-                                                            ...sectionExpanded.value,
-                                                            chapter.id: [...(sectionExpanded.value[chapter.id] ?? <int>[]), section.id].toSet().toList()
-                                                          };
-                                                        else
-                                                          sectionExpanded.value = {
-                                                            ...sectionExpanded.value,
-                                                            chapter.id: [...(sectionExpanded.value[chapter.id] ?? <int>[])]
-                                                                .where((element) => element != section.id)
-                                                                .toList()
-                                                          };
-                                                      },
-                                                      children: [
-                                                        if (section.articles.isNotEmpty) ...buildArticles(section.articles),
-                                                      ],
-                                                    ),
-                                                  );
-                                                }).toList();
-                                              },
-                                            ),
-                                        if (chapter.articles.isNotEmpty) ...buildArticles(chapter.articles),
-                                      ],
+                                                    )
+                                                    .toList(),
+                                              );
+                                            },
+                                          ),
                                     ),
-                                  );
-                                }).toList();
-                              },
-                            ),
-                        if (title.articles.isNotEmpty) ...buildArticles(title.articles),
-                      ],
-                    ),
+                                  )
+                                  .toList(),
+                            );
+                          },
+                        ),
                   ),
                 ),
               );

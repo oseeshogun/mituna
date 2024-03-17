@@ -59,6 +59,8 @@ dependencies:
   string_extensions: ^0.6.13
   envied: ^0.5.3
   flutter_tts: ^3.8.5
+  fuzzy: ^0.5.1
+  share_plus: ^7.2.2
 
 dev_dependencies:
   flutter_test:

@@ -86,4 +86,27 @@ class LawsDao extends DatabaseAccessor<AppDatabase> with _$LawsDaoMixin {
   Stream<List<LawSection>> streamSections(int chapterId) {
     return (select(lawSections)..where((tbl) => tbl.chapter.equals(chapterId))).watch();
   }
+
+  Future<List<LawArticle>> getAllByCategory(LawCategory workCode) {
+    return (select(lawArticles)..where((tbl) => tbl.category.equals(workCode.name))).get();
+  }
+
+  Future<List<LawChapter>> getAllChaptersByCategory(LawCategory category) async {
+    final result = await ((select(lawChapters).join([
+      innerJoin(lawTitles, lawTitles.id.equalsExp(lawChapters.title)),
+    ]))
+          ..where(lawTitles.category.equals(category.name)))
+        .get();
+    return result.map((e) => e.readTable(lawChapters)).toList();
+  }
+
+  Future<List<LawSection>> getAllSectionsByCategory(LawCategory category) async {
+    final result = await ((select(lawSections).join([
+      innerJoin(lawChapters, lawChapters.id.equalsExp(lawSections.chapter)),
+      innerJoin(lawTitles, lawTitles.id.equalsExp(lawChapters.title)),
+    ]))
+          ..where(lawTitles.category.equals(category.name)))
+        .get();
+    return result.map((e) => e.readTable(lawSections)).toList();
+  }
 }

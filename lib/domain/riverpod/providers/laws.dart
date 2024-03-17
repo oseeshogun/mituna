@@ -29,3 +29,21 @@ Stream<LawArticle?> lawArticleStream(LawArticleStreamRef, int number) {
   final dao = locator.get<LawsDao>();
   return dao.streamSingleArticle(number);
 }
+
+@Riverpod(keepAlive: true)
+Future<List<LawArticle>> lawArticles(LawArticlesRef ref, LawCategory category) async {
+  final dao = locator.get<LawsDao>();
+  return dao.getAllByCategory(category);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<LawChapter>> lawChapters(LawChaptersRef ref, LawCategory category) async {
+  final dao = locator.get<LawsDao>();
+  return dao.getAllChaptersByCategory(category);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<LawSection>> lawSections(LawSectionsRef ref, LawCategory category) async {
+  final dao = locator.get<LawsDao>();
+  return dao.getAllSectionsByCategory(category);
+}
