@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:drift/drift.dart';
 import 'package:mituna/core/constants/enums/law_category.dart';
 import 'package:mituna/data/local/db.dart';
@@ -108,5 +110,15 @@ class LawsDao extends DatabaseAccessor<AppDatabase> with _$LawsDaoMixin {
           ..where(lawTitles.category.equals(category.name)))
         .get();
     return result.map((e) => e.readTable(lawSections)).toList();
+  }
+
+  Future<int> randomArticleNumber(LawCategory category) async {
+    final query = ((selectOnly(lawArticles)..addColumns([lawArticles.category, lawArticles.number]))..where(lawArticles.category.equals(category.name)));
+    final numbers = (await query.map((row) => row.read(lawArticles.number)).get()).whereType<int>().toList();
+    return numbers[Random().nextInt(numbers.length)];
+  }
+
+  Future<LawArticle?> getArticleByNumber(int articleNumber) {
+    return (select(lawArticles)..where((tbl) => tbl.number.equals(articleNumber))).getSingleOrNull();
   }
 }

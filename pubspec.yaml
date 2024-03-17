@@ -61,6 +61,7 @@ dependencies:
   flutter_tts: ^3.8.5
   fuzzy: ^0.5.1
   share_plus: ^7.2.2
+  flutter_local_notifications: ^17.0.0
 
 dev_dependencies:
   flutter_test:

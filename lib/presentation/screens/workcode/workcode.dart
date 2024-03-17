@@ -1,23 +1,32 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/core/constants/enums/law_category.dart';
+import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/domain/riverpod/providers/laws.dart';
+import 'package:mituna/domain/services/notification.dart';
+import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/laws/build_law_section.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'article_search_delegate.dart';
 
 // TODO: add optional daily remainde r for users
 
 class WorkcodeScreen extends HookConsumerWidget {
-  const WorkcodeScreen({super.key});
+  final prefs = locator.get<SharedPreferences>();
+
+  WorkcodeScreen({super.key});
 
   static const String route = '/workcode';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final workCodeNotificationAction = useState(prefs.workCodeNotificationAction);
     final titleExpanded = useState<List<int>>([]);
     final chapterExpanded = useState<Map<int, List<int>>>({});
     final sectionExpanded = useState<Map<int, List<int>>>({});
@@ -49,6 +58,11 @@ class WorkcodeScreen extends HookConsumerWidget {
       return null;
     }, [chapterExpanded.value, titleExpanded.value]);
 
+    useEffect(() {
+      prefs.workCodeNotificationAction = workCodeNotificationAction.value;
+      return null;
+    }, [workCodeNotificationAction.value]);
+
     Future<void> search() async {
       await showSearch(
         context: context,
@@ -68,10 +82,108 @@ class WorkcodeScreen extends HookConsumerWidget {
       );
     }
 
+    scheduleNotification() async {
+      final result = await showOkCancelAlertDialog(
+        context: context,
+        title: 'Notification',
+        message: "Voulez-vous recevoir une notification journalière d'un article du code du travail?",
+        okLabel: 'Oui',
+        cancelLabel: 'Annuler',
+      );
+      if (result == OkCancelResult.ok) {
+        final orderResult = await showModalActionSheet<bool>(
+          context: context,
+          title: "Choississez l'ordre d'affichage",
+          actions: [
+            const SheetAction(
+              label: 'Chronologique',
+              key: false,
+            ),
+            const SheetAction(
+              label: 'Aléatoire',
+              key: true,
+            ),
+          ],
+        );
+
+        prefs.randomWorkCodeArticles = orderResult ?? false;
+
+        final service = locator.get<FlutterNotification>();
+
+        prefs.workCodeNotificationId = prefs.notificationId;
+
+        service
+            .periodicNotification(
+          channelId: 'workcode',
+          channelName: 'workcode',
+          channelDescription: 'Notification about Work Code articles of RDC',
+          title: 'Code du travail',
+          body: 'Nouvel article du code du travail',
+          payload: 'workcode',
+          id: prefs.workCodeNotificationId,
+          interval: RepeatInterval.daily,
+        )
+            .then((_) {
+          workCodeNotificationAction.value = true;
+          showOkAlertDialog(
+            context: context,
+            title: "Notification",
+            message: "Notification d'article du code du travail active.",
+          );
+        }).catchError((_) {
+          debugPrint(_.toString());
+          workCodeNotificationAction.value = false;
+          showOkAlertDialog(
+            context: context,
+            title: "Notification",
+            message: "Nous n'avons pas pu activer la notification d'article du code du travail.",
+          );
+        });
+      }
+    }
+
+    cancelNotifications() async {
+      final result = await showOkCancelAlertDialog(
+        context: context,
+        title: 'Notification',
+        message: "Voulez-vous annuler la notification journalière d'un article du code du travail?",
+        okLabel: 'Oui',
+        cancelLabel: 'Non',
+      );
+      if (result == OkCancelResult.ok) {
+        final service = locator.get<FlutterNotification>();
+        service.cancel(prefs.workCodeNotificationId).then((value) {
+          workCodeNotificationAction.value = false;
+          showOkAlertDialog(
+            context: context,
+            title: "Notification",
+            message: "Notification d'article du code du travail annulée.",
+          );
+        }).catchError((_) {
+          debugPrint(_.toString());
+          showOkAlertDialog(
+            context: context,
+            title: "Notification",
+            message: "Nous n'avons pas pu annuler la notification d'article du code du travail.",
+          );
+        });
+      }
+    }
+
     return Scaffold(
       appBar: PrimaryAppBar(
         title: TextTitleLevelOne('Code du travail'),
         actions: [
+          if (!workCodeNotificationAction.value)
+            IconButton(
+              onPressed: () => scheduleNotification(),
+              icon: const Icon(Icons.notification_add),
+            )
+          else
+            IconButton(
+              onPressed: () => cancelNotifications(),
+              icon: const Icon(Icons.notifications_active),
+            ),
           if (canSearch)
             IconButton(
               onPressed: () => search(),

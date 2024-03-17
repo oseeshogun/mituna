@@ -16,4 +16,27 @@ extension SharedPreferencesKeys on SharedPreferences {
 
   bool offlineSaved(String version) => getBool('offline_$version') ?? false;
   offlineSavedDone(String version) => setBool('offline_$version', true);
+
+  int get notificationId {
+    final id = getInt('notification_id') ?? 0;
+    final newId = id + 1;
+    setInt('notification_id', newId);
+    return newId;
+  }
+
+  bool get workCodeNotificationAction => getBool('work_code_notification_action') ?? false;
+  set workCodeNotificationAction(bool value) => setBool('work_code_notification_action', value);
+
+  int get workCodeNotificationId => getInt('work_code_notification_id') ?? 0;
+  set workCodeNotificationId(int value) => setInt('work_code_notification_id', value);
+
+  bool get randomWorkCodeArticles => getBool('random_work_code_articles') ?? false;
+  set randomWorkCodeArticles(bool value) => setBool('random_work_code_articles', value);
+
+  int get lastWorkCodeArticleId {
+    final id = getInt('last_work_code_article_id') ?? 0;
+    final newId = id + 1;
+    setInt('last_work_code_article_id', newId);
+    return newId;
+  }
 }

@@ -11,6 +11,7 @@ import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/actions/firebase_messaging.dart';
+import 'package:mituna/presentation/actions/local_notification.dart';
 import 'package:mituna/presentation/actions/offline_save.dart';
 import 'package:mituna/presentation/actions/rate_my_app.dart';
 import 'package:mituna/presentation/screens/home/categories.dart';
@@ -18,7 +19,6 @@ import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/screens/workcode/workcode.dart';
-import 'package:mituna/presentation/screens/youtube/youtube_screen.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 import 'package:upgrader/upgrader.dart';
@@ -36,10 +36,9 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useRateMyApp(context);
     useOfflineSave(context);
+    useLocalNotificationAppLaunched(context);
     final (isLoadingTodayQuestion, todayQuestion) = useSetupInteractedMessage(context);
     final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
-
-    goYoutube() => Navigator.of(context).pushNamed(YoutubeScreen.route);
 
     startPrint([QuestionCategory? category]) async {
       sprintUsecase.start(category).then((sprint) {
@@ -136,7 +135,7 @@ class HomeScreen extends HookConsumerWidget {
                             child: PrimaryButton(
                               loading: isLoadingTodayQuestion,
                               child: const TextTitleLevelTwo(
-                                '🎥 Youtube',
+                                '💼  Code du travail',
                                 color: AppColors.kColorBlueRibbon,
                                 maxLines: 1,
                               ),
@@ -145,38 +144,10 @@ class HomeScreen extends HookConsumerWidget {
                                 horizontal: 10.0,
                                 vertical: 5.0,
                               ),
-                              onPressed: () => goYoutube(),
-                            ),
-                          ),
-                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30.0),
-                    SizedBox(
-                      height: 40.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding * 3),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
-                            child: PrimaryButton(
-                              loading: isLoadingTodayQuestion,
-                              backgroundColor: Colors.white,
-                              child: const TextTitleLevelTwo(
-                                'Code du travail',
-                                color: AppColors.kColorBlueRibbon,
-                                maxLines: 1,
-                              ),
-                              radius: 20.0,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 5.0,
-                              ),
                               onPressed: () => Navigator.of(context).pushNamed(WorkcodeScreen.route),
                             ),
                           ),
+                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
                         ],
                       ),
                     ),
