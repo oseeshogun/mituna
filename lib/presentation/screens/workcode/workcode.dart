@@ -15,8 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'article_search_delegate.dart';
 
-// TODO: add optional daily remainde r for users
-
 class WorkcodeScreen extends HookConsumerWidget {
   final prefs = locator.get<SharedPreferences>();
 
