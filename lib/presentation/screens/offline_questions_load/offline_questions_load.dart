@@ -40,8 +40,6 @@ class OfflineQuestionsLoadScreen extends HookWidget {
         try {
           // save questions
           await offlineLoadUsecase.saveQuestions();
-          // save videos
-          await offlineLoadUsecase.saveYoutubeVideos();
           // background save of workcode
         await offlineLoadUsecase.saveWorkcode();
 

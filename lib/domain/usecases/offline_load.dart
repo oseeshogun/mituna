@@ -8,7 +8,6 @@ import 'package:mituna/data/local/daos/answers_dao.dart';
 import 'package:mituna/data/local/daos/questions_dao.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/domain/usecases/law.dart';
-import 'package:mituna/domain/usecases/youtube_videos.dart';
 import 'package:mituna/locator.dart';
 
 class OfflineLoadUsecase extends Usecase {
@@ -44,12 +43,6 @@ class OfflineLoadUsecase extends Usecase {
     });
     await questionsDao.insertMultipleEntries(questionCompanions);
     await answersDao.insertMultipleEntries(answerCompanions);
-  }
-
-  Future<void> saveYoutubeVideos() async {
-    final youtubeUsecase = YoutubeUsecase();
-    final rawVideos = await youtubeUsecase.loadVideosFromAsset();
-    await youtubeUsecase.saveVideos(rawVideos);
   }
 
   Future<void> saveWorkcode() async {

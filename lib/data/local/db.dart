@@ -10,7 +10,6 @@ import 'package:mituna/data/local/models/law/chapter.dart';
 import 'package:mituna/data/local/models/law/section.dart';
 import 'package:mituna/data/local/models/law/title.dart';
 import 'package:mituna/data/local/models/question.dart';
-import 'package:mituna/data/local/models/youtube_video.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
@@ -33,7 +32,6 @@ class QuestionWithAnswers extends Equatable {
 @DriftDatabase(tables: [
   Questions,
   Answers,
-  YoutubeVideos,
   LawTitles,
   LawChapters,
   LawSections,
@@ -57,7 +55,6 @@ class AppDatabase extends _$AppDatabase {
         if (from == 1) {
           await m.createTable(questions);
           await m.createTable(answers);
-          await m.createTable(youtubeVideos);
           await m.createTable(lawTitles);
           await m.createTable(lawChapters);
           await m.createTable(lawSections);

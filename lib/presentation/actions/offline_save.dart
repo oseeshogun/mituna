@@ -74,8 +74,6 @@ void useOfflineSave(BuildContext context) {
 
         // background save of questions
         await offlineLoadUsecase.saveQuestions();
-        // background save of videos
-        await offlineLoadUsecase.saveYoutubeVideos();
         // background save of workcode
         await offlineLoadUsecase.saveWorkcode();
 

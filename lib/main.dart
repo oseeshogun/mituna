@@ -12,7 +12,6 @@ import 'package:mituna/presentation/screens/settings/donation.dart';
 import 'package:mituna/presentation/screens/settings/favorites_categories.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/workcode/workcode.dart';
-import 'package:mituna/presentation/screens/youtube/youtube_screen.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -75,8 +74,7 @@ class MyApp extends StatelessWidget {
         AboutTheApp.route: (context) => const AboutTheApp(),
         Donation.route: (context) => const Donation(),
         FavoritesCategories.route: (context) => const FavoritesCategories(),
-        YoutubeScreen.route: (context) => const YoutubeScreen(),
-        WorkcodeScreen.route: (context) => const WorkcodeScreen(),
+        WorkcodeScreen.route: (context) => WorkcodeScreen(),
       },
     );
   }
