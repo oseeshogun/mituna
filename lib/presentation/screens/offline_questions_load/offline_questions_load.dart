@@ -7,6 +7,7 @@ import 'package:mituna/locator.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/usecases/offline_load.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OfflineQuestionsLoadScreen extends HookWidget {
@@ -37,9 +38,13 @@ class OfflineQuestionsLoadScreen extends HookWidget {
         animationController.forward();
 
         try {
-          final rawQuestions = await offlineLoadUsecase.loadQuestionsFromAsset();
-          await offlineLoadUsecase.saveQuestions(rawQuestions);
-          prefs.offlineQuestionsLoaded = true;
+          // save questions
+          await offlineLoadUsecase.saveQuestions();
+
+          final info = await PackageInfo.fromPlatform();
+          final version = info.version;
+
+          prefs.offlineSavedDone(version);
           // ignore: use_build_context_synchronously
           if (Navigator.of(context).canPop()) Navigator.of(context).pop();
         } catch (err, st) {

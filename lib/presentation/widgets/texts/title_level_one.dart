@@ -5,12 +5,14 @@ class TextTitleLevelOne extends StatelessWidget {
     this.text, {
     this.color = Colors.white,
     this.textAlign = TextAlign.center,
+    this.maxLines,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final Color? color;
   final TextAlign textAlign;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class TextTitleLevelOne extends StatelessWidget {
         color: color,
       ),
       textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 }

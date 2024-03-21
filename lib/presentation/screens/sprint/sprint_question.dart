@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,17 +25,19 @@ class SprintQuestion extends HookConsumerWidget {
     super.key,
     required this.sprint,
     required this.onNext,
+    required this.onStartAnimation,
   });
 
   final Sprint sprint;
   final Future<void> Function(int timePassed)? onNext;
+  final Future<void> Function(bool isCorrect)? onStartAnimation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final prefs = locator.get<SharedPreferences>();
     final soundEffect = locator.get<SoundEffects>();
     final question = useState(sprint.randomQuestion);
-    final selectedAnswer = useState<AnswerData?>(null);
+    final selectedAnswer = useState<Answer?>(null);
     final questionCounterState = useState(QuestionCounterState.running);
     final order = useState(sprint.questionIndexPlusOne);
     final timePassed = useState(0);
@@ -74,7 +78,7 @@ class SprintQuestion extends HookConsumerWidget {
       prefs.setBool('answered_${question.value?.question.id}', true);
       if (questionCounterState.value == QuestionCounterState.stopped) return;
       sprint.answer(question.value!, selectedAnswer.value, timePassed.value);
-      ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+      ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
       final isCorrect = selectedAnswer.value?.isCorrect == true;
       if (!isCorrect) {
         await badAnswer();
@@ -83,6 +87,7 @@ class SprintQuestion extends HookConsumerWidget {
       }
       questionCounterState.value = QuestionCounterState.stopped;
 
+      if (Random().nextBool()) await onStartAnimation?.call(isCorrect);
       Future.delayed(const Duration(seconds: 2), () => onNext?.call(timePassed.value));
     }
 
@@ -125,6 +130,7 @@ class SprintQuestion extends HookConsumerWidget {
                   child: TextTitleLevelOne(
                     question.value?.question.content ?? '',
                     textAlign: TextAlign.left,
+                    maxLines: 5,
                   ),
                 ),
               ),
@@ -137,7 +143,7 @@ class SprintQuestion extends HookConsumerWidget {
                   builder: (context, animatedBlinking) {
                     return FadeAnimation(
                       delay: 1.3 + (index / 10),
-                      child: PrimaryRadioButton<AnswerData>(
+                      child: PrimaryRadioButton<Answer>(
                         value: answer,
                         forceSelected: animatedBlinking,
                         groupValue: selectedAnswer.value,

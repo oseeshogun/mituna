@@ -11,11 +11,11 @@ class Usecase {
     try {
       return Right(await execute());
     } on FirebaseException catch (err) {
-      return Left(FirebaseFailure(err.messageFr ?? 'Une erreur est inattendue est survenue.'));
+      return Left(FirebaseFailure(err.messageFr ?? 'Une erreur est inattendue est survenue.', err));
     } catch (err, st) {
       debugPrint(err.toString());
       debugPrint(st.toString());
-      return const Left(UnknownFailure());
+      return Left(UnknownFailure(err as Exception));
     }
   }
 }

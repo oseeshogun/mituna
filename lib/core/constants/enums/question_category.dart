@@ -1,6 +1,6 @@
 part of 'all.dart';
 
-enum QuestionCategory { history, geography, sciences, nature, gastronomy, arts, sports, programmation, otaku }
+enum QuestionCategory { history, geography, sciences, nature, gastronomy, arts, sports, programmation, otaku, religion }
 
 extension QuestionCategoryAsset on QuestionCategory {
   String get asset => 'assets/images/categories/$name.jpg';
@@ -25,8 +25,31 @@ extension QuestionCategoryAsset on QuestionCategory {
         return 'Programmation';
       case QuestionCategory.otaku:
         return 'Otaku';
+      case QuestionCategory.religion:
+        return 'Religion';
       default:
         throw UnimplementedError('Unknown category: $this');
     }
   }
+
+  bool get isFavorite {
+    final _prefs = locator.get<SharedPreferences>();
+    return _prefs.getBool('favorite_$name') ?? _defaultIsFavorite(this);
+  }
+
+  void set isFavorite(bool value) {
+    final _prefs = locator.get<SharedPreferences>();
+    _prefs.setBool('favorite_$name', value);
+  }
+}
+
+bool _defaultIsFavorite(QuestionCategory category) {
+  return {
+    QuestionCategory.history,
+    QuestionCategory.geography,
+    QuestionCategory.nature,
+    QuestionCategory.arts,
+    QuestionCategory.sciences,
+    QuestionCategory.religion,
+  }.contains(category);
 }

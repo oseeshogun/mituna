@@ -10,7 +10,6 @@ import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
-import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
@@ -20,12 +19,10 @@ class FinishedSprint extends HookConsumerWidget {
   FinishedSprint({
     super.key,
     required this.hasSucceded,
-    this.topazWon,
     required this.category,
   });
 
   final bool hasSucceded;
-  final int? topazWon;
   final QuestionCategory? category;
   final soundEffect = locator.get<SoundEffects>();
   final sprintUsecase = SprintUsecase();
@@ -36,7 +33,7 @@ class FinishedSprint extends HookConsumerWidget {
 
     void newSprint([QuestionCategory? category]) {
       sprintUsecase.start().then((sprint) {
-        ref.watch(sprintHeartsProvider(sprint.id).notifier).state = sprint.hearts;
+        ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
     }
@@ -65,18 +62,12 @@ class FinishedSprint extends HookConsumerWidget {
             if (hasSucceded)
               Text.rich(
                 TextSpan(
-                  text: 'Bien joué, vous avez gagné $topazWon',
+                  text: 'Bien joué',
                   style: const TextStyle(
                     fontSize: 36.0,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
-                  children: const [
-                    WidgetSpan(
-                      child: TopazIcon(),
-                      alignment: PlaceholderAlignment.middle,
-                    ),
-                  ],
                 ),
                 textAlign: TextAlign.center,
               )
@@ -89,14 +80,6 @@ class FinishedSprint extends HookConsumerWidget {
               onPressed: () => newSprint(category),
               child: const TextTitleLevelTwo(
                 'Poursuivre un autre sprint',
-                color: AppColors.kColorBlack,
-              ),
-            ),
-            const SizedBox(height: 15.0),
-            PrimaryButton(
-              onPressed: () => Navigator.of(context).pushReplacementNamed(RankingScreen.route),
-              child: const TextTitleLevelTwo(
-                'Classement du jeu',
                 color: AppColors.kColorBlack,
               ),
             ),

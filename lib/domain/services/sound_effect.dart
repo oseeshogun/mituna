@@ -4,8 +4,6 @@ import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soundpool/soundpool.dart';
-
-
 class SoundEffects {
   Soundpool pool = Soundpool.fromOptions(
     options: const SoundpoolOptions(streamType: StreamType.notification),

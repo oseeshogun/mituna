@@ -1,4 +1,7 @@
 {
     "dart.lineLength": 160,
-    "dart.additionalAnalyzerFileExtensions": ["drift"]
+    "editor.formatOnSave": true,
+    "dart.additionalAnalyzerFileExtensions": [
+        "drift"
+    ]
 } 

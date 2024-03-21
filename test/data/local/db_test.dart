@@ -17,18 +17,18 @@ void main() {
     answersDao = AnswersDao(database);
 
     await questionsDao.insertMultipleEntries([
-      QuestionCompanion.insert(id: 'vvv1', content: 'Qui es-tu ?', type: QuestionType.choice, category: QuestionCategory.history),
-      QuestionCompanion.insert(id: 'vvv2', content: 'Qui suis-je ?', type: QuestionType.choice, category: QuestionCategory.arts),
+      QuestionsCompanion.insert(id: 'vvv1', content: 'Qui es-tu ?', type: QuestionType.choice, category: QuestionCategory.history),
+      QuestionsCompanion.insert(id: 'vvv2', content: 'Qui suis-je ?', type: QuestionType.choice, category: QuestionCategory.arts),
     ]);
     await answersDao.insertMultipleEntries([
-      AnswerCompanion.insert(value: 'Toi', type: AnswerType.text, question: 'vvv1', isCorrect: Value(true)),
-      AnswerCompanion.insert(value: 'Lui', type: AnswerType.text, question: 'vvv1'),
-      AnswerCompanion.insert(value: 'Dieu', type: AnswerType.text, question: 'vvv1'),
-      AnswerCompanion.insert(value: 'Alien', type: AnswerType.text, question: 'vvv1'),
-      AnswerCompanion.insert(value: 'Dieu', type: AnswerType.text, question: 'vvv2'),
-      AnswerCompanion.insert(value: 'Humain', type: AnswerType.text, question: 'vvv2', isCorrect: Value(true)),
-      AnswerCompanion.insert(value: 'Gorille', type: AnswerType.text, question: 'vvv2'),
-      AnswerCompanion.insert(value: 'Lion', type: AnswerType.text, question: 'vvv2'),
+      AnswersCompanion.insert(value: 'Toi', type: AnswerType.text, question: 'vvv1', isCorrect: Value(true)),
+      AnswersCompanion.insert(value: 'Lui', type: AnswerType.text, question: 'vvv1'),
+      AnswersCompanion.insert(value: 'Dieu', type: AnswerType.text, question: 'vvv1'),
+      AnswersCompanion.insert(value: 'Alien', type: AnswerType.text, question: 'vvv1'),
+      AnswersCompanion.insert(value: 'Dieu', type: AnswerType.text, question: 'vvv2'),
+      AnswersCompanion.insert(value: 'Humain', type: AnswerType.text, question: 'vvv2', isCorrect: Value(true)),
+      AnswersCompanion.insert(value: 'Gorille', type: AnswerType.text, question: 'vvv2'),
+      AnswersCompanion.insert(value: 'Lion', type: AnswerType.text, question: 'vvv2'),
     ]);
   });
 

@@ -2,7 +2,7 @@ name: mituna
 description: Mituna est une application de quiz passionnante qui met à l'épreuve vos connaissances sur la République Démocratique du Congo (RDC) ainsi que sur diverses questions liées au monde.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+15
+version: 1.1.0+20
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -24,7 +24,7 @@ dependencies:
   adaptive_dialog: ^1.9.0
   firebase_messaging: ^14.6.5
   upgrader: ^8.1.0
-  hooks_riverpod: ^2.3.7
+  hooks_riverpod: ^2.4.9
   cloud_firestore: ^4.8.4
   simple_animations: ^5.0.2
   lottie: ^2.6.0
@@ -52,20 +52,29 @@ dependencies:
   gsheets: ^0.5.0
   package_info_plus: ^4.1.0
   confetti: ^0.7.0
+  rate_my_app: ^2.0.0
+  faker: ^2.1.0
+  riverpod_annotation: ^2.3.3
+  string_extensions: ^0.6.13
+  envied: ^0.5.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.3.2
-  drift_dev: ^2.11.0
+  flutter_native_splash: ^2.3.6
   build_runner: ^2.4.6
+  envied_generator: ^0.5.3
+  drift_dev: ^2.11.0
   json_serializable: ^6.7.1
   retrofit_generator: ^7.0.8
   mockito: ^5.4.2
   firebase_auth_mocks: ^0.12.0
   fake_cloud_firestore: ^2.4.1+1
+  riverpod_generator: ^2.3.9
+  custom_lint: ^0.5.8
+  riverpod_lint: ^2.3.7
 
 flutter:
   uses-material-design: true
@@ -73,6 +82,8 @@ flutter:
     - assets/svgs/
     - assets/icons/
     - assets/lottiefiles/
+    - assets/lottiefiles/happy/
+    - assets/lottiefiles/sad/
     - assets/images/
     - assets/images/categories/
     - assets/sounds/
@@ -92,13 +103,11 @@ flutter:
 flutter_native_splash:
   color: "#1d87ff"
   image: "assets/images/mituna.png"
-  branding: "assets/images/mituna.png"
   branding_mode: center
 
   android_12:
     color: "#1d87ff"
     image: "assets/images/mituna.png"
-    branding: "assets/images/mituna.png"
     branding_mode: center
 
   fullscreen: true

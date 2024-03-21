@@ -25,7 +25,7 @@ class AboutTheApp extends HookWidget {
   }
 
   Future<void> contactThankfulPerson(BuildContext context, PersonToBeThankful person) async {
-    showBottomSheet<String?>(
+    showBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       enableDrag: true,
@@ -118,7 +118,7 @@ class AboutTheApp extends HookWidget {
                 TextTitleLevelTwo('Version ${version.data?.version ?? '...'}'),
                 const SizedBox(height: 20.0),
                 InkWell(
-                  onTap: () => launchUrl(Uri.parse('https://mituna.oseemasuaku.app/privacy')),
+                  onTap: () => launchUrl(Uri.parse('https://mituna.oseemasuaku.com/privacy')),
                   child: const TextTitleLevelTwo('Termes & Conditions d\'utilisation'),
                 ),
                 const SizedBox(height: 20.0),
@@ -132,7 +132,7 @@ class AboutTheApp extends HookWidget {
                             brightness: Brightness.dark,
                           ),
                           child: LicensePage(
-                            applicationName: 'Mituna Ya Congo',
+                            applicationName: 'Mituna',
                             applicationIcon: Image.asset(
                               'assets/images/mituna_rounded.png',
                               fit: BoxFit.contain,

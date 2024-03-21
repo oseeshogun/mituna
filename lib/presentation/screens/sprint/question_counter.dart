@@ -27,7 +27,6 @@ class QuestionCounter extends HookWidget {
   Widget build(BuildContext context) {
     final counterAnimationController = useAnimationController(duration: Duration(seconds: count));
     final counterAnimation = useAnimation(Tween<double>(begin: 2 * pi, end: 0).animate(counterAnimationController));
-    final isMounted = useIsMounted();
     final time = useState(count);
 
     useEffect(() {
@@ -38,7 +37,7 @@ class QuestionCounter extends HookWidget {
           return;
         }
         onTick?.call(time.value);
-        if (isMounted()) time.value = max(0, time.value - 1);
+        if (context.mounted) time.value = max(0, time.value - 1);
         if (time.value == 0) {
           timer.cancel();
           counterAnimationController.stop();

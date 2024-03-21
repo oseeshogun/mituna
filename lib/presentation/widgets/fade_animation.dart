@@ -3,11 +3,13 @@ part of 'all.dart';
 class FadeAnimation extends StatelessWidget {
   final double delay;
   final Widget child;
+  final double startY;
 
   const FadeAnimation({
     super.key,
     required this.delay,
     required this.child,
+    this.startY = -90.0,
   });
 
   @override
@@ -20,7 +22,7 @@ class FadeAnimation extends StatelessWidget {
       )
       ..tween(
         'translateY',
-        Tween(begin: -90.0, end: 0.0),
+        Tween(begin: startY, end: 0.0),
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );

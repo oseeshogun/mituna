@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/utils/preferences.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
@@ -20,6 +21,7 @@ import 'package:mituna/presentation/widgets/texts/all.dart';
 
 import 'about_the_app.dart';
 import 'donation.dart';
+import 'favorites_categories.dart';
 import 'report_error.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -42,21 +44,47 @@ class SettingsScreen extends HookConsumerWidget {
     }, [volume.value]);
 
     Future<void> changeUserDisplayName(String displayName) async {
-      final inputs = await showTextInputDialog(
+      String newDisplayName = displayName;
+
+      final input = await showModalBottomSheet(
         context: context,
-        textFields: [
-          DialogTextField(
-            initialText: displayName,
-            hintText: "Nom d'utilisateur",
-            maxLength: 9,
-            textCapitalization: TextCapitalization.words,
-          ),
-        ],
+        backgroundColor: AppColors.kColorBlueRibbon,
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 26.0),
+                  TextTitleLevelOne("Changer votre nom d'utilisateur"),
+                  const SizedBox(height: 30.0),
+                  TextFormField(
+                    initialValue: displayName,
+                    maxLength: 9,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      hintText: 'Nom d\'utilisateur',
+                      hintStyle: TextStyle(color: Colors.white38),
+                    ),
+                    style: TextStyle(color: Colors.white),
+                    onChanged: (value) => (newDisplayName = value),
+                  ),
+                  const SizedBox(height: 20.0),
+                  PrimaryButton(
+                    child: TextDescription('Confirmer', color: AppColors.kColorBlueRibbon),
+                    onPressed: () => Navigator.of(context).pop(newDisplayName),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                ],
+              ),
+            ),
+          );
+        },
       );
-      if (inputs == null) return;
-      final newDisplayName = inputs.first;
-      if (newDisplayName == displayName) return;
-      userUsecase.updateDisplayName(newDisplayName);
+      print(input);
+      if (input == null) return;
+      if (input == displayName) return;
+      userUsecase.updateDisplayName(input);
     }
 
     Future<void> updateAvatar(ValueNotifier<bool> loading) async {
@@ -77,11 +105,6 @@ class SettingsScreen extends HookConsumerWidget {
       appBar: PrimaryAppBar(
         title: const TextTitleLevelOne('Paramètres'),
         actions: [
-          IconButton(
-            tooltip: 'Réjoignez-nous sur Discord',
-            onPressed: () => launchUrl(Uri.parse('https://discord.gg/TSqVPtaQ4A')),
-            icon: const Icon(Icons.discord),
-          ),
           firebaseAuthUserAsyncValue.when(
             loading: () => Container(),
             error: (error, stackTrace) => Container(),
@@ -117,46 +140,44 @@ class SettingsScreen extends HookConsumerWidget {
             firestoreAuthUserAsyncValue.when(
               loading: () => SizedBox(),
               error: (error, stackTrace) => SizedBox(),
-              data: (firestoreUser) => TextTitleLevelOne(firestoreUser?.displayName ?? ''),
+              data: (firestoreUser) => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextTitleLevelOne(firestoreUser?.displayName ?? ''),
+                  firestoreAuthUserAsyncValue.when(
+                    loading: () => SizedBox(),
+                    error: (error, stackTrace) => SizedBox(),
+                    data: (firestoreUser) => IconButton(
+                      icon: const Icon(
+                        CupertinoIcons.pencil,
+                        size: 14.0,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 30.0),
-            firestoreAuthUserAsyncValue.when(
-              loading: () => SizedBox(),
-              error: (error, stackTrace) => SizedBox(),
-              data: (firestoreUser) => SettingTile(
-                leading: const Icon(
-                  CupertinoIcons.person_fill,
-                  color: Colors.white,
-                ),
-                title: "Nom d'utilisateur",
-                subtitle: "Changer votre nom d'utilisateur",
-                onTap: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
-              ),
-            ),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.flag_fill,
-                color: Colors.white,
-              ),
-              title: 'Rapporter une erreur',
-              subtitle: 'Une réponse n’est pas correcte ? un bug ?',
-              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
+              leading: const Icon(Icons.category),
+              title: 'Catégories favorites',
+              onTap: () => Navigator.of(context).pushNamed(FavoritesCategories.route),
             ),
-            const SizedBox(height: 10.0),
             SoundSlider(
               value: volume.value,
               onChanged: (value) => (volume.value = value),
             ),
-            const SizedBox(height: 10.0),
+            SettingTile(
+              leading: const Icon(CupertinoIcons.flag_fill),
+              title: 'Rapporter une erreur',
+              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
+            ),
             Builder(builder: (context) {
               return SettingTile(
-                leading: const Icon(
-                  Icons.code,
-                  color: Colors.white,
-                ),
+                leading: const Icon(Icons.code),
                 title: 'Code source',
-                subtitle: "L'application est gratuite et open source.",
                 onLongPress: () async {
                   await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
                   ScaffoldMessenger.maybeOf(context)?.showSnackBar(
@@ -168,41 +189,25 @@ class SettingsScreen extends HookConsumerWidget {
                 onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
               );
             }),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.flag_fill,
-                color: Colors.white,
-              ),
-              title: 'A propos',
-              subtitle: "A propos de l'application",
-              onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
-            ),
-            const SizedBox(height: 10.0),
-            SettingTile(
-              leading: const Icon(
-                Icons.diversity_1,
-                color: Colors.white,
-              ),
+              leading: const Icon(Icons.diversity_1),
               title: 'Faire un don',
-              subtitle: "Faîtes un geste positif pour encourager notre travail.",
               onTap: () => Navigator.of(context).pushNamed(Donation.route),
             ),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                Icons.logout,
-                color: Colors.white,
-              ),
+              leading: const Icon(CupertinoIcons.flag_fill),
+              title: 'A propos',
+              onTap: () => Navigator.of(context).pushNamed(AboutTheApp.route),
+            ),
+            const SizedBox(height: 30.0),
+            SettingTile(
+              leading: const Icon(Icons.logout),
               title: 'Déconnexion',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: false))),
             ),
-            const SizedBox(height: 10.0),
             SettingTile(
-              leading: const Icon(
-                CupertinoIcons.trash,
-                color: Colors.white,
-              ),
+              foregroundColor: AppColors.kColorYellow,
+              leading: const Icon(CupertinoIcons.trash),
               title: 'Supprimer mon compte',
               onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: true))),
             ),
