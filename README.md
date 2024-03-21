@@ -12,7 +12,6 @@ Quelques captures d'écran de l'application :
 
 <div style="display: flex;">
     <img src="assets/captures/Accueil.png" alt="Accueil" width="180px" />
-    <img src="assets/captures/LeaderBoard.png" alt="LeaderBoard" width="180px" style="margin-left: 20px" />
     <img src="assets/captures/Question.png" alt="Question" width="180px" style="margin-left: 20px" />
 </div>
 
@@ -20,7 +19,6 @@ Quelques captures d'écran de l'application :
 
 - Quiz sur la RDC : Testez vos connaissances sur l'histoire, la culture, la géographie et d'autres aspects de la RDC.
 - Questions mondiales : Explorez des questions variées sur des sujets internationaux pour élargir vos horizons.
-- Classements : Consultez les classements pour voir comment vous vous situez par rapport aux autres joueurs.
 
 ## Installation
 
