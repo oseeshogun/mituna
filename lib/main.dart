@@ -6,12 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/presentation/screens/offline_questions_load/offline_questions_load.dart';
-import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/about_the_app.dart';
 import 'package:mituna/presentation/screens/settings/donation.dart';
 import 'package:mituna/presentation/screens/settings/favorites_categories.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
-import 'package:mituna/presentation/screens/workcode/workcode.dart';
 
 import 'firebase_options.dart';
 import 'locator.dart';
@@ -68,13 +66,11 @@ class MyApp extends StatelessWidget {
         HomeScreen.route: (context) => HomeScreen(),
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
-        RankingScreen.route: (context) => RankingScreen(),
         SettingsScreen.route: (context) => SettingsScreen(),
         ReportErrorScreen.route: (context) => ReportErrorScreen(),
         AboutTheApp.route: (context) => const AboutTheApp(),
         Donation.route: (context) => const Donation(),
         FavoritesCategories.route: (context) => const FavoritesCategories(),
-        WorkcodeScreen.route: (context) => WorkcodeScreen(),
       },
     );
   }

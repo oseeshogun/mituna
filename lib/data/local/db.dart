@@ -4,18 +4,12 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mituna/core/constants/enums/all.dart';
-import 'package:mituna/core/constants/enums/law_category.dart';
 import 'package:mituna/data/local/models/answer.dart';
-import 'package:mituna/data/local/models/law/chapter.dart';
-import 'package:mituna/data/local/models/law/section.dart';
-import 'package:mituna/data/local/models/law/title.dart';
 import 'package:mituna/data/local/models/question.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
 import 'log_interceptor.dart';
-import 'models/law/article.dart';
-import 'type_converters/list_int.dart';
 
 part 'db.g.dart';
 
@@ -32,10 +26,6 @@ class QuestionWithAnswers extends Equatable {
 @DriftDatabase(tables: [
   Questions,
   Answers,
-  LawTitles,
-  LawChapters,
-  LawSections,
-  LawArticles,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -55,10 +45,6 @@ class AppDatabase extends _$AppDatabase {
         if (from == 1) {
           await m.createTable(questions);
           await m.createTable(answers);
-          await m.createTable(lawTitles);
-          await m.createTable(lawChapters);
-          await m.createTable(lawSections);
-          await m.createTable(lawArticles);
           await m.deleteTable('question');
           await m.deleteTable('answer');
         }

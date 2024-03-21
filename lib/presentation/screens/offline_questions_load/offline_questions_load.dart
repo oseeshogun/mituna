@@ -40,8 +40,6 @@ class OfflineQuestionsLoadScreen extends HookWidget {
         try {
           // save questions
           await offlineLoadUsecase.saveQuestions();
-          // background save of workcode
-        await offlineLoadUsecase.saveWorkcode();
 
           final info = await PackageInfo.fromPlatform();
           final version = info.version;

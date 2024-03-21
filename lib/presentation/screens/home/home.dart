@@ -5,20 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/enums/all.dart';
-import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
-import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/presentation/actions/firebase_messaging.dart';
-import 'package:mituna/presentation/actions/local_notification.dart';
 import 'package:mituna/presentation/actions/offline_save.dart';
 import 'package:mituna/presentation/actions/rate_my_app.dart';
 import 'package:mituna/presentation/screens/home/categories.dart';
-import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
-import 'package:mituna/presentation/screens/workcode/workcode.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 import 'package:upgrader/upgrader.dart';
@@ -36,9 +31,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useRateMyApp(context);
     useOfflineSave(context);
-    useLocalNotificationAppLaunched(context);
-    final (isLoadingTodayQuestion, todayQuestion) = useSetupInteractedMessage(context);
-    final firestoreAuthUserStreamProvider = ref.watch(firestoreAuthenticatedUserStreamProvider);
+    useSetupInteractedMessage(context);
 
     startPrint([QuestionCategory? category]) async {
       sprintUsecase.start(category).then((sprint) {
@@ -71,23 +64,8 @@ class HomeScreen extends HookConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const TopazIcon(),
-                          const SizedBox(width: 5.0),
-                          firestoreAuthUserStreamProvider.when(
-                            loading: () => TextTitleLevelTwo(0.toString()),
-                            error: (error, stackTrace) => TextTitleLevelTwo(0.toString()),
-                            data: (firestoreAuthUser) => TextTitleLevelTwo(firestoreAuthUser?.diamonds.toString() ?? 0.toString()),
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () => Navigator.of(context).pushNamed(RankingScreen.route),
-                            icon: const Icon(
-                              Icons.bar_chart,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
                           IconButton(
                             onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
                             icon: const Icon(
@@ -105,52 +83,7 @@ class HomeScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 20.0),
                     const TextTitleLevelOne('Appuyez pour commencer'),
-                    const SizedBox(height: 30.0),
-                    SizedBox(
-                      height: 50.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.65),
-                            child: PrimaryButton(
-                              loading: isLoadingTodayQuestion,
-                              child: const TextTitleLevelTwo(
-                                '🕹️  Question du jour',
-                                color: AppColors.kColorBlueRibbon,
-                                maxLines: 1,
-                              ),
-                              radius: 50.0,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 5.0,
-                              ),
-                              onPressed: () => todayQuestion(),
-                            ),
-                          ),
-                          const SizedBox(width: 30.0),
-                          ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.65),
-                            child: PrimaryButton(
-                              loading: isLoadingTodayQuestion,
-                              child: const TextTitleLevelTwo(
-                                '💼  Code du travail',
-                                color: AppColors.kColorBlueRibbon,
-                                maxLines: 1,
-                              ),
-                              radius: 50.0,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0,
-                                vertical: 5.0,
-                              ),
-                              onPressed: () => Navigator.of(context).pushNamed(WorkcodeScreen.route),
-                            ),
-                          ),
-                          SizedBox(width: AppSizes.kScaffoldHorizontalPadding),
-                        ],
-                      ),
-                    ),
+                    
                     const SizedBox(height: 30.0),
                     QuestionCategoriesHomeList(startPrint: startPrint),
                     const SizedBox(height: 30.0),
