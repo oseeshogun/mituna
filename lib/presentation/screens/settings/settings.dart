@@ -20,7 +20,6 @@ import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
 import 'about_the_app.dart';
-import 'donation.dart';
 import 'favorites_categories.dart';
 
 class SettingsScreen extends HookConsumerWidget {
@@ -183,11 +182,6 @@ class SettingsScreen extends HookConsumerWidget {
                 onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
               );
             }),
-            SettingTile(
-              leading: const Icon(Icons.diversity_1),
-              title: 'Faire un don',
-              onTap: () => Navigator.of(context).pushNamed(Donation.route),
-            ),
             SettingTile(
               leading: const Icon(CupertinoIcons.flag_fill),
               title: 'A propos',
