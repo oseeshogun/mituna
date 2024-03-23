@@ -1,10 +1,10 @@
 # Mituna
 
-<a href='https://play.google.com/store/apps/details?id=deepcolt.com.mituna'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height=90px/></a>
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=deepcolt.com.mituna)
 
 Mituna est une application de quiz passionnante qui met à l'épreuve vos connaissances sur la République Démocratique du Congo (RDC) ainsi que sur diverses questions liées au monde.
 
-<img src="assets/images/mituna.png" alt="Mituna Logo" width="100px" />
+![Mituna Logo](assets/images/mituna.png)
 
 ## Aperçu
 
