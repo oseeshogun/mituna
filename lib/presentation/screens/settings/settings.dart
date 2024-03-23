@@ -22,7 +22,6 @@ import 'package:mituna/presentation/widgets/texts/all.dart';
 import 'about_the_app.dart';
 import 'donation.dart';
 import 'favorites_categories.dart';
-import 'report_error.dart';
 
 class SettingsScreen extends HookConsumerWidget {
   SettingsScreen({super.key});
@@ -168,11 +167,6 @@ class SettingsScreen extends HookConsumerWidget {
             SoundSlider(
               value: volume.value,
               onChanged: (value) => (volume.value = value),
-            ),
-            SettingTile(
-              leading: const Icon(CupertinoIcons.flag_fill),
-              title: 'Rapporter une erreur',
-              onTap: () => Navigator.of(context).pushNamed(ReportErrorScreen.route),
             ),
             Builder(builder: (context) {
               return SettingTile(

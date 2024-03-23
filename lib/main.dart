@@ -16,7 +16,6 @@ import 'locator.dart';
 import 'presentation/screens/auth/authentication.dart';
 import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
-import 'presentation/screens/settings/report_error.dart';
 
 final providerContainer = ProviderContainer();
 
@@ -67,7 +66,6 @@ class MyApp extends StatelessWidget {
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
         OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
         SettingsScreen.route: (context) => SettingsScreen(),
-        ReportErrorScreen.route: (context) => ReportErrorScreen(),
         AboutTheApp.route: (context) => const AboutTheApp(),
         Donation.route: (context) => const Donation(),
         FavoritesCategories.route: (context) => const FavoritesCategories(),
