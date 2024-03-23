@@ -45,63 +45,69 @@ class HomeScreen extends HookConsumerWidget {
         upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Opacity(
-                    opacity: 0.5,
-                    child: Lottie.asset(
-                      'assets/lottiefiles/bells.json',
-                      width: MediaQuery.of(context).size.width * 0.9,
-                    ),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
-                            icon: const Icon(
-                              CupertinoIcons.settings,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Opacity(
+                      opacity: 0.5,
+                      child: Lottie.asset(
+                        'assets/lottiefiles/bells.json',
+                        width: MediaQuery.of(context).size.width * 0.9,
                       ),
                     ),
-                    const SizedBox(height: 30.0),
-                    FadeAnimation(
-                      delay: 1.0,
-                      child: RunningManLottieButton(onPressed: () => startPrint()),
-                    ),
-                    const SizedBox(height: 20.0),
-                    const TextTitleLevelOne('Appuyez pour commencer'),
-                    
-                    const SizedBox(height: 30.0),
-                    QuestionCategoriesHomeList(startPrint: startPrint),
-                    const SizedBox(height: 30.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 10.0),
-                        SvgPicture.asset(
-                          'assets/svgs/openai-white-logomark.svg',
-                          height: 40.0,
-                          width: 40.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
+                              icon: const Icon(
+                                CupertinoIcons.settings,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10.0),
-                        TextTitleLevelTwo('Powered by ChatGPT API'),
-                      ],
-                    ),
-                    const SizedBox(height: 30.0),
-                    Transform.translate(
+                      ),
+                      const SizedBox(height: 30.0),
+                      FadeAnimation(
+                        delay: 1.0,
+                        child: RunningManLottieButton(onPressed: () => startPrint()),
+                      ),
+                      const SizedBox(height: 20.0),
+                      const TextTitleLevelOne('Appuyez pour commencer'),
+                      const SizedBox(height: 30.0),
+                      QuestionCategoriesHomeList(startPrint: startPrint),
+                      const SizedBox(height: 30.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 10.0),
+                          SvgPicture.asset(
+                            'assets/svgs/openai-white-logomark.svg',
+                            height: 40.0,
+                            width: 40.0,
+                          ),
+                          const SizedBox(width: 10.0),
+                          TextTitleLevelTwo('Powered by ChatGPT API'),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Transform.translate(
                       offset: const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
                       child: Align(
                         alignment: Alignment.centerRight,
@@ -112,9 +118,9 @@ class HomeScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
