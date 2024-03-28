@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
+import 'package:mituna/domain/usecases/auth/logout.dart';
 import 'package:mituna/domain/usecases/user.dart';
 import 'package:mituna/presentation/screens/auth/welcome.dart';
 import 'package:mituna/presentation/widgets/all.dart';
@@ -17,7 +18,8 @@ class LogoutOrDeleteAccount extends HookWidget {
 
   final bool isDeleteAccount;
 
-  final userUsecase = UserUsecase();
+  final deleteAccountUsecase = DeleteAccountUsecase();
+  final logOutUsecase = LogOutUsecase();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class LogoutOrDeleteAccount extends HookWidget {
 
     logout() {
       loading.value = true;
-      userUsecase.logout().then((result) {
+      logOutUsecase().then((result) {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (r) {
@@ -37,7 +39,7 @@ class LogoutOrDeleteAccount extends HookWidget {
 
     delete() {
       loading.value = true;
-      userUsecase.deleteAccount().then((result) {
+      deleteAccountUsecase().then((result) {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (r) {

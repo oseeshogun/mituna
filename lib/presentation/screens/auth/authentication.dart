@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
-import 'package:mituna/domain/usecases/authentification.dart';
+import 'package:mituna/domain/usecases/auth/anonyme.dart';
+import 'package:mituna/domain/usecases/auth/google.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
@@ -12,7 +13,8 @@ import 'package:mituna/presentation/widgets/texts/all.dart';
 class AuthenticationScreen extends HookWidget {
   AuthenticationScreen({super.key});
 
-  final authenticationUsecase = AuthenticateUserUsecase();
+  final signInWithGoogleUsecase = SignInWithGoogleUsecase();
+  final anonymeAuthUsecase = AnonymeAuthentificationUsecase();
 
   static const String route = '/auth';
 
@@ -26,27 +28,19 @@ class AuthenticationScreen extends HookWidget {
     }
   }
 
-  Future<void> connectOrContinueWithGoogle(BuildContext context, ValueNotifier<bool> laoding) async {
-    laoding.value = true;
-    authenticationUsecase.getGoogleCredential().then((result) {
+  Future<void> connectOrContinueWithGoogle(BuildContext context, ValueNotifier<bool> loading) async {
+    loading.value = true;
+    signInWithGoogleUsecase().then((result) {
       result.fold((l) {
         showOkAlertDialog(
           context: context,
           message: l.message,
         );
-      }, (credential) {
-        authenticationUsecase.authenticateUsingGoogleCredential(credential).then((result) {
-          result.fold((l) {
-            showOkAlertDialog(
-              context: context,
-              message: l.message,
-            );
-          }, (r) {
-            afterAuthRedirect(context);
-          });
-        });
+      }, (r) {
+        afterAuthRedirect(context);
       });
-      laoding.value = false;
+    }).whenComplete(() {
+      loading.value = false;
     });
   }
 
@@ -55,7 +49,7 @@ class AuthenticationScreen extends HookWidget {
       if (Navigator.canPop(context)) return Navigator.of(context).pop();
     }
     laoding.value = true;
-    authenticationUsecase.authenticateAnonymously().then((result) {
+    anonymeAuthUsecase().then((result) {
       result.fold((l) {
         showOkAlertDialog(
           context: context,

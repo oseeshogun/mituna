@@ -8,7 +8,6 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/domain/entities/sprint.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/services/sound_effect.dart';
-import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 
@@ -19,7 +18,6 @@ class SprintScreen extends HookConsumerWidget {
   SprintScreen(this.sprint, {super.key});
 
   final Sprint sprint;
-  final sprintUsecase = SprintUsecase();
   final soundEffect = locator.get<SoundEffects>();
 
   final _happyLotties = [

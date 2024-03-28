@@ -26,8 +26,10 @@ class SettingsScreen extends HookConsumerWidget {
   SettingsScreen({super.key});
 
   final picker = ImagePicker();
-  final userUsecase = UserUsecase();
   static const route = '/settings';
+
+  final updateAvatarUsecase = UpdateAvatarUsecase();
+  final updateDisplayNameUsecase = UpdateDisplayNameUsecase();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,7 +84,7 @@ class SettingsScreen extends HookConsumerWidget {
       print(input);
       if (input == null) return;
       if (input == displayName) return;
-      userUsecase.updateDisplayName(input);
+      updateDisplayNameUsecase(input);
     }
 
     Future<void> updateAvatar(ValueNotifier<bool> loading) async {
@@ -91,7 +93,7 @@ class SettingsScreen extends HookConsumerWidget {
       final XFile? xFileImage = await picker.pickImage(source: source);
       if (xFileImage == null) return;
       loading.value = true;
-      userUsecase.updateUserAvatar(xFileImage.path).then((result) {
+      updateAvatarUsecase(xFileImage.path).then((result) {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (r) => null);
