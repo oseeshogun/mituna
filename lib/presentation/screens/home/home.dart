@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class HomeScreen extends HookConsumerWidget {
 
   final messaging = FirebaseMessaging.instance;
 
-  final sprintUsecase = SprintUsecase();
+  final startSprintUsecase = StartSprintUsecase();
 
   static const String route = '/home';
 
@@ -34,9 +35,16 @@ class HomeScreen extends HookConsumerWidget {
     useSetupInteractedMessage(context);
 
     startPrint([QuestionCategory? category]) async {
-      sprintUsecase.start(category).then((sprint) {
-        ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
-        Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+      startSprintUsecase(category).then((result) {
+        result.fold((l) {
+          showOkAlertDialog(
+            context: context,
+            message: l.message,
+          );
+        }, (sprint) {
+          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+        });
       });
     }
 

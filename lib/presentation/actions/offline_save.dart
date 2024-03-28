@@ -28,10 +28,10 @@ void useOfflineSave(BuildContext context) {
         final version = info.version;
         if (prefs.offlineSaved(version) == true) return;
         // background save of questions
-        final offlineLoadUsecase = OfflineLoadUsecase();
+        final saveQuestionsInDbUsecase = SaveQuestionsInDbUsecase();
 
         // background save of questions
-        await offlineLoadUsecase.saveQuestions();
+        await saveQuestionsInDbUsecase();
 
         prefs.offlineSavedDone(version);
       } catch (err, st) {

@@ -14,7 +14,7 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
 
   Future<Question?> getById(String id) => (select(questions)..where((tbl) => tbl.id.isValue(id))).getSingleOrNull();
 
-  Future<List<String>> randomQuestionIdList({int limit = 10, List<String>? categories, mostPickedLimit = 10}) async {
+  Future<List<String>> randomQuestionIdList({required int limit, required List<String>? categories, required mostPickedLimit}) async {
     final mostPicked = (selectOnly(questions)
       ..addColumns([questions.id, questions.picked])
       ..orderBy([OrderingTerm.desc(questions.picked)])
@@ -52,7 +52,10 @@ class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixi
 
   Future<bool> isEmpty() async {
     final questionCount = countAll(filter: questions.id.isNotNull());
-    final count = await ((selectOnly(questions)..addColumns([questionCount])..limit(1)).asyncMap((result) {
+    final count = await ((selectOnly(questions)
+          ..addColumns([questionCount])
+          ..limit(1))
+        .asyncMap((result) {
       return result.read(questionCount);
     }).getSingleOrNull());
     return count == null || count < 1;

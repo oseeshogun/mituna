@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,16 +26,20 @@ class FinishedSprint extends HookConsumerWidget {
   final bool hasSucceded;
   final QuestionCategory? category;
   final soundEffect = locator.get<SoundEffects>();
-  final sprintUsecase = SprintUsecase();
+  final startSprintUsecase = StartSprintUsecase();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String imageAsset = hasSucceded ? 'assets/svgs/Young and happy-bro.svg' : 'assets/svgs/Missed chances-cuate.svg';
 
     void newSprint([QuestionCategory? category]) {
-      sprintUsecase.start().then((sprint) {
-        ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+      startSprintUsecase(category).then((result) {
+        result.fold((l) {
+          showOkAlertDialog(context: context, message: l.message);
+        }, (sprint) {
+          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+        });
       });
     }
 

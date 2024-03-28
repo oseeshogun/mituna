@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OfflineQuestionsLoadScreen extends HookWidget {
   OfflineQuestionsLoadScreen({super.key});
 
-  final offlineLoadUsecase = OfflineLoadUsecase();
+  final saveQuestionsInDbUsecase = SaveQuestionsInDbUsecase();
   final prefs = locator.get<SharedPreferences>();
 
   static const route = '/offline_load';
@@ -39,7 +39,7 @@ class OfflineQuestionsLoadScreen extends HookWidget {
 
         try {
           // save questions
-          await offlineLoadUsecase.saveQuestions();
+          await saveQuestionsInDbUsecase();
 
           final info = await PackageInfo.fromPlatform();
           final version = info.version;
