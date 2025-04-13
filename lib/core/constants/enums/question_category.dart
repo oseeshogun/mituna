@@ -27,9 +27,7 @@ extension QuestionCategoryAsset on QuestionCategory {
         return 'Otaku';
       case QuestionCategory.religion:
         return 'Religion';
-      default:
-        throw UnimplementedError('Unknown category: $this');
-    }
+      }
   }
 
   bool get isFavorite {

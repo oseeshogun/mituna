@@ -21,7 +21,7 @@ class TextDescription extends StatelessWidget {
     return AutoSizeText(
       text,
       style: TextStyle(
-        color: color.withOpacity(opacity),
+        color: color.withAlpha((opacity * 255).toInt()),
         fontSize: 18,
       ),
       textAlign: textAlign,

@@ -18,7 +18,7 @@ class UserAvatar extends HookWidget {
 
     final container = Container(
       decoration: BoxDecoration(
-        color: AppColors.kColorBlack.withOpacity(.2),
+        color: AppColors.kColorBlack.withAlpha((.2 * 255).toInt()),
         shape: BoxShape.circle,
       ),
       child: Visibility(
@@ -27,7 +27,7 @@ class UserAvatar extends HookWidget {
         child: IconButton(
           icon: Icon(
             CupertinoIcons.camera_fill,
-            color: Colors.white.withOpacity(.5),
+            color: Colors.white.withAlpha((.5 * 255).toInt()),
             size: 30.0,
           ),
           onPressed: () => onUpdateImage?.call(loading),

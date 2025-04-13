@@ -98,13 +98,16 @@ class AuthenticationScreen extends HookWidget {
                 ),
               ),
               const Spacer(),
-              PrimaryButton(
-                loading: loading.value,
-                child: TextTitleLevelOne(
-                  anonymousAccountIsUsed ? 'Annuler' : 'Plus tard',
-                  color: AppColors.kColorBlack,
+              Visibility(
+                visible: !loading.value,
+                child: PrimaryButton(
+                  loading: loading.value,
+                  child: TextTitleLevelOne(
+                    anonymousAccountIsUsed ? 'Annuler' : 'Plus tard',
+                    color: AppColors.kColorBlack,
+                  ),
+                  onPressed: () => connectOrContinueAnonymously(context, loading),
                 ),
-                onPressed: () => connectOrContinueAnonymously(context, loading),
               ),
               const SizedBox(height: 20.0),
             ],

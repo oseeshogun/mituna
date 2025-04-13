@@ -23,7 +23,7 @@ class RunningManLottieButton extends StatelessWidget {
                 color: AppColors.kColorYellow,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.white.withOpacity(.4),
+                    color: Colors.white.withAlpha((.4 * 255).toInt()),
                     blurRadius: 10.0,
                     spreadRadius: 3.0,
                   ),

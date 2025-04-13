@@ -24,8 +24,8 @@ class RankFirstPainter extends CustomPainter {
         const Offset(0, 0),
         const Offset(0, -120.0),
         [
-          Colors.white.withOpacity(.6),
-          Colors.white.withOpacity(.0),
+          Colors.white.withAlpha((.6 * 255).toInt()),
+          Colors.white.withAlpha((.0 * 255).toInt()),
         ],
       );
 

@@ -51,7 +51,7 @@ class SprintScreen extends HookConsumerWidget {
       Future.delayed(const Duration(milliseconds: 500), () {
         startCountdownLottie.value = true;
       });
-      return () => soundEffect.stop();
+      return () {};
     }, []);
 
     if (!startCountdownLottie.value) return const Scaffold();
@@ -73,9 +73,10 @@ class SprintScreen extends HookConsumerWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
-        final result = await showOkCancelAlertDialog(context: context, title: 'Etes-vous sûr de vouloir quitter le sprint ?', cancelLabel: 'Non', okLabel: 'Oui');
+        final result =
+            await showOkCancelAlertDialog(context: context, title: 'Etes-vous sûr de vouloir quitter le sprint ?', cancelLabel: 'Non', okLabel: 'Oui');
         final quit = result == OkCancelResult.ok;
         if (quit) Navigator.of(context).pop();
       },

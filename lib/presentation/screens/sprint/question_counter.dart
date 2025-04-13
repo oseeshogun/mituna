@@ -33,7 +33,6 @@ class QuestionCounter extends HookWidget {
       final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (state.value == QuestionCounterState.paused || state.value == QuestionCounterState.stopped) {
           counterAnimationController.stop();
-          soundEffect.stop();
           return;
         }
         onTick?.call(time.value);
@@ -41,7 +40,6 @@ class QuestionCounter extends HookWidget {
         if (time.value == 0) {
           timer.cancel();
           counterAnimationController.stop();
-          soundEffect.stop();
           onEnd?.call();
         }
       });

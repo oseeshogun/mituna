@@ -25,7 +25,7 @@ class SoundSlider extends HookWidget {
               data: SliderTheme.of(context).copyWith(
                 valueIndicatorColor: AppColors.kColorBlueRibbon,
                 valueIndicatorTextStyle: TextStyle(
-                  color: AppColors.kColorBlack.withOpacity(.6),
+                  color: AppColors.kColorBlack.withAlpha((.6 * 255).toInt()),
                   fontWeight: FontWeight.bold,
                 ),
                 valueIndicatorShape: const PaddleSliderValueIndicatorShape(),

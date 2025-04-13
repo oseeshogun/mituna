@@ -12,59 +12,59 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cupertino_icons: ^1.0.2
-  firebase_core: ^2.15.0
-  firebase_auth: ^4.7.2
-  flutter_hooks: ^0.20.0
-  flutter_svg: ^2.0.7
+  cupertino_icons: ^1.0.8
+  firebase_core: ^3.12.1
+  firebase_auth: ^5.5.1
+  flutter_hooks: ^0.21.2
+  flutter_svg: ^2.0.17
   auto_size_text: ^3.0.0
   dartz: ^0.10.1
-  equatable: ^2.0.5
-  google_sign_in: ^6.1.4
-  adaptive_dialog: ^1.9.0
-  firebase_messaging: ^14.6.5
-  upgrader: ^8.1.0
-  hooks_riverpod: ^2.4.9
-  cloud_firestore: ^4.8.4
-  simple_animations: ^5.0.2
-  lottie: ^2.6.0
-  drift: ^2.11.0
-  sqlite3_flutter_libs: ^0.5.15
-  path_provider: ^2.1.0
-  path: ^1.8.3
-  get_it: ^7.6.0
-  shared_preferences: ^2.2.0
-  uuid: ^3.0.7
-  vibration: ^1.8.1
-  soundpool: ^2.3.0
+  equatable: ^2.0.7
+  google_sign_in: ^6.3.0
+  adaptive_dialog: ^2.4.0
+  firebase_messaging: ^15.2.4
+  upgrader: ^11.3.1
+  hooks_riverpod: ^2.6.1
+  cloud_firestore: ^5.6.5
+  simple_animations: ^5.1.0
+  lottie: ^3.3.1
+  drift: ^2.26.0
+  sqlite3_flutter_libs: ^0.5.31
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  get_it: ^8.0.3
+  shared_preferences: ^2.5.2
+  uuid: ^4.5.1
+  vibration: ^3.1.3
+  sound_library: ^1.0.0
   tuple: ^2.0.2
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.4.1
   intl: any
-  image_picker: ^1.0.2
-  flutter_image_compress: ^2.0.4
-  firebase_storage: ^11.2.6
-  flutter_form_builder: ^9.1.0
-  package_info_plus: ^4.1.0
-  rate_my_app: ^2.0.0
-  faker: ^2.1.0
-  riverpod_annotation: ^2.3.3
-  string_extensions: ^0.7.1
-  logger: ^2.2.0
+  image_picker: ^1.1.2
+  flutter_image_compress: ^2.4.0
+  firebase_storage: ^12.4.4
+  flutter_form_builder: ^10.0.1
+  package_info_plus: ^8.3.0
+  rate_my_app: ^2.3.1
+  faker: ^2.2.0
+  riverpod_annotation: ^2.6.1
+  string_extensions: ^0.7.3
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.3.6
-  build_runner: ^2.4.6
-  drift_dev: ^2.11.0
-  mockito: ^5.4.2
-  firebase_auth_mocks: ^0.12.0
-  fake_cloud_firestore: ^2.4.1+1
-  riverpod_generator: ^2.3.9
-  custom_lint: ^0.5.8
-  riverpod_lint: ^2.3.7
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.5
+  build_runner: ^2.4.15
+  drift_dev: ^2.26.0
+  mockito: ^5.4.5
+  firebase_auth_mocks: ^0.14.1
+  fake_cloud_firestore: ^3.1.0
+  riverpod_generator: ^2.6.5
+  custom_lint: ^0.7.5
+  riverpod_lint: ^2.6.5
 
 flutter:
   uses-material-design: true

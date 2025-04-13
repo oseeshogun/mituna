@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mituna/domain/entities/firestore_user.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user.g.dart';
 
 @riverpod
-Stream<User?> firebaseAuthUserStream(FirebaseAuthUserStreamRef ref) {
+Stream<User?> firebaseAuthUserStream(Ref ref) {
   return FirebaseAuth.instance.userChanges();
 }
 
 @riverpod
-Stream<FirestoreUser?> firestoreAuthenticatedUserStream(FirestoreAuthenticatedUserStreamRef ref) {
+Stream<FirestoreUser?> firestoreAuthenticatedUserStream(Ref ref) {
   return ref.watch(firebaseAuthUserStreamProvider).when(
         data: (firebaseUser) {
           if (firebaseUser == null) return Stream.value(null);
@@ -33,6 +34,6 @@ Stream<FirestoreUser?> firestoreAuthenticatedUserStream(FirestoreAuthenticatedUs
 }
 
 @riverpod
-Stream<FirestoreUser?> firestoreUserData(FirestoreUserDataRef ref, String uid) {
+Stream<FirestoreUser?> firestoreUserData(Ref ref, String uid) {
   return FirebaseFirestore.instance.collection('users').doc(uid).snapshots().asyncMap((doc) => FirestoreUser.fromDocument(uid, doc));
 }

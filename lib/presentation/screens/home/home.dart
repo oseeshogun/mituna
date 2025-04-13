@@ -50,7 +50,7 @@ class HomeScreen extends HookConsumerWidget {
 
     return Scaffold(
       body: UpgradeAlert(
-        upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+        upgrader: Upgrader(),
         child: SafeArea(
           child: SingleChildScrollView(
             child: ConstrainedBox(
