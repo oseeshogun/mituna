@@ -7,7 +7,7 @@ class AnswerDto extends Equatable {
   final AnswerType type;
   final String question;
 
-  AnswerDto({
+  const AnswerDto({
     required this.value,
     required this.isCorrect,
     required this.type,

@@ -13,8 +13,8 @@ mixin _ErrorWrapper<T> {
     try {
       return Right<Failure, T>(await execute.call());
     } catch (err, st) {
-      logger.w("_ErrorWrapper:" + err.toString());
-      logger.w("_ErrorWrapper\n:" + st.toString());
+      logger.w("_ErrorWrapper:$err");
+      logger.w("_ErrorWrapper\n:$st");
       return _resolveLeft(err, st);
     }
   }
@@ -23,8 +23,8 @@ mixin _ErrorWrapper<T> {
     try {
       return Right<Failure, T>(execute.call());
     } catch (err, st) {
-      logger.w("_ErrorWrapper:" + err.toString());
-      logger.w("_ErrorWrapper\n:" + st.toString());
+      logger.w("_ErrorWrapper:$err");
+      logger.w("_ErrorWrapper\n:$st");
       return _resolveLeft(err, st);
     }
   }

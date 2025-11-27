@@ -16,7 +16,7 @@ void useRateMyApp(BuildContext context) {
     );
 
     rateMyApp.init().then((_) {
-      if (rateMyApp.shouldOpenDialog) {
+      if (rateMyApp.shouldOpenDialog && context.mounted) {
         rateMyApp.showRateDialog(
           context,
           title: 'Notez cette application',

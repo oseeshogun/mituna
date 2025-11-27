@@ -1,7 +1,7 @@
 part of 'all.dart';
 
 class UserAvatar extends HookWidget {
-  UserAvatar({
+  const UserAvatar({
     super.key,
     required this.avatar,
     this.onUpdateImage,

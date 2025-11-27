@@ -6,7 +6,7 @@ part 'questions_dao.g.dart';
 
 @DriftAccessor(tables: [Questions])
 class QuestionsDao extends DatabaseAccessor<AppDatabase> with _$QuestionsDaoMixin {
-  QuestionsDao(AppDatabase db) : super(db);
+  QuestionsDao(super.db);
 
   Expression<int> get questionsCount => questions.id.count();
 

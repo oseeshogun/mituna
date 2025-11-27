@@ -13,7 +13,7 @@ void useOfflineSave(BuildContext context) {
   useEffect(() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final QuestionsDao questionsDao = locator.get<QuestionsDao>();
-      if (await questionsDao.isEmpty()) {
+      if (await questionsDao.isEmpty() && context.mounted) {
         Navigator.of(context).pushNamed(OfflineQuestionsLoadScreen.route);
       }
     });

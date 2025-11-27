@@ -27,17 +27,17 @@ extension QuestionCategoryAsset on QuestionCategory {
         return 'Otaku';
       case QuestionCategory.religion:
         return 'Religion';
-      }
+    }
   }
 
   bool get isFavorite {
-    final _prefs = locator.get<SharedPreferences>();
-    return _prefs.getBool('favorite_$name') ?? _defaultIsFavorite(this);
+    final prefs = locator.get<SharedPreferences>();
+    return prefs.getBool('favorite_$name') ?? _defaultIsFavorite(this);
   }
 
-  void set isFavorite(bool value) {
-    final _prefs = locator.get<SharedPreferences>();
-    _prefs.setBool('favorite_$name', value);
+  set isFavorite(bool value) {
+    final prefs = locator.get<SharedPreferences>();
+    prefs.setBool('favorite_$name', value);
   }
 }
 

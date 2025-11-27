@@ -27,5 +27,5 @@ class FirestoreUser extends Equatable {
   @override
   List<Object> get props => [uid];
 
-  static get defaultImageUrl => 'https://res.cloudinary.com/dcmzsqq2y/image/upload/v1673795782/profiles/s_udzknr.png';
+  static String get defaultImageUrl => 'https://res.cloudinary.com/dcmzsqq2y/image/upload/v1673795782/profiles/s_udzknr.png';
 }

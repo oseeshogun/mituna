@@ -2,9 +2,9 @@ part of 'all.dart';
 
 class RunningManLottieButton extends StatelessWidget {
   const RunningManLottieButton({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final void Function()? onPressed;
 

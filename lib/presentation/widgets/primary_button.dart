@@ -9,8 +9,8 @@ class PrimaryButton extends StatelessWidget {
     this.foregroundColor = AppColors.kColorBlack,
     this.padding = const EdgeInsets.symmetric(vertical: 12.0),
     this.radius = 10.0,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final void Function()? onPressed;
   final Widget child;

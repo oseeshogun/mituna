@@ -7,7 +7,7 @@ class QuestionDto extends Equatable {
   final QuestionType type;
   final QuestionCategory category;
 
-  QuestionDto({
+  const QuestionDto({
     required this.id,
     required this.content,
     required this.type,

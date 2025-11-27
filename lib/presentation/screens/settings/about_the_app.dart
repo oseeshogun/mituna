@@ -54,7 +54,7 @@ class AboutTheApp extends HookWidget {
                           if (canLaunch) {
                             launchUrlString(person.portfolio!);
                           }
-                          Navigator.of(context).pop();
+                          if (context.mounted) Navigator.of(context).pop();
                         }).catchError((err) {
                           debugPrint(err.toString());
                         });
@@ -68,7 +68,7 @@ class AboutTheApp extends HookWidget {
                         if (canLaunch) {
                           launchUrlString(person.linkedin, mode: LaunchMode.externalApplication);
                         }
-                        Navigator.of(context).pop();
+                        if (context.mounted) Navigator.of(context).pop();
                       }).catchError((err) {
                         debugPrint(err.toString());
                       });
@@ -84,7 +84,7 @@ class AboutTheApp extends HookWidget {
                           if (canLaunch) {
                             launchUrlString(person.whatsapp!, mode: LaunchMode.externalApplication);
                           }
-                          Navigator.of(context).pop();
+                          if (context.mounted) Navigator.of(context).pop();
                         }).catchError((err) {
                           debugPrint(err.toString());
                         });

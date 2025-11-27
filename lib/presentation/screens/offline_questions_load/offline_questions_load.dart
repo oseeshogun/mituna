@@ -50,7 +50,7 @@ class OfflineQuestionsLoadScreen extends HookWidget {
         } catch (err, st) {
           debugPrint(err.toString());
           debugPrint(st.toString());
-          showOkAlertDialog(context: context, title: 'Une erreur est survenue pendant le chargement des questions.');
+          if (context.mounted) showOkAlertDialog(context: context, title: 'Une erreur est survenue pendant le chargement des questions.');
           animationController.stop();
         }
       });

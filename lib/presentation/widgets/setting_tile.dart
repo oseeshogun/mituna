@@ -1,7 +1,7 @@
 part of 'all.dart';
 
 class SettingTile extends StatelessWidget {
-  SettingTile({
+  const SettingTile({
     super.key,
     required this.leading,
     required this.title,

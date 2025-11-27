@@ -168,7 +168,7 @@ class SprintQuestion extends HookConsumerWidget {
                     );
                   },
                 );
-              }).toList()
+              })
             ],
           ),
         )

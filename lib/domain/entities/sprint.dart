@@ -53,7 +53,7 @@ class Sprint {
     return randomElement(questions.where((element) => !_questionStats.keys.contains(element)).toList());
   }
 
-  answer(QuestionWithAnswers questionAnswered, Answer? answerGiven, int elapsed) {
+  void answer(QuestionWithAnswers questionAnswered, Answer? answerGiven, int elapsed) {
     final questionStat = QuestionStat(
       question: questionAnswered,
       elapsed: elapsed,

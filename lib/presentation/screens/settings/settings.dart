@@ -15,9 +15,9 @@ import 'package:mituna/presentation/screens/auth/authentication.dart';
 import 'package:mituna/presentation/screens/settings/logout_or_delete_account.dart';
 import 'package:mituna/presentation/utils/file_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'about_the_app.dart';
 import 'favorites_categories.dart';
@@ -81,7 +81,6 @@ class SettingsScreen extends HookConsumerWidget {
           );
         },
       );
-      print(input);
       if (input == null) return;
       if (input == displayName) return;
       updateDisplayNameUsecase(input);
@@ -175,11 +174,13 @@ class SettingsScreen extends HookConsumerWidget {
                 title: 'Code source',
                 onLongPress: () async {
                   await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
-                  ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-                    SnackBar(
-                      content: Text('Lien copié'),
-                    ),
-                  );
+                  if (context.mounted) {
+                    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                      SnackBar(
+                        content: Text('Lien copié'),
+                      ),
+                    );
+                  }
                 },
                 onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
               );

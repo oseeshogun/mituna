@@ -15,7 +15,7 @@ extension SharedPreferencesKeys on SharedPreferences {
   set qotdLaunchedByNotif(bool value) => setBool(_qotdLaunchedByNofifKey, value);
 
   bool offlineSaved(String version) => getBool('offline_$version') ?? false;
-  offlineSavedDone(String version) => setBool('offline_$version', true);
+  Future<bool> offlineSavedDone(String version) async => await setBool('offline_$version', true);
 
   int get notificationId {
     final id = getInt('notification_id') ?? 0;

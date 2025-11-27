@@ -19,7 +19,7 @@ class StartSprintUsecase extends UsecaseFamily<Sprint, QuestionCategory?> {
     final categories = category != null
         ? <String>[category.name]
         : <String>[
-            ...QuestionCategory.values.where((element) => element.isFavorite).map((e) => e.name).toList(),
+            ...QuestionCategory.values.where((element) => element.isFavorite).map((e) => e.name),
           ];
     final questionsIdList = await _questionRepository.randomQuestionIdList(
       categories: categories,

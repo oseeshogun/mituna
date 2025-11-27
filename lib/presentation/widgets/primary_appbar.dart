@@ -8,13 +8,13 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
 
   const PrimaryAppBar({
-    Key? key,
+    super.key,
     this.leading,
     this.title,
     this.centerTitle = true,
     this.automaticallyImplyLeading = true,
     this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -19,8 +19,8 @@ class PrimaryRadioButton<T> extends StatelessWidget {
     this.selectedRadioBorderColor = AppColors.kColorBlueRibbon,
     this.radioFillColor = Colors.transparent,
     this.selectedRadioFillColor = AppColors.kColorBlueRibbon,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final T value;
   final T? groupValue;

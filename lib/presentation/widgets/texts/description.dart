@@ -7,8 +7,8 @@ class TextDescription extends StatelessWidget {
     this.opacity = 0.8,
     this.textAlign = TextAlign.left,
     this.maxLines,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final Color color;

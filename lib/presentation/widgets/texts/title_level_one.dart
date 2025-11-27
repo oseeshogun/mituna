@@ -6,8 +6,8 @@ class TextTitleLevelOne extends StatelessWidget {
     this.color = Colors.white,
     this.textAlign = TextAlign.center,
     this.maxLines,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String text;
   final Color? color;
