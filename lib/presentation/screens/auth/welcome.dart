@@ -33,7 +33,7 @@ class WelcomeScreen extends HookWidget {
                         height: 200,
                       ),
                       const SizedBox(height: 10),
-                      const TextTitleLevelOne('Mutuna'),
+                      const TextTitleLevelOne('Mituna'),
                       const SizedBox(height: 10),
                       const TextDescription(
                         'Testez vos connaissances sur la République Démocratique du Congo et le Monde.',
