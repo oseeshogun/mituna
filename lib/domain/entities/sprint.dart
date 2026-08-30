@@ -10,6 +10,7 @@ class Sprint {
   final QuestionCategory? category;
   final List<String> answered;
   final int topazMultiplier;
+  final bool isQuestionOfTheDay;
 
   final Map<QuestionWithAnswers, QuestionStat> _questionStats = {};
   late int _hearts;
@@ -21,6 +22,7 @@ class Sprint {
     int initialHearts = 3,
     this.category,
     this.topazMultiplier = 1,
+    this.isQuestionOfTheDay = false,
     this.answered = const [],
   })  : _hearts = initialHearts,
         assert(id.trim().isNotEmpty, "Sprint id can not be empty."),

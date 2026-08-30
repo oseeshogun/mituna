@@ -21,6 +21,7 @@ class SprintScreen extends HookConsumerWidget {
   final Sprint sprint;
   final soundEffect = locator.get<SoundEffects>();
   final saveTopazRewardUsecase = SaveTopazRewardUsecase();
+  final startQuestionOfTheDayUsecase = StartQuestionOfTheDayUsecase();
 
   final _happyLotties = [
     'assets/lottiefiles/happy/animation_lnrqd8mz.json',
@@ -117,6 +118,9 @@ class SprintScreen extends HookConsumerWidget {
                       final topazWon = sprint.topazWon;
                       if (sprint.success) {
                         saveTopazRewardUsecase(topazWon);
+                        if (sprint.isQuestionOfTheDay) {
+                          startQuestionOfTheDayUsecase.markTodayQuestionWon();
+                        }
                       }
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(

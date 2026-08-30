@@ -41,6 +41,11 @@ class HomeScreen extends HookConsumerWidget {
     useSetupInteractedMessage(context);
 
     final loadingQuestionOfTheDay = useState(false);
+    final questionOfTheDayTick = useState(0);
+    final questionOfTheDayWon = useMemoized(
+      () => startQuestionOfTheDayUsecase.isTodayQuestionWon,
+      [questionOfTheDayTick.value],
+    );
 
     startPrint([QuestionCategory? category]) async {
       startSprintUsecase(category).then((result) {
@@ -67,12 +72,13 @@ class HomeScreen extends HookConsumerWidget {
       if (!context.mounted) return;
       result.fold((l) {
         showOkAlertDialog(context: context, message: l.message);
-      }, (sprint) {
+      }, (sprint) async {
         ref
             .watch(sprintHeartsProvider(sprint.id).notifier)
             .update(sprint.hearts);
-        Navigator.of(context)
+        await Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+        questionOfTheDayTick.value++;
       });
     }
 
@@ -150,26 +156,28 @@ class HomeScreen extends HookConsumerWidget {
                       const SizedBox(height: 20.0),
                       const TextTitleLevelOne('Appuyez pour commencer'),
                       const SizedBox(height: 30.0),
-                      Center(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.65),
-                          child: PrimaryButton(
-                            loading: loadingQuestionOfTheDay.value,
-                            radius: 50.0,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 5.0),
-                            onPressed: startQuestionOfTheDay,
-                            child: const TextTitleLevelTwo(
-                              '🕹️  Question du jour',
-                              color: AppColors.kColorBlueRibbon,
-                              maxLines: 1,
+                      if (!questionOfTheDayWon) ...[
+                        Center(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.65),
+                            child: PrimaryButton(
+                              loading: loadingQuestionOfTheDay.value,
+                              radius: 50.0,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 5.0),
+                              onPressed: startQuestionOfTheDay,
+                              child: const TextTitleLevelTwo(
+                                '🕹️  Question du jour',
+                                color: AppColors.kColorBlueRibbon,
+                                maxLines: 1,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 30.0),
+                        const SizedBox(height: 30.0),
+                      ],
                       QuestionCategoriesHomeList(startPrint: startPrint),
                       const SizedBox(height: 30.0),
                       Row(

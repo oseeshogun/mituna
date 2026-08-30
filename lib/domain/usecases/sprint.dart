@@ -75,10 +75,21 @@ class StartQuestionOfTheDayUsecase extends Usecase<Sprint> {
   final _questionRepository = locator.get<QuestionRepository>();
   final _prefs = locator.get<SharedPreferences>();
 
-  String get _todayKey {
+  String get _todayStamp {
     final now = DateTime.now();
-    return 'qotd_${now.day}/${now.month}/${now.year}';
+    return '${now.day}/${now.month}/${now.year}';
   }
+
+  String get _todayKey => 'qotd_$_todayStamp';
+  String get _todayWonKey => 'qotd_won_$_todayStamp';
+
+  /// Whether the user has already succeeded at today's question. The home
+  /// screen hides the button once this is true.
+  bool get isTodayQuestionWon => _prefs.getBool(_todayWonKey) ?? false;
+
+  /// Records that today's question has been beaten. Called from the sprint
+  /// screen when a QOTD sprint finishes successfully.
+  Future<void> markTodayQuestionWon() => _prefs.setBool(_todayWonKey, true);
 
   Future<String?> _pickRandomQuestionId() async {
     final ids = await _questionRepository.randomQuestionIdList(
@@ -112,6 +123,7 @@ class StartQuestionOfTheDayUsecase extends Usecase<Sprint> {
       category: null,
       initialHearts: 1,
       topazMultiplier: 10,
+      isQuestionOfTheDay: true,
       answered: _answeredQuestionIds(_prefs, questions),
     );
   }
