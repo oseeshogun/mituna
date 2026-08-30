@@ -14,6 +14,7 @@ import 'package:mituna/presentation/actions/firebase_messaging.dart';
 import 'package:mituna/presentation/actions/offline_save.dart';
 import 'package:mituna/presentation/actions/rate_my_app.dart';
 import 'package:mituna/presentation/screens/home/categories.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
@@ -43,8 +44,11 @@ class HomeScreen extends HookConsumerWidget {
             message: l.message,
           );
         }, (sprint) {
-          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+          ref
+              .watch(sprintHeartsProvider(sprint.id).notifier)
+              .update(sprint.hearts);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
       });
     }
@@ -56,7 +60,9 @@ class HomeScreen extends HookConsumerWidget {
           bottom: false,
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top),
               child: Stack(
                 children: [
                   Positioned(
@@ -74,19 +80,36 @@ class HomeScreen extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.kScaffoldHorizontalPadding),
                         child: Row(
                           children: [
                             const TopazIcon(),
                             const SizedBox(width: 5.0),
-                            ref.watch(firestoreAuthenticatedUserStreamProvider).when(
+                            ref
+                                .watch(firestoreAuthenticatedUserStreamProvider)
+                                .when(
                                   loading: () => const TextTitleLevelTwo('0'),
-                                  error: (error, stackTrace) => const TextTitleLevelTwo('0'),
-                                  data: (firestoreAuthUser) => TextTitleLevelTwo((firestoreAuthUser?.diamonds ?? 0).toString()),
+                                  error: (error, stackTrace) =>
+                                      const TextTitleLevelTwo('0'),
+                                  data: (firestoreAuthUser) =>
+                                      TextTitleLevelTwo(
+                                          (firestoreAuthUser?.diamonds ?? 0)
+                                              .toString()),
                                 ),
                             const Spacer(),
                             IconButton(
-                              onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(RankingScreen.route),
+                              icon: const Icon(
+                                Icons.bar_chart,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(SettingsScreen.route),
                               icon: const Icon(
                                 CupertinoIcons.settings,
                                 color: Colors.white,
@@ -98,7 +121,8 @@ class HomeScreen extends HookConsumerWidget {
                       const SizedBox(height: 30.0),
                       FadeAnimation(
                         delay: 1.0,
-                        child: RunningManLottieButton(onPressed: () => startPrint()),
+                        child: RunningManLottieButton(
+                            onPressed: () => startPrint()),
                       ),
                       const SizedBox(height: 20.0),
                       const TextTitleLevelOne('Appuyez pour commencer'),
@@ -125,7 +149,8 @@ class HomeScreen extends HookConsumerWidget {
                     bottom: 0,
                     right: 0,
                     child: Transform.translate(
-                      offset: const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
+                      offset:
+                          const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Image.asset(

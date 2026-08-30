@@ -5,7 +5,8 @@ class SoundSlider extends HookWidget {
     super.key,
     required this.onChanged,
     required this.value,
-  }): assert(value >= 0.0 && value <= 1.0, "The value must be between 0 and 1");
+  }) : assert(
+            value >= 0.0 && value <= 1.0, "The value must be between 0 and 1");
 
   final void Function(double)? onChanged;
   final double value;
@@ -36,7 +37,7 @@ class SoundSlider extends HookWidget {
                 divisions: 5,
                 activeColor: AppColors.kColorYellow,
                 label: (value * 100).floor().toString(),
-                onChanged: (v) => onChanged?.call(v/100),
+                onChanged: (v) => onChanged?.call(v / 100),
               ),
             ),
           ),

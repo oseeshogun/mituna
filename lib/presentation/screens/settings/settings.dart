@@ -33,8 +33,10 @@ class SettingsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final firebaseAuthUserAsyncValue = ref.watch(firebaseAuthUserStreamProvider);
-    final firestoreAuthUserAsyncValue = ref.watch(firestoreAuthenticatedUserStreamProvider);
+    final firebaseAuthUserAsyncValue =
+        ref.watch(firebaseAuthUserStreamProvider);
+    final firestoreAuthUserAsyncValue =
+        ref.watch(firestoreAuthenticatedUserStreamProvider);
     final prefs = locator.get<SharedPreferences>();
     final volume = useState(prefs.volume);
 
@@ -71,7 +73,8 @@ class SettingsScreen extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 20.0),
                   PrimaryButton(
-                    child: TextDescription('Confirmer', color: AppColors.kColorBlueRibbon),
+                    child: TextDescription('Confirmer',
+                        color: AppColors.kColorBlueRibbon),
                     onPressed: () => Navigator.of(context).pop(newDisplayName),
                   ),
                   SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
@@ -110,7 +113,8 @@ class SettingsScreen extends HookConsumerWidget {
             data: (firebaseUser) {
               if (firebaseUser?.isAnonymous == true) {
                 return IconButton(
-                  onPressed: () => Navigator.of(context).pushNamed(AuthenticationScreen.route),
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(AuthenticationScreen.route),
                   icon: const Icon(
                     CupertinoIcons.person_crop_circle,
                     size: 30,
@@ -123,7 +127,8 @@ class SettingsScreen extends HookConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.kScaffoldHorizontalPadding),
         child: Column(
           children: [
             const SizedBox(height: 10.0),
@@ -152,7 +157,8 @@ class SettingsScreen extends HookConsumerWidget {
                         size: 14.0,
                         color: Colors.white,
                       ),
-                      onPressed: () => changeUserDisplayName(firestoreUser?.displayName ?? ''),
+                      onPressed: () => changeUserDisplayName(
+                          firestoreUser?.displayName ?? ''),
                     ),
                   ),
                 ],
@@ -162,7 +168,8 @@ class SettingsScreen extends HookConsumerWidget {
             SettingTile(
               leading: const Icon(Icons.category),
               title: 'Catégories favorites',
-              onTap: () => Navigator.of(context).pushNamed(FavoritesCategories.route),
+              onTap: () =>
+                  Navigator.of(context).pushNamed(FavoritesCategories.route),
             ),
             SoundSlider(
               value: volume.value,
@@ -173,7 +180,8 @@ class SettingsScreen extends HookConsumerWidget {
                 leading: const Icon(Icons.code),
                 title: 'Code source',
                 onLongPress: () async {
-                  await Clipboard.setData(ClipboardData(text: 'https://github.com/oseeshogun/mituna'));
+                  await Clipboard.setData(ClipboardData(
+                      text: 'https://github.com/oseeshogun/mituna'));
                   if (context.mounted) {
                     ScaffoldMessenger.maybeOf(context)?.showSnackBar(
                       SnackBar(
@@ -182,7 +190,9 @@ class SettingsScreen extends HookConsumerWidget {
                     );
                   }
                 },
-                onTap: () => launchUrl(Uri.parse("https://github.com/oseeshogun/mituna"), mode: LaunchMode.externalApplication),
+                onTap: () => launchUrl(
+                    Uri.parse("https://github.com/oseeshogun/mituna"),
+                    mode: LaunchMode.externalApplication),
               );
             }),
             SettingTile(
@@ -194,13 +204,17 @@ class SettingsScreen extends HookConsumerWidget {
             SettingTile(
               leading: const Icon(Icons.logout),
               title: 'Déconnexion',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: false))),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      LogoutOrDeleteAccount(isDeleteAccount: false))),
             ),
             SettingTile(
               foregroundColor: AppColors.kColorYellow,
               leading: const Icon(CupertinoIcons.trash),
               title: 'Supprimer mon compte',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogoutOrDeleteAccount(isDeleteAccount: true))),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      LogoutOrDeleteAccount(isDeleteAccount: true))),
             ),
             const SizedBox(height: 20.0),
           ],

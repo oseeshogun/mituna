@@ -23,7 +23,8 @@ class UserAvatar extends HookWidget {
       ),
       child: Visibility(
         visible: !loading.value,
-        replacement: const CircularProgressIndicator(color: AppColors.kColorYellow),
+        replacement:
+            const CircularProgressIndicator(color: AppColors.kColorYellow),
         child: IconButton(
           icon: Icon(
             CupertinoIcons.camera_fill,

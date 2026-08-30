@@ -9,7 +9,8 @@ class QuestionRepositoryImpl extends QuestionRepository {
   final dao = locator.get<QuestionsDao>();
 
   @override
-  Future<int> incrementPicked(List<String> entries, int value) => dao.incrementPicked(entries, value);
+  Future<int> incrementPicked(List<String> entries, int value) =>
+      dao.incrementPicked(entries, value);
 
   @override
   Future<void> insertAll(List<QuestionDto> questions) async {
@@ -25,10 +26,14 @@ class QuestionRepositoryImpl extends QuestionRepository {
   }
 
   @override
-  Future<List<String>> randomQuestionIdList({int limit = 10, List<String>? categories, mostPickedLimit = 10}) {
-    return dao.randomQuestionIdList(limit: limit, categories: categories, mostPickedLimit: mostPickedLimit);
+  Future<List<String>> randomQuestionIdList(
+      {int limit = 10, List<String>? categories, mostPickedLimit = 10}) {
+    return dao.randomQuestionIdList(
+        limit: limit, categories: categories, mostPickedLimit: mostPickedLimit);
   }
 
   @override
-  Future<List<QuestionWithAnswers>> getQuestionsWithAnswers(List<String> questionsIdList) => dao.db.getQuestionsWithAnswers(questionsIdList);
+  Future<List<QuestionWithAnswers>> getQuestionsWithAnswers(
+          List<String> questionsIdList) =>
+      dao.db.getQuestionsWithAnswers(questionsIdList);
 }

@@ -21,7 +21,9 @@ class PeriodText extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: currentPeriod == period ? AppColors.kColorBlueRibbon : Colors.grey,
+          color: currentPeriod == period
+              ? AppColors.kColorBlueRibbon
+              : Colors.grey,
           fontWeight: FontWeight.bold,
           fontSize: 14.0,
         ),

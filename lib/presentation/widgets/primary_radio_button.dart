@@ -48,8 +48,10 @@ class PrimaryRadioButton<T> extends StatelessWidget {
     final appliedTextColor = selected ? selectedTextColor : textColor;
     final appliedFillColor = selected ? selectedFillColor : fillColor;
     final appliedBorderColor = selected ? selectedBorderColor : borderColor;
-    final appliedRadioBorderColor = selected ? selectedRadioBorderColor : radioBorderColor;
-    final appliedRadioFillColor = selected ? selectedRadioFillColor : radioFillColor;
+    final appliedRadioBorderColor =
+        selected ? selectedRadioBorderColor : radioBorderColor;
+    final appliedRadioFillColor =
+        selected ? selectedRadioFillColor : radioFillColor;
 
     final defaultRadioIcon = Container(
       decoration: BoxDecoration(
@@ -85,7 +87,10 @@ class PrimaryRadioButton<T> extends StatelessWidget {
                 color: appliedTextColor,
               ),
             ),
-            if (selected && selectRadioIcon != null) selectRadioIcon! else radioIcon ?? defaultRadioIcon,
+            if (selected && selectRadioIcon != null)
+              selectRadioIcon!
+            else
+              radioIcon ?? defaultRadioIcon,
           ],
         ),
       ),

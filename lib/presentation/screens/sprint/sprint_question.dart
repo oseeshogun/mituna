@@ -88,14 +88,16 @@ class SprintQuestion extends HookConsumerWidget {
       questionCounterState.value = QuestionCounterState.stopped;
 
       if (Random().nextBool()) await onStartAnimation?.call(isCorrect);
-      Future.delayed(const Duration(seconds: 2), () => onNext?.call(timePassed.value));
+      Future.delayed(
+          const Duration(seconds: 2), () => onNext?.call(timePassed.value));
     }
 
     return Stack(
       fit: StackFit.expand,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.kScaffoldHorizontalPadding),
           child: Column(
             children: [
               const SizedBox(height: 10.0),
@@ -135,7 +137,10 @@ class SprintQuestion extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(height: 15.0),
-              ...(question.value?.answers ?? []).asMap().entries.map<Widget>((entry) {
+              ...(question.value?.answers ?? [])
+                  .asMap()
+                  .entries
+                  .map<Widget>((entry) {
                 final index = entry.key;
                 final answer = entry.value;
                 return BlinkingAnimation(
@@ -149,9 +154,11 @@ class SprintQuestion extends HookConsumerWidget {
                         groupValue: selectedAnswer.value,
                         onChanged: (value) async {
                           if (answered.value) return;
-                          questionCounterState.value = QuestionCounterState.paused;
+                          questionCounterState.value =
+                              QuestionCounterState.paused;
                           answered.value = true;
-                          final answerExists = question.value?.answers.any((element) => element == value);
+                          final answerExists = question.value?.answers
+                              .any((element) => element == value);
                           if (answerExists == false) {
                             return await onStoppedQuestion();
                           }
@@ -161,9 +168,14 @@ class SprintQuestion extends HookConsumerWidget {
                           onStoppedQuestion();
                         },
                         text: answer.value,
-                        selectedFillColor: answer.isCorrect ? AppColors.kColorYellow : AppColors.kColorOrange,
-                        selectedBorderColor: answer.isCorrect ? AppColors.kColorYellow : AppColors.kColorOrange,
-                        selectRadioIcon: answer.isCorrect ? correctIcon : incorrectIcon,
+                        selectedFillColor: answer.isCorrect
+                            ? AppColors.kColorYellow
+                            : AppColors.kColorOrange,
+                        selectedBorderColor: answer.isCorrect
+                            ? AppColors.kColorYellow
+                            : AppColors.kColorOrange,
+                        selectRadioIcon:
+                            answer.isCorrect ? correctIcon : incorrectIcon,
                       ),
                     );
                   },

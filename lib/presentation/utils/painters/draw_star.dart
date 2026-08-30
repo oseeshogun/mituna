@@ -17,8 +17,10 @@ Path drawStar(Size size) {
   path.moveTo(size.width, halfWidth);
 
   for (double step = 0; step < fullAngle; step += degreesPerStep) {
-    path.lineTo(halfWidth + externalRadius * cos(step), halfWidth + externalRadius * sin(step));
-    path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep), halfWidth + internalRadius * sin(step + halfDegreesPerStep));
+    path.lineTo(halfWidth + externalRadius * cos(step),
+        halfWidth + externalRadius * sin(step));
+    path.lineTo(halfWidth + internalRadius * cos(step + halfDegreesPerStep),
+        halfWidth + internalRadius * sin(step + halfDegreesPerStep));
   }
   path.close();
   return path;

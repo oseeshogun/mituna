@@ -11,6 +11,7 @@ import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
@@ -103,6 +104,15 @@ class FinishedSprint extends HookConsumerWidget {
               onPressed: () => newSprint(category),
               child: const TextTitleLevelTwo(
                 'Poursuivre un autre sprint',
+                color: AppColors.kColorBlack,
+              ),
+            ),
+            const SizedBox(height: 15.0),
+            PrimaryButton(
+              onPressed: () => Navigator.of(context)
+                  .pushReplacementNamed(RankingScreen.route),
+              child: const TextTitleLevelTwo(
+                'Classement du jeu',
                 color: AppColors.kColorBlack,
               ),
             ),

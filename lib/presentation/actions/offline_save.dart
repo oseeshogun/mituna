@@ -9,7 +9,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void useOfflineSave(BuildContext context) {
-
   useEffect(() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final QuestionsDao questionsDao = locator.get<QuestionsDao>();

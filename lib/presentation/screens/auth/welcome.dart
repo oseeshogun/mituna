@@ -18,7 +18,8 @@ class WelcomeScreen extends HookWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.kScaffoldHorizontalPadding),
           child: Column(
             children: [
               Expanded(
@@ -44,9 +45,11 @@ class WelcomeScreen extends HookWidget {
                 ),
               ),
               PrimaryButton(
-                child: const TextTitleLevelOne('Commencer', color: AppColors.kColorBlack),
+                child: const TextTitleLevelOne('Commencer',
+                    color: AppColors.kColorBlack),
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed(AuthenticationScreen.route);
+                  Navigator.of(context)
+                      .pushReplacementNamed(AuthenticationScreen.route);
                 },
               ),
               const SizedBox(height: 20),

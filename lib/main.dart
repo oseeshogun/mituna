@@ -15,6 +15,7 @@ import 'locator.dart';
 import 'presentation/screens/auth/authentication.dart';
 import 'presentation/screens/auth/welcome.dart';
 import 'presentation/screens/home/home.dart';
+import 'presentation/screens/ranking/ranking.dart';
 
 final providerContainer = ProviderContainer();
 
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUserAuthenticated = FirebaseAuth.instance.currentUser != null;
-    final initialRoute = isUserAuthenticated ? HomeScreen.route : WelcomeScreen.route;
+    final initialRoute =
+        isUserAuthenticated ? HomeScreen.route : WelcomeScreen.route;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -63,7 +65,9 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.route: (context) => const WelcomeScreen(),
         HomeScreen.route: (context) => HomeScreen(),
         AuthenticationScreen.route: (context) => AuthenticationScreen(),
-        OfflineQuestionsLoadScreen.route: (context) => OfflineQuestionsLoadScreen(),
+        OfflineQuestionsLoadScreen.route: (context) =>
+            OfflineQuestionsLoadScreen(),
+        RankingScreen.route: (context) => const RankingScreen(),
         SettingsScreen.route: (context) => SettingsScreen(),
         AboutTheApp.route: (context) => const AboutTheApp(),
         FavoritesCategories.route: (context) => const FavoritesCategories(),

@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +10,7 @@ import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/domain/usecases/auth/anonyme.dart';
 import 'package:mituna/domain/usecases/auth/apple.dart';
 import 'package:mituna/domain/usecases/auth/google.dart';
+import 'package:mituna/domain/usecases/leaderboard.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,34 +19,106 @@ class AuthenticationScreen extends HookWidget {
 
   final signInWithGoogleUsecase = SignInWithGoogleUsecase();
   final signInWithAppleUsecase = SignInWithAppleUsecase();
+  final linkWithGoogleUsecase = LinkAnonymousAccountWithGoogleUsecase();
+  final linkWithAppleUsecase = LinkAnonymousAccountWithAppleUsecase();
   final anonymeAuthUsecase = AnonymeAuthentificationUsecase();
+  final syncMyLeaderboardEntryUsecase = SyncMyLeaderboardEntryUsecase();
 
   static const String route = '/auth';
 
-  static final Uri _termsUri = Uri.parse('https://mituna.oseemasuaku.com/terms');
-  static final Uri _privacyUri = Uri.parse('https://mituna.oseemasuaku.com/privacy');
+  static final Uri _termsUri =
+      Uri.parse('https://mituna.oseemasuaku.com/terms');
+  static final Uri _privacyUri =
+      Uri.parse('https://mituna.oseemasuaku.com/privacy');
 
   void _afterAuthRedirect(BuildContext context) {
     if (Navigator.canPop(context)) {
       Navigator.of(context).pop();
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.route, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.route, (route) => false);
     }
   }
 
-  Future<void> _signIn(
+  static bool _isIdentityAlreadyInUse(Failure failure) {
+    final exception = failure.exception;
+    if (exception is! FirebaseAuthException) return false;
+    return const {
+      'credential-already-in-use',
+      'email-already-in-use',
+      'account-exists-with-different-credential',
+    }.contains(exception.code);
+  }
+
+  Future<void> _authenticate(
     BuildContext context,
     ValueNotifier<_AuthProvider?> pending,
     _AuthProvider provider,
-    Future<Either<Failure, Object?>> Function() usecase,
   ) async {
     if (pending.value != null) return;
     pending.value = provider;
-    final result = await usecase();
+
+    final isAnonymous = FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
+
+    Future<Either<Failure, Object?>> Function() primary;
+    Future<Either<Failure, Object?>> Function()? fallbackSignIn;
+    switch (provider) {
+      case _AuthProvider.google:
+        primary = isAnonymous
+            ? linkWithGoogleUsecase.call
+            : signInWithGoogleUsecase.call;
+        fallbackSignIn = signInWithGoogleUsecase.call;
+      case _AuthProvider.apple:
+        primary = isAnonymous
+            ? linkWithAppleUsecase.call
+            : signInWithAppleUsecase.call;
+        fallbackSignIn = signInWithAppleUsecase.call;
+      case _AuthProvider.anonymous:
+        primary = anonymeAuthUsecase.call;
+        fallbackSignIn = null;
+    }
+
+    var result = await primary();
+
+    // Linking a guest account fails when the chosen provider is already a
+    // full Mituna account. Offer to sign in with it instead — this drops the
+    // guest session's progress.
+    if (isAnonymous &&
+        fallbackSignIn != null &&
+        result.fold(_isIdentityAlreadyInUse, (_) => false)) {
+      if (!context.mounted) {
+        pending.value = null;
+        return;
+      }
+      final choice = await showOkCancelAlertDialog(
+        context: context,
+        title: 'Compte déjà utilisé',
+        message:
+            'Ce compte est déjà associé à un profil Mituna. Te connecter avec lui abandonnera la progression de ta session invité. Continuer ?',
+        okLabel: 'Se connecter',
+        cancelLabel: 'Annuler',
+      );
+      if (choice != OkCancelResult.ok) {
+        if (context.mounted) pending.value = null;
+        return;
+      }
+      result = await fallbackSignIn();
+    }
+
     if (!context.mounted) return;
     result.fold(
-      (failure) => showOkAlertDialog(context: context, title: 'Connexion échouée', message: failure.message),
-      (_) => _afterAuthRedirect(context),
+      (failure) {
+        if (failure is CancelledByUserFailure) return;
+        showOkAlertDialog(
+          context: context,
+          title: 'Connexion échouée',
+          message: failure.message,
+        );
+      },
+      (_) {
+        syncMyLeaderboardEntryUsecase();
+        _afterAuthRedirect(context);
+      },
     );
     if (context.mounted) pending.value = null;
   }
@@ -52,6 +126,7 @@ class AuthenticationScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pending = useState<_AuthProvider?>(null);
+    final isAnonymous = FirebaseAuth.instance.currentUser?.isAnonymous ?? false;
 
     return Scaffold(
       backgroundColor: AppColors.kColorBlueRibbon,
@@ -63,7 +138,8 @@ class AuthenticationScreen extends HookWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/mituna_rounded.png', height: 40.0, width: 40.0),
+                  Image.asset('assets/images/mituna_rounded.png',
+                      height: 40.0, width: 40.0),
                   const SizedBox(width: 12.0),
                   const Text(
                     'Mituna',
@@ -77,10 +153,12 @@ class AuthenticationScreen extends HookWidget {
                 ],
               ),
               const SizedBox(height: 24.0),
-              const Text(
-                'Connectez-vous pour que vos données puissent être sauvegardées',
+              Text(
+                isAnonymous
+                    ? 'Lie ton compte pour sauvegarder ta progression et rejoindre le classement'
+                    : 'Connectez-vous pour que vos données puissent être sauvegardées',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -88,14 +166,16 @@ class AuthenticationScreen extends HookWidget {
                 ),
               ),
               const SizedBox(height: 24.0),
-              SvgPicture.asset('assets/svgs/quiz show-rafiki.svg', height: 220.0),
+              SvgPicture.asset('assets/svgs/quiz show-rafiki.svg',
+                  height: 220.0),
               const SizedBox(height: 32.0),
               _SocialAuthButton(
                 iconAsset: 'assets/images/icons/icons8-google-48.png',
                 label: 'Continuer avec Google',
                 loading: pending.value == _AuthProvider.google,
                 enabled: pending.value == null,
-                onPressed: () => _signIn(context, pending, _AuthProvider.google, signInWithGoogleUsecase.call),
+                onPressed: () =>
+                    _authenticate(context, pending, _AuthProvider.google),
               ),
               const SizedBox(height: 14.0),
               _SocialAuthButton(
@@ -103,18 +183,24 @@ class AuthenticationScreen extends HookWidget {
                 label: 'Continuer avec Apple',
                 loading: pending.value == _AuthProvider.apple,
                 enabled: pending.value == null,
-                onPressed: () => _signIn(context, pending, _AuthProvider.apple, signInWithAppleUsecase.call),
+                onPressed: () =>
+                    _authenticate(context, pending, _AuthProvider.apple),
               ),
+              if (!isAnonymous) ...[
+                const SizedBox(height: 24.0),
+                const _OrDivider(),
+                const SizedBox(height: 24.0),
+                _AnonymousButton(
+                  loading: pending.value == _AuthProvider.anonymous,
+                  enabled: pending.value == null,
+                  onPressed: () =>
+                      _authenticate(context, pending, _AuthProvider.anonymous),
+                ),
+              ],
               const SizedBox(height: 24.0),
-              const _OrDivider(),
-              const SizedBox(height: 24.0),
-              _AnonymousButton(
-                loading: pending.value == _AuthProvider.anonymous,
-                enabled: pending.value == null,
-                onPressed: () => _signIn(context, pending, _AuthProvider.anonymous, anonymeAuthUsecase.call),
-              ),
-              const SizedBox(height: 24.0),
-              _TermsText(onOpenTerms: () => launchUrl(_termsUri), onOpenPrivacy: () => launchUrl(_privacyUri)),
+              _TermsText(
+                  onOpenTerms: () => launchUrl(_termsUri),
+                  onOpenPrivacy: () => launchUrl(_privacyUri)),
               const SizedBox(height: 8.0),
             ],
           ),
@@ -171,7 +257,8 @@ class _SocialAuthButton extends StatelessWidget {
                   const SizedBox(
                     height: 20.0,
                     width: 20.0,
-                    child: CircularProgressIndicator(strokeWidth: 2.0, color: AppColors.kColorChambray),
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2.0, color: AppColors.kColorChambray),
                   )
                 else
                   Text(
@@ -251,7 +338,8 @@ class _AnonymousButton extends StatelessWidget {
                   ? const SizedBox(
                       height: 20.0,
                       width: 20.0,
-                      child: CircularProgressIndicator(strokeWidth: 2.0, color: Colors.white),
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2.0, color: Colors.white),
                     )
                   : const Text(
                       'Continuer sans compte',
@@ -278,7 +366,8 @@ class _TermsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const base = TextStyle(fontFamily: 'Lato', fontSize: 12.0, color: Colors.white70, height: 1.5);
+    const base = TextStyle(
+        fontFamily: 'Lato', fontSize: 12.0, color: Colors.white70, height: 1.5);
     final link = base.copyWith(
       color: Colors.white,
       fontWeight: FontWeight.w600,

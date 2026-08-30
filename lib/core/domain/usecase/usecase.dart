@@ -2,9 +2,29 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mituna/core/domain/errors/failures.dart';
 import 'package:mituna/core/domain/errors/firebase_exception_message_fr.dart';
+
+const _userCancellationAuthCodes = {
+  'canceled',
+  'cancelled',
+  'web-context-canceled',
+  'web-context-cancelled',
+  'user-cancelled',
+  'ERROR_ABORTED_BY_USER',
+};
+
+bool _isUserCancellation(Object err) {
+  if (err is GoogleSignInException) {
+    return err.code == GoogleSignInExceptionCode.canceled;
+  }
+  if (err is FirebaseAuthException) {
+    return _userCancellationAuthCodes.contains(err.code);
+  }
+  return false;
+}
 
 mixin _ErrorWrapper<T> {
   final logger = Logger();
@@ -30,10 +50,17 @@ mixin _ErrorWrapper<T> {
   }
 
   Either<Failure, T> _resolveLeft(Object err, StackTrace st) {
+    if (_isUserCancellation(err)) {
+      return Left(CancelledByUserFailure(
+          err is Exception ? err : Exception(err.toString())));
+    }
     if (err is FirebaseAuthException) {
-      return Left(FirebaseFailure(err.messageFr ?? 'Une erreur est inattendue est survenue.', err));
+      return Left(FirebaseFailure(
+          err.messageFr ?? 'Une erreur est inattendue est survenue.', err));
     } else if (err is FirebaseException) {
-      return Left(FirebaseFailure(err.messageFr ?? 'Une erreur est survenue au niveau de firebase.', err));
+      return Left(FirebaseFailure(
+          err.messageFr ?? 'Une erreur est survenue au niveau de firebase.',
+          err));
     }
 
     return Left(UnknownFailure(err as Exception));

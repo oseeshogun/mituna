@@ -7,6 +7,7 @@ import 'package:mituna/core/domain/usecase/usecase.dart';
 import 'package:mituna/data/local/db.dart';
 import 'package:mituna/domain/entities/sprint.dart';
 import 'package:mituna/domain/repositories/question_repository.dart';
+import 'package:mituna/domain/usecases/leaderboard.dart';
 import 'package:mituna/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -58,19 +59,31 @@ class StartSprintUsecase extends UsecaseFamily<Sprint, QuestionCategory?> {
   }
 }
 
-/// Credits the topaz won in a sprint to the authenticated user's Firestore
-/// document. No-op when the user is anonymous or nothing was won.
+/// Credits the topaz won in a sprint to the signed-in user's Firestore
+/// document and, for non-anonymous accounts, mirrors it to the public
+/// `leaderboard` collection. No-op when signed out or nothing was won.
 class SaveTopazRewardUsecase extends UsecaseFamily<void, int> {
   @override
   Future<void> execute(int topaz) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null || topaz <= 0) return;
-    await FirebaseFirestore.instance.collection('users').doc(uid).set(
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser == null || topaz <= 0) return;
+    final uid = firebaseUser.uid;
+
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+    await userDoc.set(
       {
         'diamonds': FieldValue.increment(topaz),
         'last_time_win': DateTime.now().millisecondsSinceEpoch,
       },
       SetOptions(merge: true),
     );
+
+    // Anonymous accounts keep their topaz privately but never appear on the
+    // public leaderboard.
+    if (firebaseUser.isAnonymous) return;
+
+    // Mirror the updated totals into the public leaderboard entry so the
+    // ranking screen never has to fan out to per-user profile documents.
+    await publishLeaderboardEntry(uid);
   }
 }

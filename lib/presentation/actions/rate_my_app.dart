@@ -26,7 +26,8 @@ void useRateMyApp(BuildContext context) {
           noButton: 'NON MERCI',
           laterButton: 'PLUS TARD',
           ignoreNativeDialog: Platform.isAndroid,
-          onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+          onDismissed: () =>
+              rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
         );
       }
     });

@@ -52,9 +52,11 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  Future<List<QuestionWithAnswers>> getQuestionsWithAnswers(List<String> questionsIdList) async {
-    final questionsQuery =
-        (select(questions)..where((question) => question.id.isIn(questionsIdList))).join([innerJoin(answers, answers.question.equalsExp(questions.id))]);
+  Future<List<QuestionWithAnswers>> getQuestionsWithAnswers(
+      List<String> questionsIdList) async {
+    final questionsQuery = (select(questions)
+          ..where((question) => question.id.isIn(questionsIdList)))
+        .join([innerJoin(answers, answers.question.equalsExp(questions.id))]);
 
     final rows = await questionsQuery.get();
 
@@ -69,7 +71,10 @@ class AppDatabase extends _$AppDatabase {
       if (list.length <= 4) list.add(a);
     }
 
-    return [for (final entry in groupedData.entries) QuestionWithAnswers(entry.key, entry.value)];
+    return [
+      for (final entry in groupedData.entries)
+        QuestionWithAnswers(entry.key, entry.value)
+    ];
   }
 }
 
@@ -77,6 +82,7 @@ LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(path.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase.createInBackground(file).interceptWith(LogInterceptor());
+    return NativeDatabase.createInBackground(file)
+        .interceptWith(LogInterceptor());
   });
 }
