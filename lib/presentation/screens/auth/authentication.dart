@@ -8,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mituna/core/domain/errors/failures.dart';
 import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/domain/usecases/auth/anonyme.dart';
-import 'package:mituna/domain/usecases/auth/apple.dart';
 import 'package:mituna/domain/usecases/auth/google.dart';
 import 'package:mituna/domain/usecases/leaderboard.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
@@ -18,9 +17,7 @@ class AuthenticationScreen extends HookWidget {
   AuthenticationScreen({super.key});
 
   final signInWithGoogleUsecase = SignInWithGoogleUsecase();
-  final signInWithAppleUsecase = SignInWithAppleUsecase();
   final linkWithGoogleUsecase = LinkAnonymousAccountWithGoogleUsecase();
-  final linkWithAppleUsecase = LinkAnonymousAccountWithAppleUsecase();
   final anonymeAuthUsecase = AnonymeAuthentificationUsecase();
   final syncMyLeaderboardEntryUsecase = SyncMyLeaderboardEntryUsecase();
 
@@ -68,11 +65,6 @@ class AuthenticationScreen extends HookWidget {
             ? linkWithGoogleUsecase.call
             : signInWithGoogleUsecase.call;
         fallbackSignIn = signInWithGoogleUsecase.call;
-      case _AuthProvider.apple:
-        primary = isAnonymous
-            ? linkWithAppleUsecase.call
-            : signInWithAppleUsecase.call;
-        fallbackSignIn = signInWithAppleUsecase.call;
       case _AuthProvider.anonymous:
         primary = anonymeAuthUsecase.call;
         fallbackSignIn = null;
@@ -177,15 +169,6 @@ class AuthenticationScreen extends HookWidget {
                 onPressed: () =>
                     _authenticate(context, pending, _AuthProvider.google),
               ),
-              const SizedBox(height: 14.0),
-              _SocialAuthButton(
-                iconAsset: 'assets/images/icons/icons8-apple-50.png',
-                label: 'Continuer avec Apple',
-                loading: pending.value == _AuthProvider.apple,
-                enabled: pending.value == null,
-                onPressed: () =>
-                    _authenticate(context, pending, _AuthProvider.apple),
-              ),
               if (!isAnonymous) ...[
                 const SizedBox(height: 24.0),
                 const _OrDivider(),
@@ -210,7 +193,7 @@ class AuthenticationScreen extends HookWidget {
   }
 }
 
-enum _AuthProvider { google, apple, anonymous }
+enum _AuthProvider { google, anonymous }
 
 class _SocialAuthButton extends StatelessWidget {
   const _SocialAuthButton({

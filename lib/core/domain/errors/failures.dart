@@ -13,7 +13,7 @@ class FirebaseFailure extends Failure {
   const FirebaseFailure(super.message, super.exception);
 }
 
-/// The user dismissed the provider UI (Google account picker, Apple sheet…).
+/// The user dismissed the provider UI (e.g. the Google account picker).
 /// Not an error to surface — callers should quietly abort.
 class CancelledByUserFailure extends Failure {
   const CancelledByUserFailure(Exception exception)
