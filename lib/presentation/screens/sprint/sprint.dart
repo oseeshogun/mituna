@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/domain/entities/sprint.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/services/sound_effect.dart';
+import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 
@@ -19,6 +20,7 @@ class SprintScreen extends HookConsumerWidget {
 
   final Sprint sprint;
   final soundEffect = locator.get<SoundEffects>();
+  final saveTopazRewardUsecase = SaveTopazRewardUsecase();
 
   final _happyLotties = [
     'assets/lottiefiles/happy/animation_lnrqd8mz.json',
@@ -75,8 +77,11 @@ class SprintScreen extends HookConsumerWidget {
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
-        final result =
-            await showOkCancelAlertDialog(context: context, title: 'Etes-vous sûr de vouloir quitter le sprint ?', cancelLabel: 'Non', okLabel: 'Oui');
+        final result = await showOkCancelAlertDialog(
+            context: context,
+            title: 'Etes-vous sûr de vouloir quitter le sprint ?',
+            cancelLabel: 'Non',
+            okLabel: 'Oui');
         final quit = result == OkCancelResult.ok;
         if (quit && context.mounted) Navigator.of(context).pop();
       },
@@ -99,18 +104,25 @@ class SprintScreen extends HookConsumerWidget {
                   onStartAnimation: (isCorrect) async {
                     showLottieAnimation.value = true;
                     if (isCorrect) {
-                      lottieAnimationAsset.value = _happyLotties[Random().nextInt(_happyLotties.length - 1)];
+                      lottieAnimationAsset.value = _happyLotties[
+                          Random().nextInt(_happyLotties.length - 1)];
                     } else {
-                      lottieAnimationAsset.value = _sadLotties[Random().nextInt(_sadLotties.length - 1)];
+                      lottieAnimationAsset.value =
+                          _sadLotties[Random().nextInt(_sadLotties.length - 1)];
                     }
                     await Future.delayed(const Duration(seconds: 2));
                   },
                   onNext: (timePassed) async {
                     if (sprint.finished) {
+                      final topazWon = sprint.topazWon;
+                      if (sprint.success) {
+                        saveTopazRewardUsecase(topazWon);
+                      }
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => FinishedSprint(
                             hasSucceded: sprint.success,
+                            topazWon: topazWon,
                             category: sprint.category,
                           ),
                         ),

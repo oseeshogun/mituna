@@ -18,6 +18,7 @@ part 'primary_button.dart';
 part 'fade_animation.dart';
 part 'running_man_lottie_button.dart';
 part 'category_item.dart';
+part 'topaz_icon.dart';
 part 'primary_appbar.dart';
 part 'user_hearts/user_hearts.dart';
 part 'count_down_time_from_game.dart';

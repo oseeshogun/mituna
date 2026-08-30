@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/enums/all.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
+import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/presentation/actions/firebase_messaging.dart';
 import 'package:mituna/presentation/actions/offline_save.dart';
@@ -52,6 +53,7 @@ class HomeScreen extends HookConsumerWidget {
       body: UpgradeAlert(
         upgrader: Upgrader(),
         child: SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
@@ -74,8 +76,15 @@ class HomeScreen extends HookConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            const TopazIcon(),
+                            const SizedBox(width: 5.0),
+                            ref.watch(firestoreAuthenticatedUserStreamProvider).when(
+                                  loading: () => const TextTitleLevelTwo('0'),
+                                  error: (error, stackTrace) => const TextTitleLevelTwo('0'),
+                                  data: (firestoreAuthUser) => TextTitleLevelTwo((firestoreAuthUser?.diamonds ?? 0).toString()),
+                                ),
+                            const Spacer(),
                             IconButton(
                               onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
                               icon: const Icon(

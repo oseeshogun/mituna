@@ -6,26 +6,32 @@ class FirestoreUser extends Equatable {
   final String uid;
   final String displayName;
   final String avatar;
+  final int diamonds;
   final DateTime lastWinDate;
 
   const FirestoreUser({
     required this.uid,
     required this.avatar,
+    required this.diamonds,
     required this.displayName,
     required this.lastWinDate,
   });
 
-  factory FirestoreUser.fromDocument(String uid, DocumentSnapshot<Map<String, dynamic>>? document) {
+  factory FirestoreUser.fromDocument(
+      String uid, DocumentSnapshot<Map<String, dynamic>>? document) {
     final data = document?.data();
     return FirestoreUser(
         uid: uid,
         avatar: data?['avatar'] ?? defaultImageUrl,
+        diamonds: data?['diamonds'] ?? 0,
         displayName: data?['displayName'] ?? faker.person.firstName(),
-        lastWinDate: DateTime.fromMillisecondsSinceEpoch(data?['last_time_win'] ?? DateTime.now().millisecondsSinceEpoch));
+        lastWinDate: DateTime.fromMillisecondsSinceEpoch(
+            data?['last_time_win'] ?? DateTime.now().millisecondsSinceEpoch));
   }
 
   @override
   List<Object> get props => [uid];
 
-  static String get defaultImageUrl => 'https://res.cloudinary.com/dcmzsqq2y/image/upload/v1673795782/profiles/s_udzknr.png';
+  static String get defaultImageUrl =>
+      'https://res.cloudinary.com/dcmzsqq2y/image/upload/v1673795782/profiles/s_udzknr.png';
 }
