@@ -52,10 +52,68 @@ class StartSprintUsecase extends UsecaseFamily<Sprint, QuestionCategory?> {
   }
 
   List<String> _getAnsweredQuestions(List<QuestionWithAnswers> questions) {
-    return questions
-        .where((q) => _prefs.getBool('answered_${q.question.id}') == true)
-        .map((q) => q.question.id)
-        .toList();
+    return _answeredQuestionIds(_prefs, questions);
+  }
+}
+
+List<String> _answeredQuestionIds(
+    SharedPreferences prefs, List<QuestionWithAnswers> questions) {
+  return questions
+      .where((q) => prefs.getBool('answered_${q.question.id}') == true)
+      .map((q) => q.question.id)
+      .toList();
+}
+
+/// Builds a single-question "question du jour" sprint from the local database.
+///
+/// One question is pinned per calendar day in [SharedPreferences] so every
+/// launch that day replays the same one. The pinned question is re-picked if it
+/// no longer exists locally. Config mirrors the historic QOTD: a single
+/// question, one life, and a 10× topaz multiplier (already-answered questions
+/// still award nothing).
+class StartQuestionOfTheDayUsecase extends Usecase<Sprint> {
+  final _questionRepository = locator.get<QuestionRepository>();
+  final _prefs = locator.get<SharedPreferences>();
+
+  String get _todayKey {
+    final now = DateTime.now();
+    return 'qotd_${now.day}/${now.month}/${now.year}';
+  }
+
+  Future<String?> _pickRandomQuestionId() async {
+    final ids = await _questionRepository.randomQuestionIdList(
+      categories: null,
+      limit: 1,
+      mostPickedLimit: 0,
+    );
+    return ids.isEmpty ? null : ids.first;
+  }
+
+  @override
+  Future<Sprint> execute() async {
+    var questionId = _prefs.getString(_todayKey);
+
+    var questions = questionId == null
+        ? const <QuestionWithAnswers>[]
+        : await _questionRepository.getQuestionsWithAnswers([questionId]);
+
+    if (questions.isEmpty) {
+      questionId = await _pickRandomQuestionId();
+      if (questionId == null) {
+        throw Exception('Aucune question disponible.');
+      }
+      await _prefs.setString(_todayKey, questionId);
+      questions = await _questionRepository.getQuestionsWithAnswers([questionId]);
+    }
+
+    return Sprint(
+      id: const Uuid().v4(),
+      questions: questions,
+      category: null,
+      initialHearts: 1,
+      topazMultiplier: 10,
+      answered: _answeredQuestionIds(_prefs, questions),
+    );
   }
 }
 

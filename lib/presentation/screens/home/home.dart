@@ -2,10 +2,12 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/enums/all.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
 import 'package:mituna/domain/riverpod/providers/user.dart';
@@ -28,6 +30,8 @@ class HomeScreen extends HookConsumerWidget {
 
   final startSprintUsecase = StartSprintUsecase();
 
+  final startQuestionOfTheDayUsecase = StartQuestionOfTheDayUsecase();
+
   static const String route = '/home';
 
   @override
@@ -35,6 +39,8 @@ class HomeScreen extends HookConsumerWidget {
     useRateMyApp(context);
     useOfflineSave(context);
     useSetupInteractedMessage(context);
+
+    final loadingQuestionOfTheDay = useState(false);
 
     startPrint([QuestionCategory? category]) async {
       startSprintUsecase(category).then((result) {
@@ -50,6 +56,23 @@ class HomeScreen extends HookConsumerWidget {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
+      });
+    }
+
+    startQuestionOfTheDay() async {
+      if (loadingQuestionOfTheDay.value) return;
+      loadingQuestionOfTheDay.value = true;
+      final result = await startQuestionOfTheDayUsecase();
+      loadingQuestionOfTheDay.value = false;
+      if (!context.mounted) return;
+      result.fold((l) {
+        showOkAlertDialog(context: context, message: l.message);
+      }, (sprint) {
+        ref
+            .watch(sprintHeartsProvider(sprint.id).notifier)
+            .update(sprint.hearts);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
       });
     }
 
@@ -126,6 +149,26 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                       const SizedBox(height: 20.0),
                       const TextTitleLevelOne('Appuyez pour commencer'),
+                      const SizedBox(height: 30.0),
+                      Center(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width * 0.65),
+                          child: PrimaryButton(
+                            loading: loadingQuestionOfTheDay.value,
+                            radius: 50.0,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 5.0),
+                            onPressed: startQuestionOfTheDay,
+                            child: const TextTitleLevelTwo(
+                              '🕹️  Question du jour',
+                              color: AppColors.kColorBlueRibbon,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 30.0),
                       QuestionCategoriesHomeList(startPrint: startPrint),
                       const SizedBox(height: 30.0),
