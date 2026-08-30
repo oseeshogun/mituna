@@ -4,7 +4,8 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
 
 class LogInterceptor extends QueryInterceptor {
-  Future<T> _run<T>(String description, FutureOr<T> Function() operation) async {
+  Future<T> _run<T>(
+      String description, FutureOr<T> Function() operation) async {
     final stopwatch = Stopwatch()..start();
     debugPrint('Running $description');
 
@@ -35,32 +36,44 @@ class LogInterceptor extends QueryInterceptor {
   }
 
   @override
-  Future<void> runBatched(QueryExecutor executor, BatchedStatements statements) {
-    return _run('batch with $statements', () => executor.runBatched(statements));
+  Future<void> runBatched(
+      QueryExecutor executor, BatchedStatements statements) {
+    return _run(
+        'batch with $statements', () => executor.runBatched(statements));
   }
 
   @override
-  Future<int> runInsert(QueryExecutor executor, String statement, List<Object?> args) {
-    return _run('$statement with $args', () => executor.runInsert(statement, args));
+  Future<int> runInsert(
+      QueryExecutor executor, String statement, List<Object?> args) {
+    return _run(
+        '$statement with $args', () => executor.runInsert(statement, args));
   }
 
   @override
-  Future<int> runUpdate(QueryExecutor executor, String statement, List<Object?> args) {
-    return _run('$statement with $args', () => executor.runUpdate(statement, args));
+  Future<int> runUpdate(
+      QueryExecutor executor, String statement, List<Object?> args) {
+    return _run(
+        '$statement with $args', () => executor.runUpdate(statement, args));
   }
 
   @override
-  Future<int> runDelete(QueryExecutor executor, String statement, List<Object?> args) {
-    return _run('$statement with $args', () => executor.runDelete(statement, args));
+  Future<int> runDelete(
+      QueryExecutor executor, String statement, List<Object?> args) {
+    return _run(
+        '$statement with $args', () => executor.runDelete(statement, args));
   }
 
   @override
-  Future<void> runCustom(QueryExecutor executor, String statement, List<Object?> args) {
-    return _run('$statement with $args', () => executor.runCustom(statement, args));
+  Future<void> runCustom(
+      QueryExecutor executor, String statement, List<Object?> args) {
+    return _run(
+        '$statement with $args', () => executor.runCustom(statement, args));
   }
 
   @override
-  Future<List<Map<String, Object?>>> runSelect(QueryExecutor executor, String statement, List<Object?> args) {
-    return _run('$statement with $args', () => executor.runSelect(statement, args));
+  Future<List<Map<String, Object?>>> runSelect(
+      QueryExecutor executor, String statement, List<Object?> args) {
+    return _run(
+        '$statement with $args', () => executor.runSelect(statement, args));
   }
 }

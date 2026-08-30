@@ -16,7 +16,11 @@ Stream<FirestoreUser?> firestoreAuthenticatedUserStream(Ref ref) {
   return ref.watch(firebaseAuthUserStreamProvider).when(
         data: (firebaseUser) {
           if (firebaseUser == null) return Stream.value(null);
-          return FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).snapshots().asyncMap((doc) {
+          return FirebaseFirestore.instance
+              .collection('users')
+              .doc(firebaseUser.uid)
+              .snapshots()
+              .asyncMap((doc) {
             return FirestoreUser.fromDocument(
               firebaseUser.uid,
               doc,
@@ -34,5 +38,9 @@ Stream<FirestoreUser?> firestoreAuthenticatedUserStream(Ref ref) {
 
 @riverpod
 Stream<FirestoreUser?> firestoreUserData(Ref ref, String uid) {
-  return FirebaseFirestore.instance.collection('users').doc(uid).snapshots().asyncMap((doc) => FirestoreUser.fromDocument(uid, doc));
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .snapshots()
+      .asyncMap((doc) => FirestoreUser.fromDocument(uid, doc));
 }

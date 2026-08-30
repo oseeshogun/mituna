@@ -11,7 +11,8 @@ class Answers extends Table {
 
   TextColumn get type => textEnum<AnswerType>()();
 
-  TextColumn get question => text().references(Questions, #id, onDelete: KeyAction.cascade)();
+  TextColumn get question =>
+      text().references(Questions, #id, onDelete: KeyAction.cascade)();
 
   @override
   List<Set<Column>> get uniqueKeys => [

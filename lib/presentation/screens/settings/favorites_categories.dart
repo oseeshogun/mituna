@@ -22,17 +22,19 @@ class FavoritesCategories extends HookConsumerWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.kScaffoldHorizontalPadding),
           child: ListView.builder(
             itemCount: QuestionCategory.values.length,
             itemBuilder: (context, index) {
               final category = QuestionCategory.values[index];
 
               return CheckboxListTile(
-                value: states.value[category.name] ??  category.isFavorite,
+                value: states.value[category.name] ?? category.isFavorite,
                 title: Text(
                   category.title,
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 fillColor: WidgetStatePropertyAll(AppColors.kColorBlueRibbon),
                 checkColor: AppColors.kColorYellow,

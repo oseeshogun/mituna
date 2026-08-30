@@ -26,5 +26,6 @@ void setupLocator() {
 
   locator.registerSingleton(ProviderContainer());
 
-  locator.registerSingletonAsync(() async => await SharedPreferences.getInstance());
+  locator.registerSingletonAsync(
+      () async => await SharedPreferences.getInstance());
 }

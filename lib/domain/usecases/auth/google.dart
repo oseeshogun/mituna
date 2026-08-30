@@ -3,7 +3,8 @@ import 'package:mituna/core/domain/usecase/usecase.dart';
 
 import 'get_google_oauth.dart';
 
-class LinkAnonymousAccountWithGoogleUsecase extends Usecase<UserCredential?> with GetOAuthCredential {
+class LinkAnonymousAccountWithGoogleUsecase extends Usecase<UserCredential?>
+    with GetOAuthCredential {
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -13,7 +14,8 @@ class LinkAnonymousAccountWithGoogleUsecase extends Usecase<UserCredential?> wit
   }
 }
 
-class SignInWithGoogleUsecase extends Usecase<UserCredential?> with GetOAuthCredential {
+class SignInWithGoogleUsecase extends Usecase<UserCredential?>
+    with GetOAuthCredential {
   final _auth = FirebaseAuth.instance;
 
   @override

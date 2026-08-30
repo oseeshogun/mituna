@@ -31,7 +31,8 @@ class LogoutOrDeleteAccount extends HookWidget {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (r) {
-          Navigator.of(context).pushNamedAndRemoveUntil(WelcomeScreen.route, (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(WelcomeScreen.route, (route) => false);
         });
         loading.value = false;
       });
@@ -43,7 +44,8 @@ class LogoutOrDeleteAccount extends HookWidget {
         result.fold((l) {
           showOkAlertDialog(context: context, title: l.message);
         }, (r) {
-          Navigator.of(context).pushNamedAndRemoveUntil(WelcomeScreen.route, (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(WelcomeScreen.route, (route) => false);
         });
         loading.value = false;
       });
@@ -51,11 +53,13 @@ class LogoutOrDeleteAccount extends HookWidget {
 
     return Scaffold(
       appBar: PrimaryAppBar(
-        title: TextTitleLevelTwo(isDeleteAccount ? 'Suppression du compte' : 'Déconnexion'),
+        title: TextTitleLevelTwo(
+            isDeleteAccount ? 'Suppression du compte' : 'Déconnexion'),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.kScaffoldHorizontalPadding),
           child: SizedBox(
             width: double.infinity,
             child: Column(
@@ -63,12 +67,16 @@ class LogoutOrDeleteAccount extends HookWidget {
                 const SizedBox(height: 30.0),
                 const Spacer(),
                 Lottie.asset(
-                  isDeleteAccount ? 'assets/lottiefiles/animation_llsr6jol.json' : 'assets/lottiefiles/39138-morty-cry-loader.json',
+                  isDeleteAccount
+                      ? 'assets/lottiefiles/animation_llsr6jol.json'
+                      : 'assets/lottiefiles/39138-morty-cry-loader.json',
                   height: MediaQuery.of(context).size.height * .3,
                 ),
                 const Spacer(),
                 TextDescription(
-                  isDeleteAccount ? 'Voulez-vous vraiment vous supprimez votre compte?' : 'Voulez-vous vraiment vous déconnecter ?',
+                  isDeleteAccount
+                      ? 'Voulez-vous vraiment vous supprimez votre compte?'
+                      : 'Voulez-vous vraiment vous déconnecter ?',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10.0),
@@ -94,7 +102,9 @@ class LogoutOrDeleteAccount extends HookWidget {
                   child: PrimaryButton(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
-                    child: TextTitleLevelTwo(isDeleteAccount ? 'Confirmer la suppression' : 'Confirmer la déconnexion'),
+                    child: TextTitleLevelTwo(isDeleteAccount
+                        ? 'Confirmer la suppression'
+                        : 'Confirmer la déconnexion'),
                     onPressed: () => (isDeleteAccount ? delete() : logout()),
                   ),
                 ),

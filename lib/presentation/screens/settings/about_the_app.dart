@@ -17,14 +17,16 @@ class AboutTheApp extends HookWidget {
   static const route = '/about_the_app';
 
   bool isMiddlePerson(PersonToBeThankful person) {
-    return person != peopleToBeThankful.first && person != peopleToBeThankful.last;
+    return person != peopleToBeThankful.first &&
+        person != peopleToBeThankful.last;
   }
 
   bool isFirstButThereIsMoreThanOnePerson(PersonToBeThankful person) {
     return person == peopleToBeThankful.first && peopleToBeThankful.length > 1;
   }
 
-  Future<void> contactThankfulPerson(BuildContext context, PersonToBeThankful person) async {
+  Future<void> contactThankfulPerson(
+      BuildContext context, PersonToBeThankful person) async {
     showBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -66,7 +68,8 @@ class AboutTheApp extends HookWidget {
                     onTap: () {
                       canLaunchUrlString(person.linkedin).then((canLaunch) {
                         if (canLaunch) {
-                          launchUrlString(person.linkedin, mode: LaunchMode.externalApplication);
+                          launchUrlString(person.linkedin,
+                              mode: LaunchMode.externalApplication);
                         }
                         if (context.mounted) Navigator.of(context).pop();
                       }).catchError((err) {
@@ -82,7 +85,8 @@ class AboutTheApp extends HookWidget {
                         if (person.whatsapp == null) return;
                         canLaunchUrlString(person.whatsapp!).then((canLaunch) {
                           if (canLaunch) {
-                            launchUrlString(person.whatsapp!, mode: LaunchMode.externalApplication);
+                            launchUrlString(person.whatsapp!,
+                                mode: LaunchMode.externalApplication);
                           }
                           if (context.mounted) Navigator.of(context).pop();
                         }).catchError((err) {
@@ -110,7 +114,8 @@ class AboutTheApp extends HookWidget {
       body: Builder(
         builder: (context) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.kScaffoldHorizontalPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,8 +123,10 @@ class AboutTheApp extends HookWidget {
                 TextTitleLevelTwo('Version ${version.data?.version ?? '...'}'),
                 const SizedBox(height: 20.0),
                 InkWell(
-                  onTap: () => launchUrl(Uri.parse('https://mituna.oseemasuaku.com/privacy')),
-                  child: const TextTitleLevelTwo('Termes & Conditions d\'utilisation'),
+                  onTap: () => launchUrl(
+                      Uri.parse('https://mituna.oseemasuaku.com/privacy')),
+                  child: const TextTitleLevelTwo(
+                      'Termes & Conditions d\'utilisation'),
                 ),
                 const SizedBox(height: 20.0),
                 InkWell(
@@ -152,7 +159,8 @@ class AboutTheApp extends HookWidget {
                 ),
                 const SizedBox(height: 30.0),
                 InkWell(
-                  onTap: () => launchUrlString('https://mituna.oseemasuaku.com', mode: LaunchMode.externalApplication),
+                  onTap: () => launchUrlString('https://mituna.oseemasuaku.com',
+                      mode: LaunchMode.externalApplication),
                   child: const TextTitleLevelTwo('Visitez le site internet'),
                 ),
                 const SizedBox(height: 30.0),
@@ -162,10 +170,13 @@ class AboutTheApp extends HookWidget {
                   TextSpan(
                     text: '',
                     children: peopleToBeThankful.map<TextSpan>((person) {
-                      final shouldAddComa = isMiddlePerson(person) || isFirstButThereIsMoreThanOnePerson(person);
+                      final shouldAddComa = isMiddlePerson(person) ||
+                          isFirstButThereIsMoreThanOnePerson(person);
                       return TextSpan(
                         text: person.toString() + (shouldAddComa ? ', ' : ' '),
-                        recognizer: TapGestureRecognizer()..onTap = () => contactThankfulPerson(context, person),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap =
+                              () => contactThankfulPerson(context, person),
                       );
                     }).toList(),
                     style: TextStyle(

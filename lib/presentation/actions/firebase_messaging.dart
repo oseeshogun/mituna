@@ -6,7 +6,8 @@ void useSetupInteractedMessage(BuildContext context) {
   final messaging = FirebaseMessaging.instance;
 
   useEffect(() {
-    messaging.requestPermission(alert: true, announcement: true, badge: true, sound: true);
+    messaging.requestPermission(
+        alert: true, announcement: true, badge: true, sound: true);
     return null;
   }, []);
 }

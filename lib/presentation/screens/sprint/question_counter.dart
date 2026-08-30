@@ -25,13 +25,16 @@ class QuestionCounter extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counterAnimationController = useAnimationController(duration: Duration(seconds: count));
-    final counterAnimation = useAnimation(Tween<double>(begin: 2 * pi, end: 0).animate(counterAnimationController));
+    final counterAnimationController =
+        useAnimationController(duration: Duration(seconds: count));
+    final counterAnimation = useAnimation(Tween<double>(begin: 2 * pi, end: 0)
+        .animate(counterAnimationController));
     final time = useState(count);
 
     useEffect(() {
       final timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (state.value == QuestionCounterState.paused || state.value == QuestionCounterState.stopped) {
+        if (state.value == QuestionCounterState.paused ||
+            state.value == QuestionCounterState.stopped) {
           counterAnimationController.stop();
           return;
         }

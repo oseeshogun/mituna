@@ -9,6 +9,8 @@ class Sprint {
   final List<QuestionWithAnswers> questions;
   final QuestionCategory? category;
   final List<String> answered;
+  final int topazMultiplier;
+  final bool isQuestionOfTheDay;
 
   final Map<QuestionWithAnswers, QuestionStat> _questionStats = {};
   late int _hearts;
@@ -19,11 +21,14 @@ class Sprint {
     this.secondsPerQuestion = 20,
     int initialHearts = 3,
     this.category,
+    this.topazMultiplier = 1,
+    this.isQuestionOfTheDay = false,
     this.answered = const [],
   })  : _hearts = initialHearts,
         assert(id.trim().isNotEmpty, "Sprint id can not be empty."),
         assert(questions.isNotEmpty, "Questions can be empty"),
-        assert(secondsPerQuestion > 5, "Time per question must be bigger than 5 seconds"),
+        assert(secondsPerQuestion > 5,
+            "Time per question must be bigger than 5 seconds"),
         assert(initialHearts > 0, "Sprint hearts must be bigger than 0");
 
   @override
@@ -42,18 +47,23 @@ class Sprint {
 
   int get questionCount => questions.length;
 
-  int get remainingQuestionCount => questions.length - _questionStats.keys.length;
+  int get remainingQuestionCount =>
+      questions.length - _questionStats.keys.length;
 
   int get questionIndexPlusOne => _questionStats.keys.length + 1;
 
-  int get time => _questionStats.values.fold(0, (previousValue, element) => previousValue + element.elapsed);
+  int get time => _questionStats.values
+      .fold(0, (previousValue, element) => previousValue + element.elapsed);
 
   QuestionWithAnswers? get randomQuestion {
     if (finished) return null;
-    return randomElement(questions.where((element) => !_questionStats.keys.contains(element)).toList());
+    return randomElement(questions
+        .where((element) => !_questionStats.keys.contains(element))
+        .toList());
   }
 
-  void answer(QuestionWithAnswers questionAnswered, Answer? answerGiven, int elapsed) {
+  void answer(
+      QuestionWithAnswers questionAnswered, Answer? answerGiven, int elapsed) {
     final questionStat = QuestionStat(
       question: questionAnswered,
       elapsed: elapsed,
@@ -63,5 +73,24 @@ class Sprint {
     if (answerGiven == null || !answerGiven.isCorrect) {
       _hearts--;
     }
+  }
+
+  int get topazWon {
+    if (!success) return 0;
+    int topazs = 0;
+    int increment = 1 * topazMultiplier;
+    for (int i = 0; i < _questionStats.values.length; i++) {
+      final stat = _questionStats.values.toList()[i];
+      final QuestionStat? previousQuestionInfo =
+          i - 1 < 0 ? null : _questionStats.values.toList()[i - 1];
+      if (previousQuestionInfo == null || !previousQuestionInfo.foundCorrect) {
+        increment = 1 * topazMultiplier;
+      }
+      if (stat.foundCorrect && !answered.contains(stat.question.question.id)) {
+        topazs += increment;
+        increment++;
+      }
+    }
+    return topazs;
   }
 }

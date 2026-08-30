@@ -1,5 +1,3 @@
-
-
 import 'package:mituna/data/local/db.dart';
 
 class QuestionStat {
@@ -14,7 +12,8 @@ class QuestionStat {
   });
 
   @override
-  bool operator ==(Object other) => other is QuestionStat && other.question == question;
+  bool operator ==(Object other) =>
+      other is QuestionStat && other.question == question;
 
   @override
   int get hashCode => question.hashCode;

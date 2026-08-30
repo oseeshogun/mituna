@@ -11,6 +11,7 @@ import 'package:mituna/domain/services/sound_effect.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/locator.dart';
 import 'package:mituna/presentation/screens/home/home.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/widgets/all.dart';
 import 'package:mituna/presentation/widgets/texts/all.dart';
 
@@ -20,25 +21,32 @@ class FinishedSprint extends HookConsumerWidget {
   FinishedSprint({
     super.key,
     required this.hasSucceded,
+    this.topazWon,
     required this.category,
   });
 
   final bool hasSucceded;
+  final int? topazWon;
   final QuestionCategory? category;
   final soundEffect = locator.get<SoundEffects>();
   final startSprintUsecase = StartSprintUsecase();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final String imageAsset = hasSucceded ? 'assets/svgs/Young and happy-bro.svg' : 'assets/svgs/Missed chances-cuate.svg';
+    final String imageAsset = hasSucceded
+        ? 'assets/svgs/Young and happy-bro.svg'
+        : 'assets/svgs/Missed chances-cuate.svg';
 
     void newSprint([QuestionCategory? category]) {
       startSprintUsecase(category).then((result) {
         result.fold((l) {
           showOkAlertDialog(context: context, message: l.message);
         }, (sprint) {
-          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+          ref
+              .watch(sprintHeartsProvider(sprint.id).notifier)
+              .update(sprint.hearts);
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
       });
     }
@@ -67,17 +75,28 @@ class FinishedSprint extends HookConsumerWidget {
             if (hasSucceded)
               Text.rich(
                 TextSpan(
-                  text: 'Bien joué',
+                  text: (topazWon ?? 0) > 0
+                      ? 'Bien joué, vous avez gagné $topazWon '
+                      : 'Bien joué',
                   style: const TextStyle(
                     fontSize: 36.0,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
+                  children: (topazWon ?? 0) > 0
+                      ? const [
+                          WidgetSpan(
+                            child: TopazIcon(),
+                            alignment: PlaceholderAlignment.middle,
+                          ),
+                        ]
+                      : null,
                 ),
                 textAlign: TextAlign.center,
               )
             else ...[
-              const TextTitleLevelTwo('Tout le monde échoue mais la reussite vient dans la persévérance.'),
+              const TextTitleLevelTwo(
+                  'Tout le monde échoue mais la reussite vient dans la persévérance.'),
               const TextTitleLevelOne('N\'abandonne pas, Récommence!')
             ],
             const Spacer(),
@@ -90,7 +109,17 @@ class FinishedSprint extends HookConsumerWidget {
             ),
             const SizedBox(height: 15.0),
             PrimaryButton(
-              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.route, (route) => false),
+              onPressed: () => Navigator.of(context)
+                  .pushReplacementNamed(RankingScreen.route),
+              child: const TextTitleLevelTwo(
+                'Classement du jeu',
+                color: AppColors.kColorBlack,
+              ),
+            ),
+            const SizedBox(height: 15.0),
+            PrimaryButton(
+              onPressed: () => Navigator.of(context)
+                  .pushNamedAndRemoveUntil(HomeScreen.route, (route) => false),
               backgroundColor: AppColors.kColorMarigoldYellow,
               child: const TextTitleLevelTwo(
                 'Aller à l’accueil',

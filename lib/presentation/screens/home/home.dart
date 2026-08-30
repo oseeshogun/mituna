@@ -2,17 +2,21 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mituna/core/constants/enums/all.dart';
+import 'package:mituna/core/presentation/theme/colors.dart';
 import 'package:mituna/core/presentation/theme/sizes.dart';
 import 'package:mituna/domain/riverpod/providers/sprint_hearts.dart';
+import 'package:mituna/domain/riverpod/providers/user.dart';
 import 'package:mituna/domain/usecases/sprint.dart';
 import 'package:mituna/presentation/actions/firebase_messaging.dart';
 import 'package:mituna/presentation/actions/offline_save.dart';
 import 'package:mituna/presentation/actions/rate_my_app.dart';
 import 'package:mituna/presentation/screens/home/categories.dart';
+import 'package:mituna/presentation/screens/ranking/ranking.dart';
 import 'package:mituna/presentation/screens/settings/settings.dart';
 import 'package:mituna/presentation/screens/sprint/sprint.dart';
 import 'package:mituna/presentation/widgets/all.dart';
@@ -26,6 +30,8 @@ class HomeScreen extends HookConsumerWidget {
 
   final startSprintUsecase = StartSprintUsecase();
 
+  final startQuestionOfTheDayUsecase = StartQuestionOfTheDayUsecase();
+
   static const String route = '/home';
 
   @override
@@ -33,6 +39,13 @@ class HomeScreen extends HookConsumerWidget {
     useRateMyApp(context);
     useOfflineSave(context);
     useSetupInteractedMessage(context);
+
+    final loadingQuestionOfTheDay = useState(false);
+    final questionOfTheDayTick = useState(0);
+    final questionOfTheDayWon = useMemoized(
+      () => startQuestionOfTheDayUsecase.isTodayQuestionWon,
+      [questionOfTheDayTick.value],
+    );
 
     startPrint([QuestionCategory? category]) async {
       startSprintUsecase(category).then((result) {
@@ -42,9 +55,30 @@ class HomeScreen extends HookConsumerWidget {
             message: l.message,
           );
         }, (sprint) {
-          ref.watch(sprintHeartsProvider(sprint.id).notifier).update(sprint.hearts);
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+          ref
+              .watch(sprintHeartsProvider(sprint.id).notifier)
+              .update(sprint.hearts);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
         });
+      });
+    }
+
+    startQuestionOfTheDay() async {
+      if (loadingQuestionOfTheDay.value) return;
+      loadingQuestionOfTheDay.value = true;
+      final result = await startQuestionOfTheDayUsecase();
+      loadingQuestionOfTheDay.value = false;
+      if (!context.mounted) return;
+      result.fold((l) {
+        showOkAlertDialog(context: context, message: l.message);
+      }, (sprint) async {
+        ref
+            .watch(sprintHeartsProvider(sprint.id).notifier)
+            .update(sprint.hearts);
+        await Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => SprintScreen(sprint)));
+        questionOfTheDayTick.value++;
       });
     }
 
@@ -52,9 +86,12 @@ class HomeScreen extends HookConsumerWidget {
       body: UpgradeAlert(
         upgrader: Upgrader(),
         child: SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top),
               child: Stack(
                 children: [
                   Positioned(
@@ -72,12 +109,36 @@ class HomeScreen extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSizes.kScaffoldHorizontalPadding),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.kScaffoldHorizontalPadding),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            const TopazIcon(),
+                            const SizedBox(width: 5.0),
+                            ref
+                                .watch(firestoreAuthenticatedUserStreamProvider)
+                                .when(
+                                  loading: () => const TextTitleLevelTwo('0'),
+                                  error: (error, stackTrace) =>
+                                      const TextTitleLevelTwo('0'),
+                                  data: (firestoreAuthUser) =>
+                                      TextTitleLevelTwo(
+                                          (firestoreAuthUser?.diamonds ?? 0)
+                                              .toString()),
+                                ),
+                            const Spacer(),
                             IconButton(
-                              onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.route),
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(RankingScreen.route),
+                              icon: const Icon(
+                                Icons.bar_chart,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(SettingsScreen.route),
                               icon: const Icon(
                                 CupertinoIcons.settings,
                                 color: Colors.white,
@@ -89,11 +150,34 @@ class HomeScreen extends HookConsumerWidget {
                       const SizedBox(height: 30.0),
                       FadeAnimation(
                         delay: 1.0,
-                        child: RunningManLottieButton(onPressed: () => startPrint()),
+                        child: RunningManLottieButton(
+                            onPressed: () => startPrint()),
                       ),
                       const SizedBox(height: 20.0),
                       const TextTitleLevelOne('Appuyez pour commencer'),
                       const SizedBox(height: 30.0),
+                      if (!questionOfTheDayWon) ...[
+                        Center(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.65),
+                            child: PrimaryButton(
+                              loading: loadingQuestionOfTheDay.value,
+                              radius: 50.0,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 5.0),
+                              onPressed: startQuestionOfTheDay,
+                              child: const TextTitleLevelTwo(
+                                '🕹️  Question du jour',
+                                color: AppColors.kColorBlueRibbon,
+                                maxLines: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 30.0),
+                      ],
                       QuestionCategoriesHomeList(startPrint: startPrint),
                       const SizedBox(height: 30.0),
                       Row(
@@ -116,7 +200,8 @@ class HomeScreen extends HookConsumerWidget {
                     bottom: 0,
                     right: 0,
                     child: Transform.translate(
-                      offset: const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
+                      offset:
+                          const Offset(AppSizes.kScaffoldHorizontalPadding, 0),
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Image.asset(

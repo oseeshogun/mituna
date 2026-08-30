@@ -38,7 +38,10 @@ class UpdateAvatarUsecase extends UsecaseFamily<void, String> {
     final avatarImageRef = storageRef.child('images/$basename');
     await avatarImageRef.putFile(File(xImage.path));
     final url = await avatarImageRef.getDownloadURL();
-    await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).set({"avatar": url}, SetOptions(merge: true));
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.uid)
+        .set({"avatar": url}, SetOptions(merge: true));
   }
 }
 
@@ -46,6 +49,9 @@ class UpdateDisplayNameUsecase extends UsecaseFamily<void, String> {
   @override
   Future<void> execute(String displayName) async {
     final currentUser = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('users').doc(currentUser!.uid).set({"displayName": displayName}, SetOptions(merge: true));
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.uid)
+        .set({"displayName": displayName}, SetOptions(merge: true));
   }
 }
